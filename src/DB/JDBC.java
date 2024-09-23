@@ -1,3 +1,5 @@
+package DB;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.*;
@@ -12,7 +14,7 @@ public class JDBC {
         String pass = "password";
         String bd = "FundamentosDatabase";
 
-        System.out.println("Conectando...");
+        System.out.println("Conectando a Base...");
 
         try {
             conexion = DriverManager.getConnection(host+bd,user,pass);
@@ -24,11 +26,6 @@ public class JDBC {
 
         return conexion;
 
-    }
-
-
-    public static void main(String[] args){
-        Connection bd = ConectarBD();
     }
 
 }
