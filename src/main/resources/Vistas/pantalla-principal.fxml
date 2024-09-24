@@ -1,23 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vistas.PaginaPrincipal">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.paginaPrincipal">
    <children>
       <ImageView fitHeight="54.0" fitWidth="54.0" layoutX="38.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../../../../../../../../Pictures/Screenshots/Captura%20de%20pantalla%202024-09-23%20223508.png" />
+            <Image url="@../Imagenes/Startuplogo.jpeg" />
          </image>
       </ImageView>
       <TextField fx:id="buscarProductos" layoutX="130.0" layoutY="34.0" prefHeight="26.0" prefWidth="243.0" text="Busca productos, venderores y mas  " />
-      <Button fx:id="crearCuentaBoton" accessibleRole="TOOL_BAR" layoutX="250.0" layoutY="218.0" mnemonicParsing="false" prefHeight="39.0" prefWidth="129.0" text="Crea tu cuenta" textFill="#ffd7d7" textOverrun="WORD_ELLIPSIS">
+      <Button fx:id="crearCuentaBoton" accessibleRole="TOOL_BAR" layoutX="250.0" layoutY="218.0" mnemonicParsing="false" text="Crea tu cuenta" textFill="#ffd7d7" textOverrun="WORD_ELLIPSIS">
          <font>
             <Font size="33.0" />
          </font>
@@ -26,32 +22,32 @@
       <Button fx:id="misComprasBoton" layoutX="427.0" layoutY="32.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="95.0" text="Mis compras " />
       <ImageView fitHeight="26.0" fitWidth="31.0" layoutX="535.0" layoutY="34.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../../../../../../../../Pictures/Screenshots/Captura%20de%20pantalla%202024-09-23%20225932.png" />
+            <Image url="@../Imagenes/carrito de compras.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="101.0" fitWidth="140.0" layoutX="70.0" layoutY="93.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../../../../../../../../Pictures/Screenshots/Captura%20de%20pantalla%202024-09-23%20234112.png" />
+            <Image url="@../Imagenes/deporte.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="101.0" fitWidth="127.0" layoutX="246.0" layoutY="97.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../../../../../../../../Pictures/Screenshots/Captura%20de%20pantalla%202024-09-23%20234201.png" />
+            <Image url="@../Imagenes/hogar.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="101.0" fitWidth="152.0" layoutX="427.0" layoutY="93.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../../../../../../../../Pictures/Screenshots/Captura%20de%20pantalla%202024-09-23%20234217.png" />
+            <Image url="@../Imagenes/joyas.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="116.0" fitWidth="120.0" layoutX="427.0" layoutY="211.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../../../../../../../../Pictures/Screenshots/Captura%20de%20pantalla%202024-09-23%20234232.png" />
+            <Image url="@../Imagenes/moda.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="101.0" fitWidth="142.0" layoutX="74.0" layoutY="224.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../../../../../../../../../Pictures/Screenshots/Captura%20de%20pantalla%202024-09-23%20234550.png" />
+            <Image url="@../Imagenes/tecnologia.png" />
          </image>
       </ImageView>
       <Label layoutX="134.0" layoutY="344.0" prefHeight="18.0" prefWidth="360.0" text="Tu herramienta perfecta para comprar y vender productos. Si eres emprendedor estas en el lugar indicado para potencializar tus ventas y si eres cliente es el lugar perfecto para que compres tu producto." />
