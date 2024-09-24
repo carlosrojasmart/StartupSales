@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.HelloController">
+<BorderPane fx:id="contenedor" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.HelloController">
    <top>
-      <MenuBar BorderPane.alignment="CENTER">
+      <MenuBar>
         <menus>
           <Menu mnemonicParsing="false" text="Ingresar">
             <items>
-              <MenuItem fx:id="iniciarSesion" mnemonicParsing="false" onAction="#iniciarSesion" text="Iniciar Sesión" />
-                  <MenuItem mnemonicParsing="false" text="Registrate" />
+                <MenuItem mnemonicParsing="false" onAction="#iniciarSesion" text="Iniciar Sesión" />
+                <MenuItem mnemonicParsing="false" onAction="#registrar" text="Registrate" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Edit">
@@ -25,6 +26,9 @@
             </items>
           </Menu>
         </menus>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
       </MenuBar>
    </top>
    <center>

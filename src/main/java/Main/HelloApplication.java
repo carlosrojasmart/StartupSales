@@ -12,14 +12,14 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/Vistas/hello-view.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 1000, 600);
+        Scene scene = new Scene(fxmlLoader.load(), 854.0, 503.0);
         stage.setTitle("Hello!");
         stage.setScene(scene);
         stage.show();
     }
 
     public static void main(String[] args) {
-        JDBC.ConectarBD();
-        launch();
+        JDBC.ConectarBD(); // Conexión a la base de datos
+        launch(); // Iniciar la aplicación JavaFX
     }
 }

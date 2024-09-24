@@ -11,13 +11,11 @@ import java.io.IOException;
 
 public class HelloController {
 
-    @FXML
-    public MenuItem optSalir;
-    @FXML
-    public BorderPane contenedor;
-
     public HelloController() throws IOException {
     }
+
+    @FXML
+    public MenuItem optIniciarSesion;
 
     @FXML
     public void salir() {
@@ -25,10 +23,18 @@ public class HelloController {
     }
 
     @FXML
+    private BorderPane contenedor;
+
     public void iniciarSesion() throws IOException {
         AnchorPane pane = FXMLLoader.load(getClass().getResource("Vistas/View-Login.fxml"));
         contenedor.setCenter(pane);
     }
+
+    public void registrar() throws IOException {
+        AnchorPane pane = FXMLLoader.load(getClass().getResource("Vistas/View-Register.fxml"));
+        contenedor.setCenter(pane);
+    }
+
 
 
 }
