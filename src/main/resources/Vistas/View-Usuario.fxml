@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="503.0" prefWidth="854.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.ViewInicialLogeadoController">
+<AnchorPane prefHeight="503.0" prefWidth="854.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.ViewUsuarioController">
     <children>
         <HBox layoutX="-1.0" prefHeight="66.0" prefWidth="863.0" style="-fx-background-color: #000000;">
             <children>
@@ -51,21 +51,6 @@
                 </ImageView>
             </children>
         </HBox>
-        <Label layoutX="133.0" layoutY="97.0" text="Iniciar ahora con StartupSales">
-            <font>
-                <Font name="Franklin Gothic Book" size="27.0" />
-            </font>
-        </Label>
-        <Label layoutX="231.0" layoutY="129.0" text="Tu tienda, tu éxito.">
-            <font>
-                <Font name="Century Gothic" size="45.0" />
-            </font>
-        </Label>
-        <Label layoutX="19.0" layoutY="209.0" prefHeight="18.0" prefWidth="157.0" text="Productos Destacados">
-            <font>
-                <Font name="MS Reference Sans Serif" size="14.0" />
-            </font>
-        </Label>
         <HBox layoutX="-1.0" layoutY="480.0" prefHeight="30.0" prefWidth="863.0" style="-fx-background-color: #000000;">
             <children>
                 <Label text="© 2025 StartupSales. Todos los derechos reservados." textFill="WHITE">
@@ -77,9 +62,14 @@
                     </HBox.margin>
                 </Label>
             </children></HBox>
-        <ImageView fitHeight="240.0" fitWidth="848.0" layoutX="19.0" layoutY="227.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@../Imagenes/ImagenGafasTemporal.png" />
-            </image></ImageView>
+      <VBox layoutY="66.0" prefHeight="413.0" prefWidth="215.0">
+         <children>
+            <Label text="Mi Cuenta">
+               <VBox.margin>
+                  <Insets left="20.0" top="20.0" />
+               </VBox.margin>
+            </Label>
+         </children>
+      </VBox>
     </children>
 </AnchorPane>
