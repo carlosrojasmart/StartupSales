@@ -57,14 +57,7 @@
                                 <Insets right="225.0" top="5.0" />
                             </VBox.margin>
                         </Label>
-                        <PasswordField fx:id="txtTelefono" maxWidth="300.0" minHeight="30.0">
-                            <font>
-                                <Font size="18.0" />
-                            </font>
-                            <VBox.margin>
-                                <Insets />
-                            </VBox.margin>
-                        </PasswordField>
+                  <TextField fx:id="txtTelefono" maxWidth="300.0" minHeight="30.0" />
                   <Label text="Direccion">
                      <font>
                         <Font size="18.0" />
@@ -74,12 +67,17 @@
                      </VBox.margin>
                   </Label>
                   <TextField fx:id="txtDireccion" maxWidth="300.0" minHeight="30.0" />
+                  <Label fx:id="lblMensaje" text="Crea tu usuario">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Label>
                         <Button fx:id="btnLogin" maxWidth="160.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="182.0" text="Crear Cuenta">
                             <font>
                                 <Font size="15.0" />
                             </font>
                             <VBox.margin>
-                                <Insets top="15.0" />
+                                <Insets top="10.0" />
                             </VBox.margin>
                         </Button>
                   <Button fx:id="ingresarBoton" maxWidth="160.0" mnemonicParsing="false" onAction="#mostrarLogin" text="Ya tengo una cuenta">
@@ -92,7 +90,7 @@
                   </Button>
                   <Button fx:id="btnSeguirSinCuenta" mnemonicParsing="false" onAction="#volverVistaInicial" style="-fx-background-color: #ffffffff;" text="Quiero seguir viendo sin crear una cuenta">
                      <VBox.margin>
-                        <Insets top="10.0" />
+                        <Insets top="5.0" />
                      </VBox.margin>
                   </Button>
                     </children>

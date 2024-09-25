@@ -25,21 +25,13 @@
             </TextField>
             <Button fx:id="ingresarBoton" onAction="#mostrarLogin" prefHeight="30.0" prefWidth="95.0" style="-fx-background-color: #000000;" text="Inicia Sesión" textFill="WHITE">
                <HBox.margin>
-                  <Insets left="15.0" top="18.0" />
+                  <Insets left="100.0" top="18.0" />
                </HBox.margin>
                <font>
                   <Font name="MS Reference Sans Serif" size="12.0" />
                </font>
             </Button>
             <Button fx:id="crearCuentaBoton" onAction="#mostrarCrearCuenta" prefHeight="30.0" prefWidth="110.0" style="-fx-background-color: #000000;" text="Crea tu cuenta" textFill="WHITE">
-               <HBox.margin>
-                  <Insets top="18.0" />
-               </HBox.margin>
-               <font>
-                  <Font name="MS Reference Sans Serif" size="12.0" />
-               </font>
-            </Button>
-            <Button fx:id="misComprasBoton" prefHeight="30.0" prefWidth="95.0" style="-fx-background-color: #000000;" text="Mis compras" textFill="WHITE">
                <HBox.margin>
                   <Insets top="18.0" />
                </HBox.margin>
