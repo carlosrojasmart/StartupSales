@@ -8,11 +8,11 @@
 
 <HBox prefHeight="503.0" prefWidth="854.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.ViewRegisterController">
     <children>
-        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="427.0" HBox.hgrow="ALWAYS">
+        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="427.0" style="-fx-background-color: #FFFFFFFF;" HBox.hgrow="ALWAYS">
             <children>
                 <Label text="Registro">
                     <font>
-                        <Font size="40.0" />
+                        <Font size="32.0" />
                     </font>
                     <VBox.margin>
                         <Insets />
@@ -25,7 +25,7 @@
                   <Insets right="230.0" />
                </VBox.margin>
             </Label>
-            <TextField maxWidth="300.0" minHeight="30.0" />
+            <TextField fx:id="txtUser" maxWidth="300.0" minHeight="30.0" />
                 <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                     <children>
                   <Label text="Correo Electronico">
@@ -33,31 +33,31 @@
                         <Font size="18.0" />
                      </font>
                      <VBox.margin>
-                        <Insets right="150.0" top="10.0" />
+                        <Insets right="150.0" top="5.0" />
                      </VBox.margin></Label>
-                  <TextField maxWidth="300.0" minHeight="30.0" />
+                  <TextField fx:id="txtCorreoElectronico" maxWidth="300.0" minHeight="30.0" />
                         <Label text="Contraseña">
                             <font>
                                 <Font size="18.0" />
                             </font>
                             <VBox.margin>
-                                <Insets right="205.0" top="10.0" />
+                                <Insets right="205.0" top="5.0" />
                             </VBox.margin>
                         </Label>
-                        <TextField fx:id="txtUser" maxWidth="300.0" minHeight="30.0" >
+                        <PasswordField fx:id="txtContraseña" maxWidth="300.0" minHeight="30.0">
                             <font>
                                 <Font size="18.0" />
                             </font>
-                        </TextField>
+                        </PasswordField>
                         <Label text="Telefono">
                             <font>
                                 <Font size="18.0" />
                             </font>
                             <VBox.margin>
-                                <Insets right="225.0" top="10.0" />
+                                <Insets right="225.0" top="5.0" />
                             </VBox.margin>
                         </Label>
-                        <PasswordField fx:id="txtPassword" maxWidth="300.0" minHeight="30.0" >
+                        <PasswordField fx:id="txtTelefono" maxWidth="300.0" minHeight="30.0">
                             <font>
                                 <Font size="18.0" />
                             </font>
@@ -70,18 +70,31 @@
                         <Font size="18.0" />
                      </font>
                      <VBox.margin>
-                        <Insets right="220.0" top="10.0" />
+                        <Insets right="220.0" top="5.0" />
                      </VBox.margin>
                   </Label>
-                  <TextField maxWidth="300.0" minHeight="30.0" />
-                        <Button fx:id="btnLogin" maxWidth="200.0" mnemonicParsing="false"  text="Ingresar">
+                  <TextField fx:id="txtDireccion" maxWidth="300.0" minHeight="30.0" />
+                        <Button fx:id="btnLogin" maxWidth="160.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="182.0" text="Crear Cuenta">
                             <font>
-                                <Font size="18.0" />
+                                <Font size="15.0" />
                             </font>
                             <VBox.margin>
-                                <Insets top="20.0" />
+                                <Insets top="15.0" />
                             </VBox.margin>
                         </Button>
+                  <Button fx:id="ingresarBoton" maxWidth="160.0" mnemonicParsing="false" onAction="#mostrarLogin" text="Ya tengo una cuenta">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Button fx:id="btnSeguirSinCuenta" mnemonicParsing="false" onAction="#volverVistaInicial" style="-fx-background-color: #ffffffff;" text="Quiero seguir viendo sin crear una cuenta">
+                     <VBox.margin>
+                        <Insets top="10.0" />
+                     </VBox.margin>
+                  </Button>
                     </children>
                     <VBox.margin>
                         <Insets left="30.0" right="30.0" />
