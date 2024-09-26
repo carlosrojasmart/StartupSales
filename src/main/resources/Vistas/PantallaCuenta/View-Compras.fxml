@@ -116,7 +116,7 @@
                         <Font name="MS Reference Sans Serif" size="12.0" />
                     </font>
                 </Button>
-                <Button fx:id="BtnMiPerfil" mnemonicParsing="false" style="-fx-background-color: #F5F5F5;" text="Mi Perfil">
+                <Button fx:id="BtnMiPerfil" mnemonicParsing="false" onAction="#mostrarMiPerfil" style="-fx-background-color: #F5F5F5;" text="Mi Perfil">
                     <VBox.margin>
                         <Insets left="5.0" top="80.0" />
                     </VBox.margin>
@@ -132,7 +132,7 @@
                         <Font name="MS Reference Sans Serif" size="12.0" />
                     </font>
                 </Button>
-                <Button fx:id="BtnTienda" mnemonicParsing="false" style="-fx-background-color: #F5F5F5;" text="Tienda">
+                <Button fx:id="BtnTienda" mnemonicParsing="false" onAction="#mostrarTienda" style="-fx-background-color: #F5F5F5;" text="Tienda">
                     <VBox.margin>
                         <Insets left="5.0" top="25.0" />
                     </VBox.margin>
@@ -140,7 +140,7 @@
                         <Font name="MS Reference Sans Serif" size="12.0" />
                     </font>
                 </Button>
-                <Button fx:id="BtnFacturacion" mnemonicParsing="false" style="-fx-background-color: #F5F5F5;" text="Facturacion">
+                <Button fx:id="BtnFacturacion" mnemonicParsing="false" onAction="#mostrarFacturacion" style="-fx-background-color: #F5F5F5;" text="Facturacion">
                     <VBox.margin>
                         <Insets left="5.0" top="25.0" />
                     </VBox.margin>
