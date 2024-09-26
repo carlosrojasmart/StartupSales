@@ -49,9 +49,6 @@ public class ViewLoginController {
             return;
         }
 
-        // Imprimir el valor que se está pasando como username
-        System.out.println("Usuario ingresado: " + username);
-
         try (Connection conexion = JDBC.ConectarBD()) {
             String sql = "SELECT contraseña FROM Usuario WHERE correo_electronico = ?";
             try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
@@ -60,7 +57,6 @@ public class ViewLoginController {
 
                 if (rs.next()) {
                     String storedPassword = rs.getString("contraseña");
-                    System.out.println("Contraseña encontrada en la BD: " + storedPassword);
 
                     if (storedPassword.equals(password)) {
                         mostrarMensaje("Login exitoso.");

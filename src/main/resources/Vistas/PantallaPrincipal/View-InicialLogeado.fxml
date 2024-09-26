@@ -23,15 +23,22 @@
                         <Insets left="20.0" top="18.0" />
                     </HBox.margin>
                 </TextField>
-                <Button fx:id="misComprasBoton" prefHeight="30.0" prefWidth="95.0" style="-fx-background-color: #000000;" text="Mis compras" textFill="WHITE">
+                <Button fx:id="BtnMisTiendas" onAction="#mostrarMisTiendas" prefHeight="30.0" prefWidth="86.0" style="-fx-background-color: #000000;" text="Mis Tiendas" textFill="WHITE">
                     <HBox.margin>
-                        <Insets left="170.0" top="18.0" />
+                        <Insets left="115.0" top="18.0" />
                     </HBox.margin>
                     <font>
                         <Font name="MS Reference Sans Serif" size="12.0" />
                     </font>
                 </Button>
-
+                <Button fx:id="BtnComprasAr" onAction="#mostrarCompras" prefHeight="30.0" prefWidth="72.0" style="-fx-background-color: #000000;" text="Compras" textFill="WHITE">
+                    <HBox.margin>
+                        <Insets top="18.0" />
+                    </HBox.margin>
+                    <font>
+                        <Font name="MS Reference Sans Serif" size="12.0" />
+                    </font>
+                </Button>
                 <ImageView fx:id="carritoCompra" fitHeight="38.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                     <image>
                         <Image url="@../../Imagenes/Principal/CarritoCompra.png" />

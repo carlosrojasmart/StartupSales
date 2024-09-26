@@ -15,25 +15,22 @@ public class ViewInicialLogeadoController {
     private TextField buscarProductos;
 
     @FXML
-    private Button misComprasBoton;
-
-    @FXML
     private ImageView carritoCompra;
 
     @FXML
+    private Button BtnComprasAr;
+
+    @FXML
     private ImageView usuarioIcono;
+
+    @FXML
+    private Button BtnMisTiendas;
 
     @FXML
     private void initialize() {
         buscarProductos.setOnMouseClicked(event -> {
             // Limpiar el campo de búsqueda al hacer clic
             buscarProductos.clear();
-        });
-
-        misComprasBoton.setOnAction(event -> {
-            // Lógica para manejar el botón "Mis compras"
-            System.out.println("Ir a Mis Compras");
-            // Aquí podrías implementar la navegación a otra vista
         });
 
         usuarioIcono.setOnMouseClicked(event -> {
@@ -47,6 +44,32 @@ public class ViewInicialLogeadoController {
             // Cargar la nueva vista de usuario
             Parent root = FXMLLoader.load(getClass().getResource("/Vistas/PantallaCuenta/View-MiPerfil.fxml"));
             Stage stage = (Stage) usuarioIcono.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+
+    private void mostrarMisTiendas() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/Vistas/PantallaCuenta/View-Tienda.fxml")); // Asegúrate de usar la ruta correcta
+            Stage stage = (Stage) BtnMisTiendas.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+
+    private void mostrarCompras() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/Vistas/PantallaCuenta/View-Compras.fxml")); // Asegúrate de usar la ruta correcta
+            Stage stage = (Stage) BtnComprasAr.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
         } catch (Exception e) {

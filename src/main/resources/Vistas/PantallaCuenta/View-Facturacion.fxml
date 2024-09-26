@@ -23,15 +23,14 @@
                         <Insets left="20.0" top="18.0" />
                     </HBox.margin>
                 </TextField>
-                <Button fx:id="misComprasBoton" prefHeight="30.0" prefWidth="95.0" style="-fx-background-color: #000000;" text="Mis compras" textFill="WHITE">
+                <Button fx:id="BtnVolverInicio" onAction="#mostrarInicio" prefHeight="30.0" prefWidth="50.0" style="-fx-background-color: #000000;" text="Inicio" textFill="WHITE">
                     <HBox.margin>
-                        <Insets left="170.0" top="18.0" />
+                        <Insets left="218.0" right="4.0" top="18.0" />
                     </HBox.margin>
                     <font>
                         <Font name="MS Reference Sans Serif" size="12.0" />
                     </font>
                 </Button>
-
                 <ImageView fx:id="carritoCompra" fitHeight="38.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                     <image>
                         <Image url="@../../Imagenes/Principal/CarritoCompra.png" />
@@ -132,7 +131,7 @@
                         <Font name="MS Reference Sans Serif" size="12.0" />
                     </font>
                 </Button>
-                <Button fx:id="BtnTienda" mnemonicParsing="false" onAction="#mostrarTienda" style="-fx-background-color: #F5F5F5;" text="Tienda">
+                <Button fx:id="BtnTienda" mnemonicParsing="false" onAction="#mostrarMisTiendas" style="-fx-background-color: #F5F5F5;" text="Tiendas">
                     <VBox.margin>
                         <Insets left="5.0" top="25.0" />
                     </VBox.margin>

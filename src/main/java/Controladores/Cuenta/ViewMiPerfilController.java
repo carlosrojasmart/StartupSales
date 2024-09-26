@@ -16,19 +16,19 @@ public class ViewMiPerfilController {
     private TextField buscarProductos;
 
     @FXML
-    private Button misComprasBoton;
-
-    @FXML
     private ImageView carritoCompra;
 
     @FXML
     private ImageView usuarioIcono;
 
     @FXML
-    private Button btnMiCuenta;
+    private Button BtnMiPerfil;
 
     @FXML
-    private Button BtnMiPerfil;
+    private Button BtnComprasAr;
+
+    @FXML
+    private Button BtnVolverInicio;
 
     @FXML
     private Button BtnCompras;
@@ -38,6 +38,19 @@ public class ViewMiPerfilController {
 
     @FXML
     private Button BtnFacturacion;
+
+    @FXML
+
+    private void mostrarInicio() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/Vistas/PantallaPrincipal/View-InicialLogeado.fxml")); // Asegúrate de usar la ruta correcta
+            Stage stage = (Stage) BtnVolverInicio.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @FXML
 
@@ -54,7 +67,7 @@ public class ViewMiPerfilController {
 
     @FXML
 
-    private void mostrarTienda() {
+    private void mostrarMisTiendas() {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/Vistas/PantallaCuenta/View-Tienda.fxml")); // Asegúrate de usar la ruta correcta
             Stage stage = (Stage) BtnTienda.getScene().getWindow();

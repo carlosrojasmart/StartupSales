@@ -20,7 +20,7 @@ public class paginaPrincipal {
     private Button ingresarBoton;
 
     @FXML
-    private Button misComprasBoton;
+    private Button BtnCompras;
 
     @FXML
     private ImageView carritoCompras;
