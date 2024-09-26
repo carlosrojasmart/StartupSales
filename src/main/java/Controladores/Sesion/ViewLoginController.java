@@ -1,4 +1,4 @@
-package Controladores;
+package Controladores.Sesion;
 
 import DB.JDBC;
 import javafx.fxml.FXML;
@@ -86,7 +86,7 @@ public class ViewLoginController {
 
     private void mostrarCrearCuenta() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/Vistas/View-Register.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/Vistas/PantallaSesion/View-Register.fxml"));
             Stage stage = (Stage) btnCrearUnaCuenta.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
@@ -99,7 +99,7 @@ public class ViewLoginController {
 
     private void volverVistaInicial() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/Vistas/pantalla-principal.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/Vistas/PantallaPrincipal/pantalla-principal.fxml"));
             Stage stage = (Stage) btnSeguirSinCuenta.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
@@ -112,7 +112,7 @@ public class ViewLoginController {
 
     private void volverVistaInicialLogeado() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/Vistas/View-InicialLogeado.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/Vistas/PantallaPrincipal/View-InicialLogeado.fxml"));
             Stage stage = (Stage) btnLogin.getScene().getWindow(); // Cambia esto según el botón que desees usar
             stage.setScene(new Scene(root));
             stage.show();

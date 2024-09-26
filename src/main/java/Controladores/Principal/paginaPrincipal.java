@@ -1,4 +1,4 @@
-package Controladores;
+package Controladores.Principal;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -8,9 +8,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-
-
-import java.io.IOException;
 
 public class paginaPrincipal {
     @FXML
@@ -47,7 +44,7 @@ public class paginaPrincipal {
 
     private void mostrarCrearCuenta() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/Vistas/View-Register.fxml")); // Asegúrate de usar la ruta correcta
+            Parent root = FXMLLoader.load(getClass().getResource("/Vistas/PantallaSesion/View-Register.fxml")); // Asegúrate de usar la ruta correcta
             Stage stage = (Stage) crearCuentaBoton.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
@@ -60,7 +57,7 @@ public class paginaPrincipal {
 
     private void mostrarLogin() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/Vistas/View-Login.fxml")); // Asegúrate de usar la ruta correcta
+            Parent root = FXMLLoader.load(getClass().getResource("/Vistas/PantallaSesion/View-Login.fxml")); // Asegúrate de usar la ruta correcta
             Stage stage = (Stage) ingresarBoton.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();

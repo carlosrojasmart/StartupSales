@@ -1,4 +1,4 @@
-package Controladores;
+package Controladores.Sesion;
 
 import DB.JDBC;
 import javafx.fxml.FXML;
@@ -117,7 +117,7 @@ public class ViewRegisterController {
 
     private void mostrarLogin() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/Vistas/View-Login.fxml")); // Asegúrate de usar la ruta correcta
+            Parent root = FXMLLoader.load(getClass().getResource("/Vistas/PantallaSesion/View-Login.fxml")); // Asegúrate de usar la ruta correcta
             Stage stage = (Stage) ingresarBoton.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
@@ -130,7 +130,7 @@ public class ViewRegisterController {
 
     private void volverVistaInicial() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/Vistas/pantalla-principal.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/Vistas/PantallaPrincipal/pantalla-principal.fxml"));
             Stage stage = (Stage) btnSeguirSinCuenta.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();

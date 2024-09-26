@@ -6,13 +6,13 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="503.0" prefWidth="854.0" style="-fx-background-color: #FFFFFFFF;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.paginaPrincipal">
+<AnchorPane prefHeight="503.0" prefWidth="854.0" style="-fx-background-color: #FFFFFFFF;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.Principal.paginaPrincipal">
    <children>
       <HBox layoutX="-1.0" prefHeight="66.0" prefWidth="863.0" style="-fx-background-color: #000000;">
          <children>
             <ImageView fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../Imagenes/StartUpSalesALT.png" />
+                  <Image url="@../../Imagenes/Principal/StartUpSalesALT.png" />
                </image>
                <HBox.margin>
                   <Insets left="15.0" top="10.0" />
@@ -42,7 +42,7 @@
 
             <ImageView fitHeight="38.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../Imagenes/CarritoCompra.png" />
+                  <Image url="@../../Imagenes/Principal/CarritoCompra.png" />
                </image>
                <HBox.margin>
                   <Insets left="20.0" top="18.0" />
@@ -78,7 +78,7 @@
          </children></HBox>
       <ImageView fitHeight="240.0" fitWidth="848.0" layoutX="19.0" layoutY="227.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../Imagenes/ImagenGafasTemporal.png" />
+            <Image url="@../../Imagenes/Principal/ImagenGafasTemporal.png" />
          </image></ImageView>
    </children>
 </AnchorPane>

@@ -12,8 +12,17 @@ module my.app {
     requires eu.hansolo.tilesfx;
     requires com.almasb.fxgl.all;
 
+    // Abre los paquetes a JavaFX para permitir la inyección de FXML
     opens Main to javafx.fxml;
-    opens Controladores to javafx.fxml; // Asegúrate de abrir este paquete
+    opens Controladores to javafx.fxml;
+    opens Controladores.Principal to javafx.fxml;
+    opens Controladores.Sesion to javafx.fxml;
+    opens Controladores.Cuenta to javafx.fxml;
+
+    // Exporta los paquetes para permitir el acceso público
     exports Main;
-    exports Controladores; // Exporta el paquete si es necesario
+    exports Controladores;
+    exports Controladores.Principal;
+    exports Controladores.Sesion;
+    exports Controladores.Cuenta;
 }

@@ -1,4 +1,4 @@
-package Controladores;
+package Controladores.Principal;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -45,7 +45,7 @@ public class ViewInicialLogeadoController {
     private void irAVistaUsuario() {
         try {
             // Cargar la nueva vista de usuario
-            Parent root = FXMLLoader.load(getClass().getResource("/Vistas/View-Usuario.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/Vistas/PantallaCuenta/View-MiPerfil.fxml"));
             Stage stage = (Stage) usuarioIcono.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();

@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<HBox prefHeight="503.0" prefWidth="854.0" style="-fx-background-color: #FFFFFFFF;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.ViewLoginController">
+<HBox prefHeight="503.0" prefWidth="854.0" style="-fx-background-color: #FFFFFFFF;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.Sesion.ViewLoginController">
    <children>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="427.0" HBox.hgrow="ALWAYS">
          <children>
@@ -84,7 +84,7 @@
                   <Insets />
                </VBox.margin>
                <image>
-                  <Image url="@../Imagenes/Startuplogo.jpeg" />
+                  <Image url="@../../Imagenes/Principal/Startuplogo.jpeg" />
                </image></ImageView>
          </children></VBox>
    </children>
