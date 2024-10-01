@@ -40,7 +40,7 @@
                </font>
             </Button>
 
-            <ImageView fitHeight="38.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="carritoCompra" fitHeight="38.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../Imagenes/Principal/CarritoCompra.png" />
                </image>

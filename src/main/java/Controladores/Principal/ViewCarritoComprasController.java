@@ -1,4 +1,4 @@
-package Controladores.Cuenta;
+package Controladores.Principal;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -7,10 +7,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.event.ActionEvent;
 import javafx.stage.Stage;
 
-public class ViewMiPerfilController {
+public class ViewCarritoComprasController {
 
     @FXML
     private TextField buscarProductos;
@@ -19,25 +18,13 @@ public class ViewMiPerfilController {
     private ImageView carritoCompra;
 
     @FXML
-    private ImageView usuarioIcono;
-
-    @FXML
-    private Button BtnMiPerfil;
-
-    @FXML
     private Button BtnComprasAr;
 
     @FXML
-    private Button BtnVolverInicio;
+    private ImageView usuarioIcono;
 
     @FXML
-    private Button BtnCompras;
-
-    @FXML
-    private Button BtnTienda;
-
-    @FXML
-    private Button BtnFacturacion;
+    private Button BtnMisTiendas;
 
     @FXML
     private void initialize() {
@@ -46,9 +33,26 @@ public class ViewMiPerfilController {
             buscarProductos.clear();
         });
 
+        usuarioIcono.setOnMouseClicked(event -> {
+            // Lógica para manejar el clic en el icono de usuario
+            irAVistaUsuario(); // Método para cambiar a la vista de usuario
+        });
+
         carritoCompra.setOnMouseClicked(event -> {
             irAVistaCarrito();
         });
+    }
+
+    private void irAVistaUsuario() {
+        try {
+            // Cargar la nueva vista de usuario
+            Parent root = FXMLLoader.load(getClass().getResource("/Vistas/PantallaCuenta/View-MiPerfil.fxml"));
+            Stage stage = (Stage) usuarioIcono.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void irAVistaCarrito() {
@@ -65,10 +69,10 @@ public class ViewMiPerfilController {
 
     @FXML
 
-    private void mostrarInicio() {
+    private void mostrarMisTiendas() {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/Vistas/PantallaPrincipal/View-InicialLogeado.fxml")); // Asegúrate de usar la ruta correcta
-            Stage stage = (Stage) BtnVolverInicio.getScene().getWindow();
+            Parent root = FXMLLoader.load(getClass().getResource("/Vistas/PantallaCuenta/View-Tienda.fxml")); // Asegúrate de usar la ruta correcta
+            Stage stage = (Stage) BtnMisTiendas.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
         } catch (Exception e) {
@@ -81,7 +85,7 @@ public class ViewMiPerfilController {
     private void mostrarCompras() {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/Vistas/PantallaCuenta/View-Compras.fxml")); // Asegúrate de usar la ruta correcta
-            Stage stage = (Stage) BtnCompras.getScene().getWindow();
+            Stage stage = (Stage) BtnComprasAr.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
         } catch (Exception e) {
@@ -89,29 +93,4 @@ public class ViewMiPerfilController {
         }
     }
 
-    @FXML
-
-    private void mostrarMisTiendas() {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/Vistas/PantallaCuenta/View-Tienda.fxml")); // Asegúrate de usar la ruta correcta
-            Stage stage = (Stage) BtnTienda.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @FXML
-
-    private void mostrarFacturacion() {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/Vistas/PantallaCuenta/View-Facturacion.fxml")); // Asegúrate de usar la ruta correcta
-            Stage stage = (Stage) BtnFacturacion.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

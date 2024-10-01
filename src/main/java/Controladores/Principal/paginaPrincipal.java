@@ -20,24 +20,32 @@ public class paginaPrincipal {
     private Button ingresarBoton;
 
     @FXML
-    private Button BtnCompras;
+    private ImageView carritoCompra;
 
     @FXML
-    private ImageView carritoCompras;
+    private void initialize() {
+        buscarProductos.setOnMouseClicked(event -> {
+            // Limpiar el campo de búsqueda al hacer clic
+            buscarProductos.clear();
+        });
 
-    @FXML
-    private ImageView deporteImagen;
+        //carritoCompra.setOnMouseClicked(event -> {
+        //    irAVistaCarrito();
+        //});
+    }
 
-    @FXML
-    private ImageView hogarImagen;
-    @FXML
-    private ImageView joyasImagen;
 
-    @FXML
-    private ImageView modaImagen;
-
-    @FXML
-    private ImageView tecnologiaImagen;
+    private void irAVistaCarrito() {
+        try {
+            // Cargar la nueva vista de usuario
+            Parent root = FXMLLoader.load(getClass().getResource("/Vistas/PantallaPrincipal/View-CarritoCompras.fxml"));
+            Stage stage = (Stage) carritoCompra.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
 
     @FXML
@@ -64,11 +72,6 @@ public class paginaPrincipal {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private void mostrarMisCompras() {
-        // Implementa el cambio de vista para "Mis Compras"
-        // Similar a los métodos anteriores
     }
 
 }

@@ -14,11 +14,11 @@ public class JDBC {
         String pass = "password";
         String bd = "FundamentosDatabase";
 
-        //System.out.println("Conectando a Base...");
+        System.out.println("Conectando a Base...");
 
         try {
             conexion = DriverManager.getConnection(host+bd,user,pass);
-            //System.out.println("Conexion Exitosa!!!");
+            System.out.println("Conexion Exitosa!!!");
         } catch (SQLException e) {
             System.out.println(e.getMessage());
             throw new RuntimeException(e);
