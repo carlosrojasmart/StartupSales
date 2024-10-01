@@ -37,6 +37,10 @@ public class ViewInicialLogeadoController {
             // Lógica para manejar el clic en el icono de usuario
             irAVistaUsuario(); // Método para cambiar a la vista de usuario
         });
+
+        carritoCompra.setOnMouseClicked(event -> {
+            irAVistaCarrito();
+        });
     }
 
     private void irAVistaUsuario() {
@@ -44,6 +48,18 @@ public class ViewInicialLogeadoController {
             // Cargar la nueva vista de usuario
             Parent root = FXMLLoader.load(getClass().getResource("/Vistas/PantallaCuenta/View-MiPerfil.fxml"));
             Stage stage = (Stage) usuarioIcono.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void irAVistaCarrito() {
+        try {
+            // Cargar la nueva vista de usuario
+            Parent root = FXMLLoader.load(getClass().getResource("/Vistas/PantallaPrincipal/View-CarritoCompras.fxml"));
+            Stage stage = (Stage) carritoCompra.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.show();
         } catch (Exception e) {
@@ -76,5 +92,7 @@ public class ViewInicialLogeadoController {
             e.printStackTrace();
         }
     }
+
+
 
 }

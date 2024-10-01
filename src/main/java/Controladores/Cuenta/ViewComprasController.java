@@ -41,6 +41,30 @@ public class ViewComprasController {
     private Button BtnFacturacion;
 
     @FXML
+    private void initialize() {
+        buscarProductos.setOnMouseClicked(event -> {
+            // Limpiar el campo de búsqueda al hacer clic
+            buscarProductos.clear();
+        });
+
+        carritoCompra.setOnMouseClicked(event -> {
+            irAVistaCarrito();
+        });
+    }
+
+    private void irAVistaCarrito() {
+        try {
+            // Cargar la nueva vista de usuario
+            Parent root = FXMLLoader.load(getClass().getResource("/Vistas/PantallaPrincipal/View-CarritoCompras.fxml"));
+            Stage stage = (Stage) carritoCompra.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
 
     private void mostrarInicio() {
         try {
