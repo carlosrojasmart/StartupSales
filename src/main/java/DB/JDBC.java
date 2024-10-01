@@ -26,6 +26,8 @@ public class JDBC {
 
         return conexion;
 
+        // hash CONTRASEÑA
+
     }
 
 }
