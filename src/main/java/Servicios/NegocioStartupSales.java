@@ -1,17 +1,17 @@
-package Negocio;
+package Servicios;
 
 import Modelos.*;
 
 import java.util.List;
 
-public class negocioStartupSales {
+public class NegocioStartupSales {
     private List<Cliente> clientes;
     private List<Venta> ventas;
     private List<Producto> productos;
     private List<Envio> envios;
     private List<Inventario> inventarios;
 
-    public negocioStartupSales(List<Cliente> clientes, List<Venta> ventas, List<Producto> productos,
+    public NegocioStartupSales(List<Cliente> clientes, List<Venta> ventas, List<Producto> productos,
                                List<Envio> envios, List<Inventario> inventarios) {
         this.clientes = clientes;
         this.ventas = ventas;
