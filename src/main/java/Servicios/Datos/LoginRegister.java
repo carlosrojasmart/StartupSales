@@ -1,4 +1,4 @@
-package Servicios;
+package Servicios.Datos;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -40,7 +40,7 @@ public class LoginRegister {
         }
 
         try (Connection conexion = JDBC.ConectarBD()) {
-            String sql = "SELECT contraseña FROM Usuario WHERE correo_electronico = ?";
+            String sql = "SELECT idUsuario, nombre, correo_electronico, contraseña FROM Usuario WHERE correo_electronico = ?";
             try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
                 pstmt.setString(1, username);
                 ResultSet rs = pstmt.executeQuery();
@@ -50,6 +50,13 @@ public class LoginRegister {
                     String hashedPassword = hashPassword(password); // Hashear la contraseña ingresada
 
                     if (storedPassword.equals(hashedPassword)) {
+                        // Guardar la información del usuario activo
+                        int idUsuario = rs.getInt("idUsuario");
+                        String nombre = rs.getString("nombre");
+                        String correo = rs.getString("correo_electronico");
+
+                        UsuarioActivo.setUsuarioActivo(idUsuario, nombre, correo);
+
                         callback.onSuccess("Login exitoso.");
                     } else {
                         callback.onFailure("Contraseña incorrecta.");
@@ -79,7 +86,8 @@ public class LoginRegister {
 
         // Conexión a la base de datos y ejecución de la consulta
         try (Connection conexion = JDBC.ConectarBD()) {
-            String sql = "INSERT INTO Usuario (idUsuario, nombre, direccion, correo_electronico, telefono, idTienda, contraseña) VALUES (?, ?, ?, ?, ?, NULL, ?)";
+            // Aquí eliminamos el campo idTienda de la consulta, ya que no existe en la tabla Usuario
+            String sql = "INSERT INTO Usuario (idUsuario, nombre, direccion, correo_electronico, telefono, contraseña) VALUES (?, ?, ?, ?, ?, ?)";
 
             try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
                 pstmt.setInt(1, idUsuario); // idUsuario generado aleatoriamente
@@ -99,6 +107,7 @@ public class LoginRegister {
             callback.onFailure("Error de conexión a la base de datos: " + e.getMessage());
         }
     }
+
 
     private int generarIdAleatorio() {
         // Generar un número aleatorio de 6 dígitos como idCliente

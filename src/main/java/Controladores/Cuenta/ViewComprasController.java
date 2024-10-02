@@ -2,7 +2,7 @@ package Controladores.Cuenta;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import Servicios.CambiosVistas;
+import Servicios.Vistas.CambiosVistas;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
