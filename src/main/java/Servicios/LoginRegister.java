@@ -5,10 +5,34 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Random;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 
 import DB.JDBC;
 
 public class LoginRegister {
+
+    private String hashPassword(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            byte[] hashBytes = md.digest(password.getBytes());
+            StringBuilder hexString = new StringBuilder();
+
+            for (byte b : hashBytes) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Error al generar el hash de la contraseña", e);
+        }
+    }
+
+    // Método para manejar el login
     public void handleLogin(String username, String password, LoginCallback callback) {
         if (username.isEmpty() || password.isEmpty()) {
             callback.onFailure("Por favor, completa todos los campos.");
@@ -23,8 +47,9 @@ public class LoginRegister {
 
                 if (rs.next()) {
                     String storedPassword = rs.getString("contraseña");
+                    String hashedPassword = hashPassword(password); // Hashear la contraseña ingresada
 
-                    if (storedPassword.equals(password)) {
+                    if (storedPassword.equals(hashedPassword)) {
                         callback.onSuccess("Login exitoso.");
                     } else {
                         callback.onFailure("Contraseña incorrecta.");
@@ -38,11 +63,7 @@ public class LoginRegister {
         }
     }
 
-    public interface LoginCallback {
-        void onSuccess(String message);
-        void onFailure(String errorMessage);
-    }
-
+    // Método para registrar usuario
     public void registrarUsuario(String usuario, String correo, String contraseña, String telefono, String direccion, RegistrationCallback callback) {
         // Validación de campos
         if (usuario.isEmpty() || correo.isEmpty() || contraseña.isEmpty() || telefono.isEmpty() || direccion.isEmpty()) {
@@ -52,6 +73,9 @@ public class LoginRegister {
 
         // Generar un idUsuario aleatorio
         int idUsuario = generarIdAleatorio();
+
+        // Hashear la contraseña
+        String hashedPassword = hashPassword(contraseña);
 
         // Conexión a la base de datos y ejecución de la consulta
         try (Connection conexion = JDBC.ConectarBD()) {
@@ -63,7 +87,7 @@ public class LoginRegister {
                 pstmt.setString(3, direccion); // direccion
                 pstmt.setString(4, correo); // correo_electronico
                 pstmt.setString(5, telefono); // telefono
-                pstmt.setString(6, contraseña); // contraseña
+                pstmt.setString(6, hashedPassword); // contraseña hasheada
 
                 // Ejecutar la inserción
                 pstmt.executeUpdate();
@@ -82,8 +106,14 @@ public class LoginRegister {
         return random.nextInt(900000) + 100000; // Genera un número entre 100000 y 999999
     }
 
+    public interface LoginCallback {
+        void onSuccess(String message);
+        void onFailure(String errorMessage);
+    }
+
     public interface RegistrationCallback {
         void onSuccess(String message);
         void onFailure(String errorMessage);
     }
+
 }
