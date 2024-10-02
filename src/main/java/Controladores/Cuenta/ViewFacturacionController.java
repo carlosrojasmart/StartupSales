@@ -1,6 +1,6 @@
 package Controladores.Cuenta;
 
-import Servicios.CambiosVistas;
+import Servicios.Vistas.CambiosVistas;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;

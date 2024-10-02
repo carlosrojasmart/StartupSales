@@ -1,6 +1,6 @@
 package Controladores.Cuenta;
 
-import Servicios.CambiosVistas;
+import Servicios.Vistas.CambiosVistas;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;

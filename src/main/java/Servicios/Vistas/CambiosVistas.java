@@ -1,4 +1,4 @@
-package Servicios;
+package Servicios.Vistas;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;

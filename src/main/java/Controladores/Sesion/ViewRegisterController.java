@@ -1,7 +1,7 @@
 package Controladores.Sesion;
 
-import Servicios.CambiosVistas;
-import Servicios.LoginRegister;
+import Servicios.Vistas.CambiosVistas;
+import Servicios.Datos.LoginRegister;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.PasswordField;
