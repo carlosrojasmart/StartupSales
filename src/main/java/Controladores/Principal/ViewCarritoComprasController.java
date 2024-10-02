@@ -1,7 +1,10 @@
 package Controladores.Principal;
 
+import Servicios.CambiosVistas;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -26,6 +29,7 @@ public class ViewCarritoComprasController {
     @FXML
     private Button BtnMisTiendas;
 
+    private CambiosVistas cambiosVistas = new CambiosVistas();
     @FXML
     private void initialize() {
         buscarProductos.setOnMouseClicked(event -> {
@@ -35,62 +39,28 @@ public class ViewCarritoComprasController {
 
         usuarioIcono.setOnMouseClicked(event -> {
             // Lógica para manejar el clic en el icono de usuario
-            irAVistaUsuario(); // Método para cambiar a la vista de usuario
-        });
-
-        carritoCompra.setOnMouseClicked(event -> {
-            irAVistaCarrito();
+            mostrarMiPerfil(); // Método para cambiar a la vista de usuario
         });
     }
 
-    private void irAVistaUsuario() {
-        try {
-            // Cargar la nueva vista de usuario
-            Parent root = FXMLLoader.load(getClass().getResource("/Vistas/PantallaCuenta/View-MiPerfil.fxml"));
-            Stage stage = (Stage) usuarioIcono.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void irAVistaCarrito() {
-        try {
-            // Cargar la nueva vista de usuario
-            Parent root = FXMLLoader.load(getClass().getResource("/Vistas/PantallaPrincipal/View-CarritoCompras.fxml"));
-            Stage stage = (Stage) carritoCompra.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private void cambiarVista(Node nodo, String rutaFXML) {
+        Stage stage = (Stage) nodo.getScene().getWindow();
+        cambiosVistas.cambiarVista(stage, rutaFXML);
     }
 
     @FXML
-
-    private void mostrarMisTiendas() {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/Vistas/PantallaCuenta/View-Tienda.fxml")); // Asegúrate de usar la ruta correcta
-            Stage stage = (Stage) BtnMisTiendas.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void mostrarMiPerfil() {
+        cambiarVista(usuarioIcono, "/Vistas/PantallaCuenta/View-MiPerfil.fxml");
     }
 
     @FXML
+    public void mostrarMisTiendas(ActionEvent event) {
+        cambiarVista(BtnMisTiendas, "/Vistas/PantallaCuenta/View-Tienda.fxml");
+    }
 
-    private void mostrarCompras() {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/Vistas/PantallaCuenta/View-Compras.fxml")); // Asegúrate de usar la ruta correcta
-            Stage stage = (Stage) BtnComprasAr.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    @FXML
+    public void mostrarCompras(ActionEvent event) {
+        cambiarVista(BtnComprasAr, "/Vistas/PantallaCuenta/View-Compras.fxml");
     }
 
 }

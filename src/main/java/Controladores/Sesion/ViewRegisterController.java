@@ -1,20 +1,14 @@
 package Controladores.Sesion;
 
-import DB.JDBC;
+import Servicios.CambiosVistas;
+import Servicios.LoginRegister;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.Node;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.Random;
 
 public class ViewRegisterController {
     @FXML
@@ -45,59 +39,42 @@ public class ViewRegisterController {
     @FXML
     private Label lblMensaje; // Para mostrar mensajes de éxito o error
 
+    private CambiosVistas cambiosVistas = new CambiosVistas();
+
+    private LoginRegister loginRegister = new LoginRegister();
+
+    private void cambiarVista(Node nodo, String rutaFXML) {
+        Stage stage = (Stage) nodo.getScene().getWindow();
+        cambiosVistas.cambiarVista(stage, rutaFXML);
+    }
+
     @FXML
     public void initialize() {
         // Configurar el botón para que ejecute la acción de registro
         btnLogin.setOnAction(event -> registrarUsuario());
     }
 
+    @FXML
     private void registrarUsuario() {
-        // Obtener los valores ingresados por el usuario
         String usuario = txtUser.getText();
         String correo = txtCorreoElectronico.getText();
-        String contraseña = txtContraseña.getText(); // Obtener la contraseña
+        String contraseña = txtContraseña.getText();
         String telefono = txtTelefono.getText();
         String direccion = txtDireccion.getText();
 
-        // Validación de campos
-        if (usuario.isEmpty() || correo.isEmpty() || contraseña.isEmpty() || telefono.isEmpty() || direccion.isEmpty()) {
-            mostrarMensaje("Por favor, completa todos los campos.");
-            return;
-        }
-
-        // Generar un idUsuario aleatorio
-        int idUsuario = generarIdAleatorio();
-
-        // Conexión a la base de datos y ejecución de la consulta
-        try (Connection conexion = JDBC.ConectarBD()) {
-            String sql = "INSERT INTO Usuario (idUsuario, nombre, direccion, correo_electronico, telefono, idTienda, contraseña) VALUES (?, ?, ?, ?, ?, NULL, ?)";
-
-            try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
-                pstmt.setInt(1, idUsuario); // idUsuario generado aleatoriamente
-                pstmt.setString(2, usuario); // nombre
-                pstmt.setString(3, direccion); // direccion
-                pstmt.setString(4, correo); // correo_electronico
-                pstmt.setString(5, telefono); // telefono
-                pstmt.setString(6, contraseña); // contraseña
-
-                // Ejecutar la inserción
-                pstmt.executeUpdate();
-                mostrarMensaje("Usuario registrado exitosamente.");
-                limpiarCampos();
-                mostrarLogin(); //Muestra login
-            } catch (SQLException e) {
-                mostrarMensaje("Error al registrar usuario: " + e.getMessage());
+        loginRegister.registrarUsuario(usuario, correo, contraseña, telefono, direccion, new LoginRegister.RegistrationCallback() {
+            @Override
+            public void onSuccess(String message) {
+                mostrarMensaje(message);
+                limpiarCampos(); // Llama a limpiar los campos después de registrar
+                mostrarLogin(); // Muestra la vista de login
             }
-        } catch (SQLException e) {
-            mostrarMensaje("Error de conexión a la base de datos: " + e.getMessage());
-        }
-    }
 
-
-    private int generarIdAleatorio() {
-        // Generar un número aleatorio de 6 dígitos como idCliente
-        Random random = new Random();
-        return random.nextInt(900000) + 100000; // Genera un número entre 100000 y 999999
+            @Override
+            public void onFailure(String errorMessage) {
+                mostrarMensaje(errorMessage);
+            }
+        });
     }
 
     private void limpiarCampos() {
@@ -114,28 +91,12 @@ public class ViewRegisterController {
 
 
     @FXML
-
     private void mostrarLogin() {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/Vistas/PantallaSesion/View-Login.fxml")); // Asegúrate de usar la ruta correcta
-            Stage stage = (Stage) ingresarBoton.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        cambiarVista(ingresarBoton, "/Vistas/PantallaSesion/View-Login.fxml");
     }
 
     @FXML
-
     private void volverVistaInicial() {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/Vistas/PantallaPrincipal/pantalla-principal.fxml"));
-            Stage stage = (Stage) btnSeguirSinCuenta.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        cambiarVista(btnSeguirSinCuenta, "/Vistas/PantallaPrincipal/View-PantallaPrincipal.fxml");
     }
 }

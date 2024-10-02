@@ -1,13 +1,14 @@
 package Controladores.Cuenta;
 
+import Servicios.CambiosVistas;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.event.ActionEvent;
 import javafx.stage.Stage;
+
 
 public class ViewTiendaController {
 
@@ -18,19 +19,10 @@ public class ViewTiendaController {
     private ImageView carritoCompra;
 
     @FXML
-    private ImageView usuarioIcono;
-
-    @FXML
-    private Button btnMiCuenta;
-
-    @FXML
     private Button BtnMiPerfil;
 
     @FXML
     private Button BtnCompras;
-
-    @FXML
-    private Button BtnTienda;
 
     @FXML
     private Button BtnFacturacion;
@@ -38,8 +30,7 @@ public class ViewTiendaController {
     @FXML
     private Button BtnVolverInicio;
 
-    @FXML
-    private Button BtnComprasAr;
+    private CambiosVistas cambiosVistas = new CambiosVistas();
 
     @FXML
     private void initialize() {
@@ -49,72 +40,38 @@ public class ViewTiendaController {
         });
 
         carritoCompra.setOnMouseClicked(event -> {
-            irAVistaCarrito();
+            mostrarCarrito();
         });
     }
 
 
-    private void irAVistaCarrito() {
-        try {
-            // Cargar la nueva vista de usuario
-            Parent root = FXMLLoader.load(getClass().getResource("/Vistas/PantallaPrincipal/View-CarritoCompras.fxml"));
-            Stage stage = (Stage) carritoCompra.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    @FXML
+    public void mostrarCarrito() {
+        cambiarVista(carritoCompra, "/Vistas/PantallaPrincipal/View-CarritoCompras.fxml");
     }
 
     @FXML
-
-    private void mostrarInicio() {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/Vistas/PantallaPrincipal/View-InicialLogeado.fxml")); // Asegúrate de usar la ruta correcta
-            Stage stage = (Stage) BtnVolverInicio.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void mostrarMiPerfil() {
+        cambiarVista(BtnMiPerfil, "/Vistas/PantallaCuenta/View-MiPerfil.fxml");
     }
 
     @FXML
-
-    private void mostrarCompras() {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/Vistas/PantallaCuenta/View-Compras.fxml")); // Asegúrate de usar la ruta correcta
-            Stage stage = (Stage) BtnCompras.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void mostrarCompras(ActionEvent event) {
+        cambiarVista(BtnCompras, "/Vistas/PantallaCuenta/View-Compras.fxml");
     }
 
     @FXML
-
-    private void mostrarMiPerfil() {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/Vistas/PantallaCuenta/View-MiPerfil.fxml")); // Asegúrate de usar la ruta correcta
-            Stage stage = (Stage) BtnMiPerfil.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void mostrarFacturacion(ActionEvent event) {
+        cambiarVista(BtnFacturacion, "/Vistas/PantallaCuenta/View-Facturacion.fxml");
     }
 
     @FXML
+    public void mostrarInicio(ActionEvent event) {
+        cambiarVista(BtnVolverInicio, "/Vistas/PantallaPrincipal/View-InicialLogeado.fxml");
+    }
 
-    private void mostrarFacturacion() {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/Vistas/PantallaCuenta/View-Facturacion.fxml")); // Asegúrate de usar la ruta correcta
-            Stage stage = (Stage) BtnFacturacion.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private void cambiarVista(Node nodo, String rutaFXML) {
+        Stage stage = (Stage) nodo.getScene().getWindow();
+        cambiosVistas.cambiarVista(stage, rutaFXML);
     }
 }
