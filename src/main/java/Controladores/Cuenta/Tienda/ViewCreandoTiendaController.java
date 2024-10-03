@@ -1,4 +1,4 @@
-package Controladores.Cuenta;
+package Controladores.Cuenta.Tienda;
 
 import Servicios.Vistas.CambiosVistas;
 import Servicios.Datos.UsuarioActivo;
@@ -7,16 +7,12 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Random;
 
 public class ViewCreandoTiendaController {
 
@@ -45,7 +41,7 @@ public class ViewCreandoTiendaController {
     private TextArea descTienda;
 
     @FXML
-    private ChoiceBox<String> boxCategoria;  // El ChoiceBox debe manejar Strings o lo que sea tu tipo de categoría
+    private ChoiceBox<String> boxCategoria;
 
     @FXML
     private Button BtnCargarImagen;
@@ -57,8 +53,7 @@ public class ViewCreandoTiendaController {
     private Button BtnCrearTienda;
 
     private CambiosVistas cambiosVistas = new CambiosVistas();
-    private CrearTienda crearTiendaService = new CrearTienda();  // Servicio para manejar la creación de tiendas
-    private File archivoImagen;
+    private CrearTienda crearTienda = new CrearTienda();  // Instancia de CrearTienda
 
     @FXML
     private void initialize() {
@@ -100,70 +95,41 @@ public class ViewCreandoTiendaController {
         cambiosVistas.cambiarVista(stage, rutaFXML);
     }
 
-    // Método para cargar la imagen de la tienda
+    // Llamar al método para cargar la imagen
     @FXML
-    private void cargarImagen() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Imágenes", "*.png", "*.jpg", "*.jpeg")
-        );
-
-        archivoImagen = fileChooser.showOpenDialog(null);
-
-        if (archivoImagen != null) {
-            try {
-                Image nuevaImagen = new Image(new FileInputStream(archivoImagen));
-                imagenTienda.setImage(nuevaImagen);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+    private void cargarImagen(ActionEvent event) {
+        crearTienda.cargarImagen(imagenTienda);  // Pasar el ImageView para mostrar la imagen
     }
 
-    // Método para crear la tienda
+    // Llamar al método para crear la tienda
     @FXML
     private void crearTienda(ActionEvent event) {
         try {
-            // Generar idTienda aleatorio
-            int idTienda = generarIdAleatorio();
-
-            // Obtener el idUsuario del usuario activo
-            int idUsuario = UsuarioActivo.getIdUsuario();  // Asumimos que tienes el id del usuario activo
-
-            // Obtener los valores del formulario
             String nombre = nombreTienda.getText();
             String descripcion = descTienda.getText();
-            String categoria = boxCategoria.getValue();  // Obtenemos la categoría seleccionada
+            String categoria = boxCategoria.getValue();
 
-            // Validar campos
-            if (nombre.isEmpty() || descripcion.isEmpty() || categoria == null || archivoImagen == null) {
-                mostrarAlerta("Error", "Por favor, complete todos los campos y seleccione una imagen.");
+            // Obtener el idUsuario del usuario activo
+            int idUsuario = UsuarioActivo.getIdUsuario();
+
+            // Validar que todos los campos estén completos
+            if (nombre.isEmpty() || descripcion.isEmpty() || categoria == null || crearTienda.getArchivoImagen() == null) {
+                System.out.println("Por favor, complete todos los campos.");
                 return;
             }
 
-            // Crear la tienda usando el servicio
-            crearTiendaService.crearTienda(idTienda, nombre, descripcion, idUsuario, categoria, archivoImagen);
+            // Pasar el archivo de imagen junto con los otros parámetros
+            crearTienda.crearTienda(crearTienda.generarIdAleatorio(), nombre, descripcion, idUsuario, categoria, crearTienda.getArchivoImagen());
 
-            // Mostrar mensaje de éxito
-            mostrarAlerta("Éxito", "La tienda ha sido creada exitosamente.");
-            // Redirigir o limpiar la vista
+            // Cambiar a la vista de Tienda Creada después de crear la tienda
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();  // Obtener el Stage desde el evento
+            cambiosVistas.cambiarVista(stage, "/Vistas/PantallaCuenta/Tienda/View-TiendaCreada.fxml");
 
         } catch (SQLException | IOException e) {
             e.printStackTrace();
-            mostrarAlerta("Error", "Ocurrió un error al crear la tienda: " + e.getMessage());
         }
     }
 
-    private int generarIdAleatorio() {
-        Random random = new Random();
-        return random.nextInt(900000) + 100000;  // Generar un idTienda entre 100000 y 999999
-    }
 
-    private void mostrarAlerta(String titulo, String mensaje) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(titulo);
-        alert.setHeaderText(null);
-        alert.setContentText(mensaje);
-        alert.showAndWait();
-    }
+
 }

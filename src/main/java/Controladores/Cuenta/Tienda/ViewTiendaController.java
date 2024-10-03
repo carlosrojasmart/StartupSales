@@ -1,4 +1,4 @@
-package Controladores.Cuenta;
+package Controladores.Cuenta.Tienda;
 
 import Servicios.Vistas.CambiosVistas;
 import javafx.fxml.FXML;

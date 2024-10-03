@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="503.0" prefWidth="854.0" style="-fx-background-color: #EDEDED;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.Cuenta.Tienda.ViewTiendaController">
+<AnchorPane prefHeight="503.0" prefWidth="854.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.Cuenta.Tienda.ViewTiendaCreadaController">
     <children>
         <HBox layoutX="-1.0" prefHeight="66.0" prefWidth="863.0" style="-fx-background-color: #000000;">
             <children>
@@ -149,49 +149,41 @@
                 </Button>
             </children>
         </VBox>
-      <ScrollPane layoutX="164.0" layoutY="66.0" prefHeight="414.0" prefWidth="698.0">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="412.0" prefWidth="683.0">
-               <children>
-                  <VBox layoutX="76.0" layoutY="54.0" prefHeight="303.0" prefWidth="546.0" style="-fx-background-color: #ffffffff;">
-                     <children>
-                        <ImageView fitHeight="118.0" fitWidth="125.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../../Imagenes/Cuenta/Tutienda.png" />
-                           </image>
-                           <VBox.margin>
-                              <Insets left="211.0" top="30.0" />
-                           </VBox.margin>
-                        </ImageView>
-                        <Label text="Inicia ahora tu tienda con StartupSales" textAlignment="CENTER">
-                           <VBox.margin>
-                              <Insets left="60.0" top="15.0" />
-                           </VBox.margin>
-                           <font>
-                              <Font name="MS Reference Sans Serif" size="22.0" />
-                           </font>
-                        </Label>
-                        <Label prefHeight="34.0" prefWidth="396.0" text="Creando una tienda podras vender tus productos, cambiar sus precios y tener un seguimientos de tus ventas." textAlignment="CENTER" wrapText="true">
-                           <VBox.margin>
-                              <Insets left="78.0" top="5.0" />
-                           </VBox.margin>
-                           <font>
-                              <Font name="MS Reference Sans Serif" size="13.0" />
-                           </font>
-                        </Label>
-                        <Button fx:id="BtnCrearTienda" mnemonicParsing="false" onAction="#crearTienda" style="-fx-background-color: #000000;" text="Crear Tienda" textFill="WHITE">
-                           <VBox.margin>
-                              <Insets left="217.0" top="20.0" />
-                           </VBox.margin>
-                           <font>
-                              <Font name="MS Reference Sans Serif" size="14.0" />
-                           </font>
+        <!-- ScrollPane para las tiendas -->
+        <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="164.0" layoutY="66.0" prefHeight="414.0" prefWidth="698.0">
+            <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="456.0" prefWidth="698.0" style="-fx-background-color: #ffffff;">
+                    <children>
+                        <!-- Botón Crear Tienda -->
+                        <Button fx:id="BtnCrearTienda" layoutX="574.0" layoutY="13.0" mnemonicParsing="false" onAction="#crearTienda" style="-fx-background-color: #000000;" text="Crear Tienda" textFill="WHITE">
+                            <font>
+                                <Font name="MS Reference Sans Serif" size="14.0" />
+                            </font>
                         </Button>
-                     </children>
-                  </VBox>
-               </children>
-            </AnchorPane>
-        </content>
-      </ScrollPane>
+
+                        <!-- GridPane para las tiendas -->
+                        <GridPane fx:id="contenedorTiendas" alignment="CENTER" hgap="30" vgap="30">
+                            <columnConstraints>
+                                <ColumnConstraints prefWidth="150.0" />
+                                <ColumnConstraints prefWidth="150.0" />
+                                <ColumnConstraints prefWidth="150.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints prefHeight="150.0" />
+                                <RowConstraints prefHeight="150.0" />
+                                <RowConstraints prefHeight="150.0" />
+                            </rowConstraints>
+                        </GridPane>
+
+                        <!-- Título -->
+                        <Label layoutX="24.0" layoutY="14.0" text="Tus Tiendas">
+                            <font>
+                                <Font name="MS Reference Sans Serif" size="20.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </AnchorPane>
+            </content>
+        </ScrollPane>
     </children>
 </AnchorPane>

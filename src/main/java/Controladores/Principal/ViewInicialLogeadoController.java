@@ -1,5 +1,6 @@
 package Controladores.Principal;
 
+import Servicios.Datos.UsuarioActivo;
 import Servicios.Vistas.CambiosVistas;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -61,7 +62,14 @@ public class ViewInicialLogeadoController {
 
     @FXML
     public void mostrarMisTiendas(ActionEvent event) {
-        cambiarVista(BtnMisTiendas, "/Vistas/PantallaCuenta/Tienda/View-Tienda.fxml");
+        // Verificar si el usuario es vendedor
+        if (UsuarioActivo.isVendedor()) {
+            // Si es vendedor, ir a la vista de tienda ya creada
+            cambiarVista(BtnMisTiendas, "/Vistas/PantallaCuenta/Tienda/View-TiendaCreada.fxml");
+        } else {
+            // Si no es vendedor, ir a la vista para crear la tienda
+            cambiarVista(BtnMisTiendas, "/Vistas/PantallaCuenta/Tienda/View-Tienda.fxml");
+        }
     }
 
     @FXML

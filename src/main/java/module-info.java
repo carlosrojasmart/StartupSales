@@ -25,4 +25,6 @@ module my.app {
     exports Controladores.Principal;
     exports Controladores.Sesion;
     exports Controladores.Cuenta;
+    exports Controladores.Cuenta.Tienda;
+    opens Controladores.Cuenta.Tienda to javafx.fxml;
 }
