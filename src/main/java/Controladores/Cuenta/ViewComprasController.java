@@ -51,17 +51,17 @@ public class ViewComprasController {
 
     @FXML
     public void mostrarMiPerfil() {
-        cambiarVista(BtnMiPerfil, "/Vistas/PantallaCuenta/View-MiPerfil.fxml");
+        cambiarVista(BtnMiPerfil, "/Vistas/PantallaCuenta/MiPerfil/View-MiPerfil.fxml");
     }
 
     @FXML
     public void mostrarMisTiendas(ActionEvent event) {
-        cambiarVista(BtnTienda, "/Vistas/PantallaCuenta/View-Tienda.fxml");
+        cambiarVista(BtnTienda, "/Vistas/PantallaCuenta/Tienda/View-Tienda.fxml");
     }
 
     @FXML
     public void mostrarFacturacion(ActionEvent event) {
-        cambiarVista(BtnFacturacion, "/Vistas/PantallaCuenta/View-Facturacion.fxml");
+        cambiarVista(BtnFacturacion, "/Vistas/PantallaCuenta/Facturacion/View-Facturacion.fxml");
     }
 
     @FXML
@@ -73,6 +73,5 @@ public class ViewComprasController {
         Stage stage = (Stage) nodo.getScene().getWindow();
         cambiosVistas.cambiarVista(stage, rutaFXML);
     }
-
 
 }

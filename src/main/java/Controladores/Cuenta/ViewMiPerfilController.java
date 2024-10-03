@@ -166,17 +166,17 @@ public class ViewMiPerfilController {
 
     @FXML
     public void mostrarCompras(ActionEvent event) {
-        cambiarVista(BtnCompras, "/Vistas/PantallaCuenta/View-Compras.fxml");
+        cambiarVista(BtnCompras, "/Vistas/PantallaCuenta/Compras/View-Compras.fxml");
     }
 
     @FXML
     public void mostrarMisTiendas(ActionEvent event) {
-        cambiarVista(BtnTienda, "/Vistas/PantallaCuenta/View-Tienda.fxml");
+        cambiarVista(BtnTienda, "/Vistas/PantallaCuenta/Tienda/View-Tienda.fxml");
     }
 
     @FXML
     public void mostrarFacturacion(ActionEvent event) {
-        cambiarVista(BtnFacturacion, "/Vistas/PantallaCuenta/View-Facturacion.fxml");
+        cambiarVista(BtnFacturacion, "/Vistas/PantallaCuenta/Facturacion/View-Facturacion.fxml");
     }
 
     @FXML

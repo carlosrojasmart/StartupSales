@@ -13,7 +13,7 @@
             <children>
                 <ImageView fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../../Imagenes/Principal/StartUpSalesALT.png" />
+                        <Image url="@../../../Imagenes/Principal/StartUpSalesALT.png" />
                     </image>
                     <HBox.margin>
                         <Insets left="15.0" top="10.0" />
@@ -34,7 +34,7 @@
                 </Button>
                 <ImageView fx:id="carritoCompra" fitHeight="38.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../../Imagenes/Principal/CarritoCompra.png" />
+                        <Image url="@../../../Imagenes/Principal/CarritoCompra.png" />
                     </image>
                     <HBox.margin>
                         <Insets left="20.0" top="18.0" />
@@ -43,7 +43,7 @@
 
                 <ImageView fx:id="usuarioIcono" fitHeight="38.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../../Imagenes/Principal/usuario.png" />
+                        <Image url="@../../../Imagenes/Principal/usuario.png" />
                     </image>
                     <HBox.margin>
                         <Insets left="20.0" top="17.0" />
@@ -69,12 +69,12 @@
                   <Insets left="20.0" top="30.0" />
                </VBox.margin>
                <image>
-                  <Image url="@../../Imagenes/Cuenta/menu.png" />
+                  <Image url="@../../../Imagenes/Cuenta/menu.png" />
                </image>
             </ImageView>
             <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../Imagenes/Cuenta/PerfilAzul.png" />
+                  <Image url="@../../../Imagenes/Cuenta/PerfilAzul.png" />
                </image>
                <VBox.margin>
                   <Insets left="20.0" top="70.0" />
@@ -82,7 +82,7 @@
             </ImageView>
             <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../Imagenes/Cuenta/bolsa-de-la-compra.png" />
+                  <Image url="@../../../Imagenes/Cuenta/bolsa-de-la-compra.png" />
                </image>
                <VBox.margin>
                   <Insets left="20.0" top="20.0" />
@@ -90,7 +90,7 @@
             </ImageView>
             <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../Imagenes/Cuenta/tienda.png" />
+                  <Image url="@../../../Imagenes/Cuenta/tienda.png" />
                </image>
                <VBox.margin>
                   <Insets left="20.0" top="20.0" />
@@ -98,7 +98,7 @@
             </ImageView>
             <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../Imagenes/Cuenta/factura.png" />
+                  <Image url="@../../../Imagenes/Cuenta/factura.png" />
                </image>
                <VBox.margin>
                   <Insets left="20.0" top="20.0" />
@@ -162,7 +162,7 @@
                                   <Circle fx:id="clipCircle" centerX="50.0" centerY="50.0" radius="50.0" />
                               </clip>
                               <image>
-                                  <Image url="@../../Imagenes/Cuenta/ImagenPerfilDef.jpg" />
+                                  <Image url="@../../../Imagenes/Cuenta/ImagenPerfilDef.jpg" />
                               </image>
                               <VBox.margin>
                                   <Insets left="20.0" top="15.0" />

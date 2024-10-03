@@ -4,15 +4,16 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="503.0" prefWidth="854.0" style="-fx-background-color: #EDEDED;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.Cuenta.ViewTiendaController">
+<AnchorPane prefHeight="503.0" prefWidth="854.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.Cuenta.ViewCreandoTiendaController">
     <children>
         <HBox layoutX="-1.0" prefHeight="66.0" prefWidth="863.0" style="-fx-background-color: #000000;">
             <children>
                 <ImageView fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../../Imagenes/Principal/StartUpSalesALT.png" />
+                        <Image url="@../../../Imagenes/Principal/StartUpSalesALT.png" />
                     </image>
                     <HBox.margin>
                         <Insets left="15.0" top="10.0" />
@@ -33,7 +34,7 @@
                 </Button>
                 <ImageView fx:id="carritoCompra" fitHeight="38.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../../Imagenes/Principal/CarritoCompra.png" />
+                        <Image url="@../../../Imagenes/Principal/CarritoCompra.png" />
                     </image>
                     <HBox.margin>
                         <Insets left="20.0" top="18.0" />
@@ -42,7 +43,7 @@
 
                 <ImageView fx:id="usuarioIcono" fitHeight="38.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../../Imagenes/Principal/usuario.png" />
+                        <Image url="@../../../Imagenes/Principal/usuario.png" />
                     </image>
                     <HBox.margin>
                         <Insets left="20.0" top="17.0" />
@@ -68,12 +69,12 @@
                         <Insets left="20.0" top="30.0" />
                     </VBox.margin>
                     <image>
-                        <Image url="@../../Imagenes/Cuenta/menu.png" />
+                        <Image url="@../../../Imagenes/Cuenta/menu.png" />
                     </image>
                 </ImageView>
                 <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../../Imagenes/Cuenta/Perfil.png" />
+                        <Image url="@../../../Imagenes/Cuenta/Perfil.png" />
                     </image>
                     <VBox.margin>
                         <Insets left="20.0" top="70.0" />
@@ -81,7 +82,7 @@
                 </ImageView>
                 <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../../Imagenes/Cuenta/bolsa-de-la-compra.png" />
+                        <Image url="@../../../Imagenes/Cuenta/bolsa-de-la-compra.png" />
                     </image>
                     <VBox.margin>
                         <Insets left="20.0" top="20.0" />
@@ -89,7 +90,7 @@
                 </ImageView>
                 <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../../Imagenes/Cuenta/tiendaAzul.png" />
+                        <Image url="@../../../Imagenes/Cuenta/tiendaAzul.png" />
                     </image>
                     <VBox.margin>
                         <Insets left="20.0" top="20.0" />
@@ -97,7 +98,7 @@
                 </ImageView>
                 <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../../Imagenes/Cuenta/factura.png" />
+                        <Image url="@../../../Imagenes/Cuenta/factura.png" />
                     </image>
                     <VBox.margin>
                         <Insets left="20.0" top="20.0" />
@@ -149,6 +150,95 @@
                 </Button>
             </children>
         </VBox>
+        <ScrollPane layoutX="164.0" layoutY="66.0" prefHeight="414.0" prefWidth="698.0">
+            <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="412.0" prefWidth="683.0">
+               <children>
+                  <VBox layoutX="83.0" layoutY="32.0" prefHeight="166.0" prefWidth="534.0" style="-fx-background-color: #ffffff;">
+                     <children>
+                         <ImageView fx:id="imagenTienda" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                             <clip>
+                                 <!-- Radio del círculo ajustado al ancho del ImageView (mitad de 100) -->
+                                 <Circle fx:id="clipCircle" centerX="50.0" centerY="50.0" radius="50.0" />
+                             </clip>
+                             <image>
+                                 <Image url="@../../../Imagenes/Cuenta/ImagenPerfilDef.jpg" />
+                             </image>
+                           <VBox.margin>
+                              <Insets left="215.0" top="22.0" />
+                           </VBox.margin>
+                         </ImageView>
+                        <Button fx:id="BtnCargarImagen" mnemonicParsing="false" onAction="#cargarImagen" style="-fx-background-color: #000000;" text="Cargar Imagen" textFill="WHITE">
+                           <VBox.margin>
+                              <Insets left="212.0" top="10.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="MS Reference Sans Serif" size="12.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </VBox>
+                  <VBox layoutX="350.0" layoutY="198.0" prefHeight="66.0" prefWidth="268.0" style="-fx-background-color: #ffffff;">
+                     <children>
+                        <Label text="Categoria" textAlignment="CENTER">
+                           <font>
+                              <Font name="MS Reference Sans Serif" size="12.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="50.0" top="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <ChoiceBox fx:id="boxCategoria" prefWidth="150.0">
+                           <VBox.margin>
+                              <Insets left="50.0" top="5.0" />
+                           </VBox.margin>
+                        </ChoiceBox>
+                     </children>
+                  </VBox>
+                  <VBox layoutX="83.0" layoutY="198.0" prefHeight="66.0" prefWidth="270.0" style="-fx-background-color: #ffffff;">
+                     <children>
+                        <Label text="Nombre" textAlignment="CENTER">
+                           <font>
+                              <Font name="MS Reference Sans Serif" size="12.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="50.0" top="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <TextField fx:id="nombreTienda" maxWidth="230.0" minHeight="26.0">
+                           <VBox.margin>
+                              <Insets left="50.0" top="5.0" />
+                           </VBox.margin>
+                        </TextField>
+                     </children>
+                  </VBox>
+                  <VBox layoutX="83.0" layoutY="264.0" prefHeight="131.0" prefWidth="534.0" style="-fx-background-color: #ffffff;">
+                     <children>
+                        <Label text="Descripcion" textAlignment="CENTER">
+                           <font>
+                              <Font name="MS Reference Sans Serif" size="12.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="50.0" />
+                           </VBox.margin>
+                        </Label>
+                        <TextArea fx:id="descTienda" maxWidth="416.0" prefHeight="50.0" prefWidth="416.0">
+                           <VBox.margin>
+                              <Insets left="50.0" top="5.0" />
+                           </VBox.margin>
+                        </TextArea>
+                        <Button fx:id="BtnCrearTienda" mnemonicParsing="false" onAction="#crearTienda" style="-fx-background-color: #000000;" text="Crear Tienda" textFill="WHITE">
+                           <VBox.margin>
+                              <Insets left="208.0" top="15.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="MS Reference Sans Serif" size="14.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </VBox>
+               </children></AnchorPane>
+            </content>
+        </ScrollPane>
     </children>
-
 </AnchorPane>

@@ -47,17 +47,17 @@ public class ViewCarritoComprasController {
 
     @FXML
     public void mostrarMiPerfil() {
-        cambiarVista(usuarioIcono, "/Vistas/PantallaCuenta/View-MiPerfil.fxml");
+        cambiarVista(usuarioIcono, "/Vistas/PantallaCuenta/MiPerfil/View-MiPerfil.fxml");
     }
 
     @FXML
     public void mostrarMisTiendas(ActionEvent event) {
-        cambiarVista(BtnMisTiendas, "/Vistas/PantallaCuenta/View-Tienda.fxml");
+        cambiarVista(BtnMisTiendas, "/Vistas/PantallaCuenta/Tienda/View-Tienda.fxml");
     }
 
     @FXML
     public void mostrarCompras(ActionEvent event) {
-        cambiarVista(BtnComprasAr, "/Vistas/PantallaCuenta/View-Compras.fxml");
+        cambiarVista(BtnComprasAr, "/Vistas/PantallaCuenta/Compras/View-Compras.fxml");
     }
 
 }
