@@ -7,10 +7,12 @@ import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
@@ -44,7 +46,11 @@ public class ViewTiendaCreadaController {
     private Button BtnCrearTienda;
 
     @FXML
-    private GridPane contenedorTiendas; // Cambiado a GridPane
+    private GridPane contenedorTiendas; // El GridPane para contener las tiendas
+
+    @FXML
+    private ScrollPane scrollPaneTiendas; // El ScrollPane para las tiendas
+
 
     private CambiosVistas cambiosVistas = new CambiosVistas();
 
@@ -57,7 +63,7 @@ public class ViewTiendaCreadaController {
         cargarTiendasDelUsuario();
     }
 
-    // Método para cargar dinámicamente las tiendas del usuario desde la base de datos
+    /// Método para cargar dinámicamente las tiendas del usuario
     private void cargarTiendasDelUsuario() {
         int idUsuario = UsuarioActivo.getIdUsuario(); // Obtener el ID del usuario activo
 
@@ -88,6 +94,9 @@ public class ViewTiendaCreadaController {
                 }
             }
 
+            // Ajustar el tamaño del GridPane para asegurarse de que el ScrollPane funcione
+            ajustarGridPane();
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -97,9 +106,9 @@ public class ViewTiendaCreadaController {
     private void agregarTienda(String nombreTienda, byte[] imagenBytes, int row, int column) {
         // Crear un ImageView para la imagen de la tienda
         ImageView imagenTienda = new ImageView();
-        imagenTienda.setFitHeight(150);  // Ajustar el alto
-        imagenTienda.setFitWidth(150);   // Ajustar el ancho
-        imagenTienda.setPreserveRatio(false);  // No preservar la proporción para forzar el tamaño uniforme
+        imagenTienda.setFitHeight(150);
+        imagenTienda.setFitWidth(150);
+        imagenTienda.setPreserveRatio(false);
 
         // Convertir el byte[] de la base de datos a una imagen y asignarla al ImageView
         if (imagenBytes != null) {
@@ -120,17 +129,20 @@ public class ViewTiendaCreadaController {
         });
 
         // Crear un VBox para agrupar la imagen, el nombre y el botón
-        VBox tiendaBox = new VBox(10); // Espaciado de 10 entre elementos
-        tiendaBox.setPrefSize(150, 200); // Ajustar el tamaño del VBox
+        VBox tiendaBox = new VBox(10);
+        tiendaBox.setPrefSize(150, 200);
         tiendaBox.getChildren().addAll(nombreTiendaLabel, imagenTienda, btnIrATienda);
-
-        // Añadir más padding en la parte superior para dar más espacio
-        tiendaBox.setStyle("-fx-alignment: center; -fx-padding: 200 20 20 20;"); // Espaciado superior de 40
-
-
+        tiendaBox.setStyle("-fx-alignment: center; -fx-padding: 10 20 20 20;");
 
         // Agregar la tienda al GridPane en la fila y columna correspondiente
         contenedorTiendas.add(tiendaBox, column, row);
+    }
+
+    // Método para ajustar el tamaño del GridPane según las tiendas agregadas
+    private void ajustarGridPane() {
+        contenedorTiendas.setPrefHeight(Region.USE_COMPUTED_SIZE);
+        contenedorTiendas.setPrefWidth(Region.USE_COMPUTED_SIZE);
+        scrollPaneTiendas.setContent(contenedorTiendas);  // Asegurarse de que el ScrollPane contenga el GridPane correctamente
     }
 
     @FXML

@@ -149,38 +149,32 @@
                 </Button>
             </children>
         </VBox>
-        <!-- ScrollPane para las tiendas -->
-        <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="164.0" layoutY="66.0" prefHeight="414.0" prefWidth="698.0">
+        <ScrollPane fx:id="scrollPaneTiendas" fitToHeight="true" fitToWidth="true" layoutX="164.0" layoutY="66.0" prefHeight="414.0" prefWidth="698.0">
             <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="456.0" prefWidth="698.0" style="-fx-background-color: #ffffff;">
                     <children>
-                        <!-- Botón Crear Tienda -->
-                        <Button fx:id="BtnCrearTienda" layoutX="574.0" layoutY="13.0" mnemonicParsing="false" onAction="#crearTienda" style="-fx-background-color: #000000;" text="Crear Tienda" textFill="WHITE">
+                        <!-- Botón "Crear Tienda" en la esquina superior derecha -->
+                        <Button fx:id="BtnCrearTienda" layoutX="550.0" layoutY="10.0" mnemonicParsing="false" onAction="#crearTienda" style="-fx-background-color: #000000;" text="Crear Tienda" textFill="WHITE">
                             <font>
                                 <Font name="MS Reference Sans Serif" size="14.0" />
                             </font>
                         </Button>
 
-                        <!-- GridPane para las tiendas -->
-                        <GridPane fx:id="contenedorTiendas" alignment="CENTER" hgap="30" vgap="30">
-                            <columnConstraints>
-                                <ColumnConstraints prefWidth="150.0" />
-                                <ColumnConstraints prefWidth="150.0" />
-                                <ColumnConstraints prefWidth="150.0" />
-                            </columnConstraints>
-                            <rowConstraints>
-                                <RowConstraints prefHeight="150.0" />
-                                <RowConstraints prefHeight="150.0" />
-                                <RowConstraints prefHeight="150.0" />
-                            </rowConstraints>
-                        </GridPane>
-
-                        <!-- Título -->
+                        <!-- Label "Tus Tiendas" en la esquina superior izquierda -->
                         <Label layoutX="24.0" layoutY="14.0" text="Tus Tiendas">
                             <font>
                                 <Font name="MS Reference Sans Serif" size="20.0" />
                             </font>
                         </Label>
+
+                        <!-- GridPane para las tiendas, ajustado con layoutY para evitar superposiciones -->
+                        <GridPane fx:id="contenedorTiendas" alignment="CENTER" layoutY="60.0" hgap="30" vgap="30">
+                            <columnConstraints>
+                                <ColumnConstraints prefWidth="150.0" />
+                                <ColumnConstraints prefWidth="150.0" />
+                                <ColumnConstraints prefWidth="150.0" />
+                            </columnConstraints>
+                        </GridPane>
                     </children>
                 </AnchorPane>
             </content>
