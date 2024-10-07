@@ -130,8 +130,11 @@ public class ViewProductoController {
                 return;
             }
 
-            // Guardar el producto en la base de datos
-            boolean exito = crearProducto.crearProducto(producto);
+            // Obtener el Stage actual
+            Stage stage = (Stage) nombreProducto.getScene().getWindow();
+
+            // Guardar el producto en la base de datos y cambiar la vista si es exitoso
+            boolean exito = crearProducto.crearProducto(producto, stage);
             if (exito) {
                 System.out.println("Producto creado exitosamente.");
             } else {
@@ -142,6 +145,7 @@ public class ViewProductoController {
             System.out.println("Error al procesar los datos del producto.");
         }
     }
+
     @FXML
     public void mostrarCarrito() {
         cambiarVista(carritoCompra, "/Vistas/PantallaPrincipal/View-CarritoCompras.fxml");

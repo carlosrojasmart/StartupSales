@@ -1,8 +1,14 @@
 package Servicios.Datos;
 
+import Controladores.Cuenta.Tienda.ViewEditarProductoController;
 import DB.JDBC;
 import Modelos.Producto;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,7 +19,7 @@ import java.util.Random;
 
 public class CrearProducto {
 
-    public boolean crearProducto(Producto producto) {
+    public boolean crearProducto(Producto producto, Stage stage) {
         // Generar un idProducto aleatorio antes de guardar
         producto.setIdProducto(generarIdProductoAleatorio());
 
@@ -32,11 +38,30 @@ public class CrearProducto {
             pstmt.setInt(8, producto.getIdTienda());
 
             int filasInsertadas = pstmt.executeUpdate();
-            return filasInsertadas > 0;
+            if (filasInsertadas > 0) {
+                // Cambiar de vista a la tienda después de la creación exitosa
+                irAVistaTienda(stage);
+                return true;
+            }
+            return false;
 
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
+        }
+    }
+
+    private void irAVistaTienda(Stage stage) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Vistas/PantallaCuenta/Tienda/View-MirarTienda.fxml"));
+            Parent root = loader.load();
+
+            // Cambiar la escena del stage a la vista de la tienda
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error al cargar la vista de la tienda.");
         }
     }
 
@@ -75,4 +100,56 @@ public class CrearProducto {
 
         return productos;
     }
+
+    public boolean actualizarProducto(Producto producto) {
+        String sql = "UPDATE Producto SET nombre = ?, precio = ?, descripcion = ?, stock = ?, categoria = ?, imagenProducto = ? WHERE idProducto = ?";
+
+        try (Connection conexion = JDBC.ConectarBD();
+             PreparedStatement pstmt = conexion.prepareStatement(sql)) {
+            pstmt.setString(1, producto.getNombre());
+            pstmt.setDouble(2, producto.getPrecio());
+            pstmt.setString(3, producto.getDescripcion());
+            pstmt.setInt(4, producto.getStock());
+            pstmt.setString(5, producto.getCategoria());
+            pstmt.setBytes(6, producto.getImagenProducto());
+            pstmt.setInt(7, producto.getIdProducto());
+
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean eliminarProducto(int idProducto) {
+        String sql = "DELETE FROM Producto WHERE idProducto = ?";
+
+        try (Connection conexion = JDBC.ConectarBD();
+             PreparedStatement pstmt = conexion.prepareStatement(sql)) {
+            pstmt.setInt(1, idProducto);
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public void editarProducto(Stage stage, Producto producto) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Vistas/PantallaCuenta/Tienda/View-EditarProducto.fxml"));
+            Parent root = loader.load();
+
+            // Obtener el controlador de la vista de edición
+            ViewEditarProductoController controller = loader.getController();
+            controller.setProductoSeleccionado(producto); // Pasar el producto al controlador de edición
+
+            // Mostrar la nueva vista
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error al cargar la vista de edición de producto.");
+        }
+    }
+
 }
