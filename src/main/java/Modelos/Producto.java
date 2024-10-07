@@ -7,10 +7,24 @@ public class Producto {
     private String descripcion;
     private int stock;
     private String categoria;
-    private byte[] imagenProducto; // Renombrado para mayor consistencia
+    private byte[] imagenProducto;
     private int idTienda;
+    private int cantidad; // Este atributo se añadió para la gestión del carrito
 
-    // Getters y Setters
+    // Constructor vacío
+    public Producto() {
+    }
+
+    // Constructor con todos los atributos
+    public Producto(int idProducto, String nombre, double precio, byte[] imagenProducto, int cantidad) {
+        this.idProducto = idProducto;
+        this.nombre = nombre;
+        this.precio = precio;
+        this.imagenProducto = imagenProducto;
+        this.cantidad = cantidad;
+    }
+
+    // Getters y Setters (incluyendo el nuevo atributo 'cantidad')
     public int getIdProducto() {
         return idProducto;
     }
@@ -73,5 +87,13 @@ public class Producto {
 
     public void setIdTienda(int idTienda) {
         this.idTienda = idTienda;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
     }
 }
