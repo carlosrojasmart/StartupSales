@@ -73,7 +73,7 @@
          <content>
             <AnchorPane prefHeight="412.0" prefWidth="859.0">
                <children>
-                  <VBox fx:id="vboxProductos" layoutX="50.0" layoutY="46.0" prefHeight="285.0" prefWidth="470.0" style="-fx-background-color: #ffffff;" />
+                  <VBox fx:id="vboxProductos" layoutX="50.0" layoutY="46.0" prefHeight="285.0" prefWidth="470.0" />
                   <VBox fx:id="vboxPrecio" layoutX="546.0" layoutY="46.0" prefHeight="200.0" prefWidth="260.0" style="-fx-background-color: #ffffff;">
                      <children>
                         <Label fx:id="lblTotal" text="Total: ">
@@ -120,5 +120,4 @@
          </content>
       </ScrollPane>
     </children>
-
 </AnchorPane>

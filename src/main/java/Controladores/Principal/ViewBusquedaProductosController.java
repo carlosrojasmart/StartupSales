@@ -3,6 +3,8 @@ package Controladores.Principal;
 import Modelos.Producto;
 import Modelos.Tienda;
 import Servicios.Datos.BusquedaProductos;
+import Servicios.Datos.MostrarCarrito;
+import Servicios.Datos.UsuarioActivo;
 import Servicios.Vistas.CambiosVistas;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -149,8 +151,15 @@ public class ViewBusquedaProductosController {
     }
 
     private void agregarAlCarrito(Producto producto) {
-        // Aquí puedes implementar la lógica para agregar el producto al carrito.
-        System.out.println("Producto agregado al carrito: " + producto.getNombre());
+        int idCarrito = UsuarioActivo.getIdCarrito();
+        if (idCarrito == -1) {
+            System.out.println("Error: No se ha encontrado un carrito asociado para el usuario.");
+            return;
+        }
+
+        MostrarCarrito mostrarCarrito = new MostrarCarrito();
+        producto.setCantidad(1); // Cantidad inicial
+        mostrarCarrito.agregarProductoAlCarrito(idCarrito, producto);
     }
 
     private void cambiarVista(Node nodo, String rutaFXML) {
