@@ -2,6 +2,7 @@ package Controladores.Cuenta.Tienda;
 
 import Modelos.Producto;
 import Modelos.Tienda;
+import Servicios.Datos.CrearTienda;
 import Servicios.Datos.MostrarProductos;
 import Servicios.Datos.MostrarTiendas;
 import Servicios.Vistas.CambiosVistas;
@@ -77,11 +78,15 @@ public class ViewMirarTiendaController {
     private Button btnAgregarProducto;
 
     @FXML
+    private Button btnEliminar;
+
+    @FXML
     private VBox vboxProductos; // VBox donde se agregarán dinámicamente los productos
 
     private CambiosVistas cambiosVistas = new CambiosVistas();
     private MostrarTiendas mostrarTiendas = new MostrarTiendas();
     private MostrarProductos mostrarProductos = new MostrarProductos();
+    private CrearTienda crearTienda = new CrearTienda();
     private File archivoImagen;
 
     // Setter estático para recibir la tienda seleccionada
@@ -96,6 +101,7 @@ public class ViewMirarTiendaController {
         cargarDatosTienda();
         configurarEventos();
         cargarProductos();
+        btnEliminar.setOnAction(event -> eliminarTienda());
     }
 
     public void cargarDatosTienda() {
@@ -162,11 +168,25 @@ public class ViewMirarTiendaController {
     }
 
     private void editarProducto(Producto producto) {
-        // Aquí puedes cambiar la vista a la de edición de producto y pasar el producto seleccionado
-        // usando un método estático o un patrón adecuado.
-        System.out.println("Editar producto: " + producto.getNombre());
-        // cambiosVistas.cambiarVista(...);
+        try {
+            // Cargar la vista de edición del producto
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Vistas/PantallaCuenta/Tienda/View-EditarProducto.fxml"));
+            Parent root = loader.load();
+
+            // Obtener el controlador de la vista de edición
+            ViewEditarProductoController controller = loader.getController();
+            controller.setProductoSeleccionado(producto); // Pasar el producto al controlador de edición
+
+            // Obtener el Stage actual y mostrar la nueva vista
+            Stage stage = (Stage) vboxProductos.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Error al cargar la vista de edición de producto.");
+        }
     }
+
 
 
     private void configurarEventos() {
@@ -231,6 +251,29 @@ public class ViewMirarTiendaController {
 
     private void volverATiendas() {
         cambiarVista(btnVolverTiendas, "/Vistas/PantallaCuenta/Tienda/View-TiendaCreada.fxml");
+    }
+
+    @FXML
+    private void eliminarTienda() {
+        if (tiendaSeleccionada == null) {
+            System.out.println("No hay tienda seleccionada para eliminar.");
+            return;
+        }
+
+        // Confirmación de eliminación (opcional)
+        boolean confirmacion = true; // Aquí podrías implementar un diálogo de confirmación
+        if (!confirmacion) {
+            return;
+        }
+
+        // Eliminar la tienda de la base de datos
+        boolean exito = mostrarTiendas.eliminarTienda(tiendaSeleccionada.getIdTienda());
+        if (exito) {
+            System.out.println("Tienda eliminada correctamente.");
+            volverATiendas(); // Regresar a la vista principal de tiendas
+        } else {
+            System.out.println("Error al eliminar la tienda.");
+        }
     }
 
     private void cambiarVista(Node nodo, String rutaFXML) {
