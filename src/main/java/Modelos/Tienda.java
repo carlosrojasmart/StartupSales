@@ -7,6 +7,10 @@ public class Tienda {
     private String categoria;
     private byte[] imagen;
 
+    // Constructor vacío
+    public Tienda() {
+    }
+
     // Constructor con todos los atributos
     public Tienda(int idTienda, String nombre, String descripcion, String categoria, byte[] imagen) {
         this.idTienda = idTienda;

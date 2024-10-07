@@ -30,19 +30,10 @@ public class ViewInicialLogeadoController {
     private CambiosVistas cambiosVistas = new CambiosVistas();
     @FXML
     private void initialize() {
-        buscarProductos.setOnMouseClicked(event -> {
-            // Limpiar el campo de búsqueda al hacer clic
-            buscarProductos.clear();
-        });
+        buscarProductos.setOnMouseClicked(event -> {buscarProductos.clear();});
 
-        usuarioIcono.setOnMouseClicked(event -> {
-            // Lógica para manejar el clic en el icono de usuario
-            mostrarMiPerfil(); // Método para cambiar a la vista de usuario
-        });
-
-        carritoCompra.setOnMouseClicked(event -> {
-            mostrarCarrito();
-        });
+        usuarioIcono.setOnMouseClicked(event -> {mostrarMiPerfil();});
+        carritoCompra.setOnMouseClicked(event -> {mostrarCarrito();});
     }
 
     private void cambiarVista(Node nodo, String rutaFXML) {
@@ -75,5 +66,20 @@ public class ViewInicialLogeadoController {
     @FXML
     public void mostrarCompras(ActionEvent event) {
         cambiarVista(BtnComprasAr, "/Vistas/PantallaCuenta/Compras/View-Compras.fxml");
+    }
+
+    @FXML
+    public void realizarBusqueda() {
+        String terminoBusqueda = buscarProductos.getText().trim();
+
+        if (!terminoBusqueda.isEmpty()) {
+            // Almacenar el término de búsqueda para que esté disponible en la vista de búsqueda de productos
+            CambiosVistas.setTerminoBusqueda(terminoBusqueda);
+
+            // Cambiar a la vista de búsqueda de productos
+            cambiarVista(buscarProductos, "/Vistas/PantallaPrincipal/View-BusquedaProductos.fxml");
+        } else {
+            System.out.println("El término de búsqueda está vacío.");
+        }
     }
 }
