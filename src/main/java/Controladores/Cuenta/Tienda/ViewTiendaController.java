@@ -1,4 +1,4 @@
-package Controladores.Cuenta;
+package Controladores.Cuenta.Tienda;
 
 import Servicios.Vistas.CambiosVistas;
 import javafx.fxml.FXML;
@@ -30,6 +30,9 @@ public class ViewTiendaController {
     @FXML
     private Button BtnVolverInicio;
 
+    @FXML
+    private Button BtnCrearTienda;
+
     private CambiosVistas cambiosVistas = new CambiosVistas();
 
     @FXML
@@ -46,29 +49,22 @@ public class ViewTiendaController {
 
 
     @FXML
-    public void mostrarCarrito() {
-        cambiarVista(carritoCompra, "/Vistas/PantallaPrincipal/View-CarritoCompras.fxml");
-    }
+    public void mostrarCarrito() {cambiarVista(carritoCompra, "/Vistas/PantallaPrincipal/View-CarritoCompras.fxml");}
 
     @FXML
-    public void mostrarMiPerfil() {
-        cambiarVista(BtnMiPerfil, "/Vistas/PantallaCuenta/View-MiPerfil.fxml");
-    }
+    public void mostrarMiPerfil() {cambiarVista(BtnMiPerfil, "/Vistas/PantallaCuenta/MiPerfil/View-MiPerfil.fxml");}
 
     @FXML
-    public void mostrarCompras(ActionEvent event) {
-        cambiarVista(BtnCompras, "/Vistas/PantallaCuenta/View-Compras.fxml");
-    }
+    public void mostrarCompras(ActionEvent event) {cambiarVista(BtnCompras, "/Vistas/PantallaCuenta/Compras/View-Compras.fxml");}
 
     @FXML
-    public void mostrarFacturacion(ActionEvent event) {
-        cambiarVista(BtnFacturacion, "/Vistas/PantallaCuenta/View-Facturacion.fxml");
-    }
+    public void mostrarFacturacion(ActionEvent event) {cambiarVista(BtnFacturacion, "/Vistas/PantallaCuenta/Facturacion/View-Facturacion.fxml");}
 
     @FXML
-    public void mostrarInicio(ActionEvent event) {
-        cambiarVista(BtnVolverInicio, "/Vistas/PantallaPrincipal/View-InicialLogeado.fxml");
-    }
+    public void mostrarInicio(ActionEvent event) {cambiarVista(BtnVolverInicio, "/Vistas/PantallaPrincipal/View-InicialLogeado.fxml");}
+
+    @FXML
+    public void crearTienda(ActionEvent event) {cambiarVista(BtnCrearTienda, "/Vistas/PantallaCuenta/Tienda/View-CreandoTienda.fxml");}
 
     private void cambiarVista(Node nodo, String rutaFXML) {
         Stage stage = (Stage) nodo.getScene().getWindow();

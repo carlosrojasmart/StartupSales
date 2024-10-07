@@ -12,7 +12,6 @@ import java.security.NoSuchAlgorithmException;
 import DB.JDBC;
 
 public class LoginRegister {
-
     private String hashPassword(String password) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
@@ -40,7 +39,8 @@ public class LoginRegister {
         }
 
         try (Connection conexion = JDBC.ConectarBD()) {
-            String sql = "SELECT idUsuario, nombre, correo_electronico, contraseña FROM Usuario WHERE correo_electronico = ?";
+            // Obtener también el campo esVendedor
+            String sql = "SELECT idUsuario, nombre, correo_electronico, contraseña, esVendedor FROM Usuario WHERE correo_electronico = ?";
             try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
                 pstmt.setString(1, username);
                 ResultSet rs = pstmt.executeQuery();
@@ -54,8 +54,10 @@ public class LoginRegister {
                         int idUsuario = rs.getInt("idUsuario");
                         String nombre = rs.getString("nombre");
                         String correo = rs.getString("correo_electronico");
+                        boolean esVendedor = rs.getBoolean("esVendedor"); // Obtener el campo esVendedor
 
-                        UsuarioActivo.setUsuarioActivo(idUsuario, nombre, correo);
+                        // Llamar a setUsuarioActivo con el booleano esVendedor
+                        UsuarioActivo.setUsuarioActivo(idUsuario, nombre, correo, esVendedor);
 
                         callback.onSuccess("Login exitoso.");
                     } else {
@@ -108,7 +110,6 @@ public class LoginRegister {
         }
     }
 
-
     private int generarIdAleatorio() {
         // Generar un número aleatorio de 6 dígitos como idCliente
         Random random = new Random();
@@ -124,5 +125,4 @@ public class LoginRegister {
         void onSuccess(String message);
         void onFailure(String errorMessage);
     }
-
 }

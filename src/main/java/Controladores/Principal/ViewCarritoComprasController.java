@@ -1,5 +1,6 @@
 package Controladores.Principal;
 
+import Servicios.Datos.UsuarioActivo;
 import Servicios.Vistas.CambiosVistas;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -47,17 +48,24 @@ public class ViewCarritoComprasController {
 
     @FXML
     public void mostrarMiPerfil() {
-        cambiarVista(usuarioIcono, "/Vistas/PantallaCuenta/View-MiPerfil.fxml");
+        cambiarVista(usuarioIcono, "/Vistas/PantallaCuenta/MiPerfil/View-MiPerfil.fxml");
     }
 
     @FXML
     public void mostrarMisTiendas(ActionEvent event) {
-        cambiarVista(BtnMisTiendas, "/Vistas/PantallaCuenta/View-Tienda.fxml");
+        // Verificar si el usuario es vendedor
+        if (UsuarioActivo.isVendedor()) {
+            // Si es vendedor, ir a la vista de tienda ya creada
+            cambiarVista(BtnMisTiendas, "/Vistas/PantallaCuenta/Tienda/View-TiendaCreada.fxml");
+        } else {
+            // Si no es vendedor, ir a la vista para crear la tienda
+            cambiarVista(BtnMisTiendas, "/Vistas/PantallaCuenta/Tienda/View-Tienda.fxml");
+        }
     }
 
     @FXML
     public void mostrarCompras(ActionEvent event) {
-        cambiarVista(BtnComprasAr, "/Vistas/PantallaCuenta/View-Compras.fxml");
+        cambiarVista(BtnComprasAr, "/Vistas/PantallaCuenta/Compras/View-Compras.fxml");
     }
 
 }

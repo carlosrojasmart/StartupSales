@@ -1,5 +1,6 @@
 package Controladores.Cuenta;
 
+import Servicios.Datos.UsuarioActivo;
 import Servicios.Vistas.CambiosVistas;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -52,17 +53,24 @@ public class ViewFacturacionController {
 
     @FXML
     public void mostrarMiPerfil() {
-        cambiarVista(BtnMiPerfil, "/Vistas/PantallaCuenta/View-MiPerfil.fxml");
+        cambiarVista(BtnMiPerfil, "/Vistas/PantallaCuenta/MiPerfil/View-MiPerfil.fxml");
     }
 
     @FXML
     public void mostrarCompras(ActionEvent event) {
-        cambiarVista(BtnCompras, "/Vistas/PantallaCuenta/View-Compras.fxml");
+        cambiarVista(BtnCompras, "/Vistas/PantallaCuenta/Compras/View-Compras.fxml");
     }
 
     @FXML
     public void mostrarMisTiendas(ActionEvent event) {
-        cambiarVista(BtnTienda, "/Vistas/PantallaCuenta/View-Tienda.fxml");
+        // Verificar si el usuario es vendedor
+        if (UsuarioActivo.isVendedor()) {
+            // Si es vendedor, ir a la vista de tienda ya creada
+            cambiarVista(BtnTienda, "/Vistas/PantallaCuenta/Tienda/View-TiendaCreada.fxml");
+        } else {
+            // Si no es vendedor, ir a la vista para crear la tienda
+            cambiarVista(BtnTienda, "/Vistas/PantallaCuenta/Tienda/View-Tienda.fxml");
+        }
     }
 
     @FXML
