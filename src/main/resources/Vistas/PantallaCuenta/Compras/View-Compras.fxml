@@ -11,7 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="503.0" prefWidth="854.0" style="-fx-background-color: #EDEDED;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.Cuenta.ViewComprasController">
+<AnchorPane prefHeight="503.0" prefWidth="854.0" style="-fx-background-color: #EDEDED;" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.Cuenta.Compras.ViewComprasController">
     <children>
         <HBox layoutX="-1.0" prefHeight="66.0" prefWidth="863.0" style="-fx-background-color: #000000;">
             <children>
