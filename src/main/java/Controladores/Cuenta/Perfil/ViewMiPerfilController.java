@@ -1,4 +1,4 @@
-package Controladores.Cuenta;
+package Controladores.Cuenta.Perfil;
 
 import Servicios.Vistas.CambiosVistas;
 import Servicios.Datos.UsuarioActivo;
