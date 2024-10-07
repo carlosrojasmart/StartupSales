@@ -63,12 +63,12 @@ public class ViewTiendaCreadaController {
 
     }
 
-    // Método simulado para cargar tiendas (reemplázalo con la carga desde tu base de datos)
+    // Método simulado para cargar tiendas
     private List<Tienda> cargarTiendasDesdeBD() {
         // Lógica para obtener las tiendas de la base de datos
         return List.of(
-                new Tienda("Tienda 1", null),
-                new Tienda("Tienda 2", null)
+                new Tienda(1, "Tienda 1", "Descripción de Tienda 1", "Electrónica", null),
+                new Tienda(2, "Tienda 2", "Descripción de Tienda 2", "Ropa", null)
         );
     }
 
