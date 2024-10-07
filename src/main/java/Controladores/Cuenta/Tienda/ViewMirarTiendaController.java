@@ -1,22 +1,28 @@
 package Controladores.Cuenta.Tienda;
 
+import Modelos.Producto;
 import Modelos.Tienda;
+import Servicios.Datos.MostrarProductos;
 import Servicios.Datos.MostrarTiendas;
 import Servicios.Vistas.CambiosVistas;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -75,6 +81,7 @@ public class ViewMirarTiendaController {
 
     private CambiosVistas cambiosVistas = new CambiosVistas();
     private MostrarTiendas mostrarTiendas = new MostrarTiendas();
+    private MostrarProductos mostrarProductos = new MostrarProductos();
     private File archivoImagen;
 
     // Setter estático para recibir la tienda seleccionada
@@ -88,6 +95,7 @@ public class ViewMirarTiendaController {
         carritoCompra.setOnMouseClicked(event -> mostrarCarrito());
         cargarDatosTienda();
         configurarEventos();
+        cargarProductos();
     }
 
     public void cargarDatosTienda() {
@@ -107,6 +115,59 @@ public class ViewMirarTiendaController {
             categoriaTienda.setValue(tiendaSeleccionada.getCategoria());
         }
     }
+
+    private void cargarProductos() {
+        if (tiendaSeleccionada != null) {
+            List<Producto> productos = mostrarProductos.obtenerProductosDeTienda(tiendaSeleccionada.getIdTienda());
+            vboxProductos.getChildren().clear();
+
+            for (Producto producto : productos) {
+                agregarProductoAVista(producto);
+            }
+        }
+    }
+
+    private void agregarProductoAVista(Producto producto) {
+        // Crear el HBox para el producto con un espaciado de 10 entre los elementos
+        HBox hboxProducto = new HBox(10);
+        hboxProducto.setStyle("-fx-background-color: #ffffff; -fx-padding: 10; -fx-alignment: CENTER_LEFT; -fx-border-color: #dddddd;");
+        hboxProducto.setPrefWidth(600); // Ajustar el ancho del HBox
+
+        // Imagen del producto
+        ImageView imagenProducto = new ImageView();
+        imagenProducto.setFitHeight(80);
+        imagenProducto.setFitWidth(80);
+        if (producto.getImagenProducto() != null) {
+            Image image = new Image(new ByteArrayInputStream(producto.getImagenProducto()));
+            imagenProducto.setImage(image);
+        }
+
+        // Nombre del producto
+        Label nombreProducto = new Label(producto.getNombre());
+        nombreProducto.setStyle("-fx-font-size: 14px; -fx-padding: 0 10 0 10;"); // Añadir padding para separarlo de la imagen
+
+        // Botón para editar el producto
+        Button btnEditarProducto = new Button("Editar Producto");
+        btnEditarProducto.setStyle("-fx-background-color: #000000; -fx-text-fill: white;");
+        btnEditarProducto.setOnAction(event -> editarProducto(producto));
+
+        // Agregar los elementos al HBox
+        hboxProducto.getChildren().addAll(imagenProducto, nombreProducto, btnEditarProducto);
+
+        // Ajustar margen del HBox dentro del VBox
+        VBox.setMargin(hboxProducto, new Insets(5, 0, 10, 0)); // Espacio superior e inferior de 10px
+
+        // Agregar el HBox al VBox de productos
+        vboxProductos.getChildren().add(hboxProducto);
+    }
+
+    private void editarProducto(Producto producto) {
+        // Aquí puedes cambiar la vista a la de edición de producto y pasar el producto seleccionado
+        // usando un método estático o un patrón adecuado.
+        System.out.println("Editar producto: " + producto.getNombre());
+        // cambiosVistas.cambiarVista(...);
+    }
+
 
     private void configurarEventos() {
         btnCargarImagen.setOnAction(event -> cargarImagen());
