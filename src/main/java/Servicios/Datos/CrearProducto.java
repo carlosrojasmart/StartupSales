@@ -5,7 +5,10 @@ import Modelos.Producto;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class CrearProducto {
@@ -41,5 +44,35 @@ public class CrearProducto {
     public int generarIdProductoAleatorio() {
         Random random = new Random();
         return random.nextInt(900000) + 100000; // Generar un idProducto entre 100000 y 999999
+    }
+
+    public List<Producto> obtenerProductosDeTienda(int idTienda) {
+        List<Producto> productos = new ArrayList<>();
+        String sql = "SELECT * FROM Producto WHERE idTienda = ?";
+
+        try (Connection conexion = JDBC.ConectarBD();
+             PreparedStatement pstmt = conexion.prepareStatement(sql)) {
+
+            pstmt.setInt(1, idTienda);
+            ResultSet resultSet = pstmt.executeQuery();
+
+            while (resultSet.next()) {
+                Producto producto = new Producto();
+                producto.setIdProducto(resultSet.getInt("idProducto"));
+                producto.setNombre(resultSet.getString("nombre"));
+                producto.setPrecio(resultSet.getDouble("precio"));
+                producto.setDescripcion(resultSet.getString("descripcion"));
+                producto.setStock(resultSet.getInt("stock"));
+                producto.setCategoria(resultSet.getString("categoria"));
+                producto.setImagenProducto(resultSet.getBytes("imagenProducto"));
+
+                productos.add(producto);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return productos;
     }
 }
