@@ -6,8 +6,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class ViewCarritoComprasController {
@@ -26,6 +28,24 @@ public class ViewCarritoComprasController {
 
     @FXML
     private Button BtnMisTiendas;
+
+    @FXML
+    private VBox vboxProductos;
+
+    @FXML
+    private VBox Precio; //Donde esta el boton continuar y el total
+
+    @FXML
+    private Label lblTotal;
+
+    @FXML
+    private Button btnContinuar;
+
+    @FXML
+    private TextField codigoPromocional;
+
+    @FXML
+    private Button btnAnadirCodigo;
 
     private CambiosVistas cambiosVistas = new CambiosVistas();
     @FXML

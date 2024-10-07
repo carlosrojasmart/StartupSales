@@ -96,12 +96,22 @@ public class ViewMirarTiendaController {
 
     @FXML
     private void initialize() {
+        int idTienda = CambiosVistas.getIdTiendaSeleccionada();
         buscarProductos.setOnMouseClicked(event -> buscarProductos.clear());
         carritoCompra.setOnMouseClicked(event -> mostrarCarrito());
         cargarDatosTienda();
         configurarEventos();
         cargarProductos();
         btnEliminar.setOnAction(event -> eliminarTienda());
+        cargarDatosTiendaPorId(idTienda);
+    }
+
+    private void cargarDatosTiendaPorId(int idTienda) {
+        Tienda tienda = mostrarTiendas.obtenerTiendaPorId(idTienda); // Método para obtener la tienda por ID
+        if (tienda != null) {
+            tiendaSeleccionada = tienda;
+            cargarDatosTienda(); // Usar el método existente para cargar los datos de la tienda
+        }
     }
 
     public void cargarDatosTienda() {
@@ -157,14 +167,27 @@ public class ViewMirarTiendaController {
         btnEditarProducto.setStyle("-fx-background-color: #000000; -fx-text-fill: white;");
         btnEditarProducto.setOnAction(event -> editarProducto(producto));
 
+        // Botón para ir a la tienda
+        Button btnIrATienda = new Button("Ir a Tienda");
+        btnIrATienda.setStyle("-fx-background-color: #000000; -fx-text-fill: white;");
+        btnIrATienda.setOnAction(event -> irATienda(producto.getIdTienda()));
+
         // Agregar los elementos al HBox
-        hboxProducto.getChildren().addAll(imagenProducto, nombreProducto, btnEditarProducto);
+        hboxProducto.getChildren().addAll(imagenProducto, nombreProducto, btnEditarProducto, btnIrATienda);
 
         // Ajustar margen del HBox dentro del VBox
         VBox.setMargin(hboxProducto, new Insets(5, 0, 10, 0)); // Espacio superior e inferior de 10px
 
         // Agregar el HBox al VBox de productos
         vboxProductos.getChildren().add(hboxProducto);
+    }
+
+    private void irATienda(int idTienda) {
+        // Almacenar el ID de la tienda seleccionada en una variable accesible (similar al término de búsqueda)
+        CambiosVistas.setIdTiendaSeleccionada(idTienda);
+
+        // Cambiar a la vista de la tienda usando el ID almacenado
+        cambiarVista(vboxProductos, "/Vistas/PantallaCuenta/Tienda/View-MirarTienda.fxml");
     }
 
     private void editarProducto(Producto producto) {
