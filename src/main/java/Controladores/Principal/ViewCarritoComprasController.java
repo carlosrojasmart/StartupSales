@@ -59,7 +59,7 @@ public class ViewCarritoComprasController {
             cambiarVista(BtnMisTiendas, "/Vistas/PantallaCuenta/Tienda/View-TiendaCreada.fxml");
         } else {
             // Si no es vendedor, ir a la vista para crear la tienda
-            cambiarVista(BtnMisTiendas, "/Vistas/PantallaCuenta/Tienda/View-Tienda.fxml");
+            cambiarVista(BtnMisTiendas, "/Vistas/PantallaCuenta/Tienda/View-CrearTienda.fxml");
         }
     }
 

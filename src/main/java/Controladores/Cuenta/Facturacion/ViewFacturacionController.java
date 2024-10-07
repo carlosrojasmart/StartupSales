@@ -1,34 +1,35 @@
-package Controladores.Cuenta;
+package Controladores.Cuenta.Facturacion;
 
 import Servicios.Datos.UsuarioActivo;
+import Servicios.Vistas.CambiosVistas;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import Servicios.Vistas.CambiosVistas;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
-public class ViewComprasController {
+public class ViewFacturacionController {
 
     @FXML
     private TextField buscarProductos;
 
     @FXML
-    private ImageView carritoCompra;
+    private Button BtnCompras;
 
     @FXML
     private Button BtnVolverInicio;
+
+
+    @FXML
+    private ImageView carritoCompra;
 
     @FXML
     private Button BtnMiPerfil;
 
     @FXML
     private Button BtnTienda;
-
-    @FXML
-    private Button BtnFacturacion;
 
     private CambiosVistas cambiosVistas = new CambiosVistas();
 
@@ -56,6 +57,11 @@ public class ViewComprasController {
     }
 
     @FXML
+    public void mostrarCompras(ActionEvent event) {
+        cambiarVista(BtnCompras, "/Vistas/PantallaCuenta/Compras/View-Compras.fxml");
+    }
+
+    @FXML
     public void mostrarMisTiendas(ActionEvent event) {
         // Verificar si el usuario es vendedor
         if (UsuarioActivo.isVendedor()) {
@@ -63,13 +69,8 @@ public class ViewComprasController {
             cambiarVista(BtnTienda, "/Vistas/PantallaCuenta/Tienda/View-TiendaCreada.fxml");
         } else {
             // Si no es vendedor, ir a la vista para crear la tienda
-            cambiarVista(BtnTienda, "/Vistas/PantallaCuenta/Tienda/View-Tienda.fxml");
+            cambiarVista(BtnTienda, "/Vistas/PantallaCuenta/Tienda/View-CrearTienda.fxml");
         }
-    }
-
-    @FXML
-    public void mostrarFacturacion(ActionEvent event) {
-        cambiarVista(BtnFacturacion, "/Vistas/PantallaCuenta/Facturacion/View-Facturacion.fxml");
     }
 
     @FXML

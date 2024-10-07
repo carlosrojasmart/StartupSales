@@ -7,7 +7,10 @@ public class Producto {
     private String descripcion;
     private int stock;
     private String categoria;
+    private byte[] imagenProducto; // Renombrado para mayor consistencia
+    private int idTienda;
 
+    // Getters y Setters
     public int getIdProducto() {
         return idProducto;
     }
@@ -54,5 +57,21 @@ public class Producto {
 
     public void setCategoria(String categoria) {
         this.categoria = categoria;
+    }
+
+    public byte[] getImagenProducto() {
+        return imagenProducto;
+    }
+
+    public void setImagenProducto(byte[] imagenProducto) {
+        this.imagenProducto = imagenProducto;
+    }
+
+    public int getIdTienda() {
+        return idTienda;
+    }
+
+    public void setIdTienda(int idTienda) {
+        this.idTienda = idTienda;
     }
 }

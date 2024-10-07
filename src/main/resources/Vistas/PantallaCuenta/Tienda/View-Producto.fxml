@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="503.0" prefWidth="854.0" style="-fx-background-color: #EDEDED;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.Cuenta.Facturacion.ViewFacturacionController">
+<AnchorPane prefHeight="503.0" prefWidth="854.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.Cuenta.Tienda.ViewProductoController">
     <children>
         <HBox layoutX="-1.0" prefHeight="66.0" prefWidth="863.0" style="-fx-background-color: #000000;">
             <children>
@@ -89,7 +89,7 @@
                 </ImageView>
                 <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../../../Imagenes/Cuenta/tienda.png" />
+                        <Image url="@../../../Imagenes/Cuenta/tiendaAzul.png" />
                     </image>
                     <VBox.margin>
                         <Insets left="20.0" top="20.0" />
@@ -97,7 +97,7 @@
                 </ImageView>
                 <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../../../Imagenes/Cuenta/archivar-facturaAzul.png" />
+                        <Image url="@../../../Imagenes/Cuenta/factura.png" />
                     </image>
                     <VBox.margin>
                         <Insets left="20.0" top="20.0" />
@@ -131,7 +131,7 @@
                         <Font name="MS Reference Sans Serif" size="12.0" />
                     </font>
                 </Button>
-                <Button fx:id="BtnTienda" mnemonicParsing="false" onAction="#mostrarMisTiendas" style="-fx-background-color: #F5F5F5;" text="Tiendas">
+                <Button fx:id="BtnTienda" mnemonicParsing="false" style="-fx-background-color: #F5F5F5;" text="Tiendas" textFill="#4c91f9">
                     <VBox.margin>
                         <Insets left="5.0" top="25.0" />
                     </VBox.margin>
@@ -139,7 +139,7 @@
                         <Font name="MS Reference Sans Serif" size="12.0" />
                     </font>
                 </Button>
-                <Button fx:id="BtnFacturacion" mnemonicParsing="false" style="-fx-background-color: #F5F5F5;" text="Facturacion" textFill="#4c91f9">
+                <Button fx:id="BtnFacturacion" mnemonicParsing="false" onAction="#mostrarFacturacion" style="-fx-background-color: #F5F5F5;" text="Facturacion">
                     <VBox.margin>
                         <Insets left="5.0" top="25.0" />
                     </VBox.margin>
@@ -149,5 +149,118 @@
                 </Button>
             </children>
         </VBox>
+        <ScrollPane layoutX="164.0" layoutY="66.0" prefHeight="414.0" prefWidth="698.0">
+         <content>
+            <AnchorPane prefHeight="412.0" prefWidth="696.0">
+               <children>
+                  <VBox layoutX="41.0" layoutY="96.0" prefHeight="192.0" prefWidth="156.0" style="-fx-background-color: #ffffff;">
+                     <children>
+                         <ImageView fx:id="imagenProducto" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
+                             <image>
+                                 <Image url="@../../../Imagenes/Cuenta/ImagenPerfilDef.jpg" />
+                             </image>
+                             <VBox.margin>
+                                 <Insets left="19.0" top="17.0" />
+                             </VBox.margin>
+                         </ImageView>
+                        <Button fx:id="btnCargarImagen" mnemonicParsing="false" style="-fx-background-color: #000000;" text="Cargar Imagen" textFill="WHITE">
+                           <VBox.margin>
+                              <Insets left="26.0" top="10.0" />
+                           </VBox.margin>
+                           <font>
+                              <Font name="MS Reference Sans Serif" size="12.0" />
+                           </font></Button>
+                     </children>
+                  </VBox>
+                  <Label layoutX="14.0" layoutY="14.0" text="Crear Producto">
+                     <font>
+                        <Font name="MS Reference Sans Serif" size="15.0" />
+                     </font>
+                  </Label>
+                  <VBox layoutX="197.0" layoutY="96.0" prefHeight="192.0" prefWidth="208.0" style="-fx-background-color: #ffffff;">
+                     <children>
+                        <Label text="Nombre">
+                           <font>
+                              <Font name="MS Reference Sans Serif" size="12.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="15.0" />
+                           </VBox.margin>
+                        </Label>
+                        <TextField fx:id="nombreProducto" maxWidth="200.0" minHeight="20.0">
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <Label text="Precio">
+                           <font>
+                              <Font name="MS Reference Sans Serif" size="12.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <TextField fx:id="precioProducto" maxWidth="200.0" minHeight="20.0">
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <Label text="Stock">
+                           <font>
+                              <Font name="MS Reference Sans Serif" size="12.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Spinner fx:id="stockProducto" maxWidth="100.0">
+                           <VBox.margin>
+                              <Insets top="5.0" />
+                           </VBox.margin>
+                        </Spinner>
+                     </children></VBox>
+                  <VBox layoutX="405.0" layoutY="96.0" prefHeight="192.0" prefWidth="251.0" style="-fx-background-color: #ffffff;">
+                     <children>
+                        <Label text="Descripcion">
+                           <font>
+                              <Font name="MS Reference Sans Serif" size="12.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="10.0" top="15.0" />
+                           </VBox.margin>
+                        </Label>
+                        <TextField fx:id="descProducto" maxWidth="220.0" minHeight="20.0" prefHeight="81.0" prefWidth="220.0">
+                           <VBox.margin>
+                              <Insets left="10.0" top="5.0" />
+                           </VBox.margin>
+                        </TextField>
+                        <Label text="Categoria">
+                           <font>
+                              <Font name="MS Reference Sans Serif" size="12.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets left="10.0" top="10.0" />
+                           </VBox.margin>
+                        </Label>
+                        <ChoiceBox fx:id="catProducto" prefWidth="100.0">
+                           <VBox.margin>
+                              <Insets left="10.0" top="5.0" />
+                           </VBox.margin>
+                        </ChoiceBox>
+                     </children>
+                  </VBox>
+                  <Button fx:id="btnCrearProducto" layoutX="286.0" layoutY="319.0" mnemonicParsing="false" prefHeight="29.0" prefWidth="123.0" style="-fx-background-color: #000000;" text="Crear" textFill="WHITE">
+                     <font>
+                        <Font name="MS Reference Sans Serif" size="15.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="btnVolverTienda" layoutX="555.0" layoutY="10.0" mnemonicParsing="false" onAction="#mostrarMirarTienda" style="-fx-background-color: #000000;" text="Volver a tienda" textFill="WHITE">
+                     <font>
+                        <Font name="MS Reference Sans Serif" size="14.0" />
+                     </font>
+                  </Button>
+               </children>
+            </AnchorPane>
+         </content></ScrollPane>
     </children>
 </AnchorPane>
