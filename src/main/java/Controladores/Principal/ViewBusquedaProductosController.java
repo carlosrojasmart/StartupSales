@@ -141,8 +141,8 @@ public class ViewBusquedaProductosController {
             // Guardar la tienda seleccionada en CambiosVistas
             CambiosVistas.setTiendaSeleccionada(tienda);
 
-            // Cambiar a la vista de la tienda para el cliente
-            cambiarVista(vboxProductos, "/Vistas/PantallaCuenta/Tienda/View-MirarTienda.fxml");
+            // Cambiar a la vista de la tienda para el cliente (View-TiendaACliente.fxml)
+            cambiarVista(vboxProductos, "/Vistas/PantallaCuenta/Tienda/View-TiendaACliente.fxml");
         } else {
             System.out.println("Tienda no encontrada con el ID: " + idTienda);
         }

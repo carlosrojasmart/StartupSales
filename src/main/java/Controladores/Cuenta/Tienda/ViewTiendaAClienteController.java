@@ -63,16 +63,18 @@ public class ViewTiendaAClienteController {
 
     @FXML
     private void initialize() {
-        // Obtener la tienda seleccionada desde CambiosVistas
         Tienda tienda = CambiosVistas.getTiendaSeleccionada();
-
-        // Verificar si la tienda no es nula
         if (tienda != null) {
             cargarDatosTienda(tienda);
             cargarProductos(tienda);
         } else {
             System.out.println("No hay tienda seleccionada.");
         }
+
+        // Hacer los TextFields no editables
+        nombreTienda.setEditable(false);
+        categoriaTienda.setEditable(false);
+        DescTienda.setEditable(false);
     }
 
     private void cargarDatosTienda(Tienda tienda) {
@@ -138,8 +140,9 @@ public class ViewTiendaAClienteController {
     private void agregarProductoAVista(Producto producto) {
         HBox hboxProducto = new HBox(10);
         hboxProducto.setStyle("-fx-background-color: #ffffff; -fx-padding: 10; -fx-alignment: CENTER_LEFT; -fx-border-color: #dddddd;");
-        hboxProducto.setPrefWidth(600); // Ajustar el ancho del HBox
+        hboxProducto.setPrefWidth(600);
 
+        // Imagen del producto
         ImageView imagenProducto = new ImageView();
         imagenProducto.setFitHeight(80);
         imagenProducto.setFitWidth(80);
@@ -148,21 +151,35 @@ public class ViewTiendaAClienteController {
             imagenProducto.setImage(image);
         }
 
+        // Nombre del producto
         Label nombreProducto = new Label(producto.getNombre());
         nombreProducto.setStyle("-fx-font-size: 14px; -fx-padding: 0 10 0 10;");
 
+        // Precio del producto
         Label precioProducto = new Label(String.format("$ %.2f", producto.getPrecio()));
         precioProducto.setStyle("-fx-font-size: 14px;");
 
+        // Botón para agregar al carrito
         Button btnAgregarCarrito = new Button("Agregar al Carrito");
         btnAgregarCarrito.setStyle("-fx-background-color: #000000; -fx-text-fill: white;");
         btnAgregarCarrito.setOnAction(event -> agregarAlCarrito(producto));
 
-        hboxProducto.getChildren().addAll(imagenProducto, nombreProducto, precioProducto, btnAgregarCarrito);
-        VBox.setMargin(hboxProducto, new Insets(5, 0, 10, 0));
+        HBox.setMargin(hboxProducto, new Insets(5, 0, 10, 0)); // Ajustar el margen
 
+        // Agregar los elementos al HBox
+        hboxProducto.getChildren().addAll(imagenProducto, nombreProducto, precioProducto, btnAgregarCarrito);
+
+        // Ajustar el margen del primer producto para reducir el espacio superior
+        if (vboxProductos.getChildren().isEmpty()) {
+            VBox.setMargin(hboxProducto, new Insets(1, 0, 5, 0)); // Menor margen superior si es el primero
+        } else {
+            VBox.setMargin(hboxProducto, new Insets(5, 0, 10, 0)); // Margen estándar para los demás productos
+        }
+
+        // Agregar el HBox al VBox de productos
         vboxProductos.getChildren().add(hboxProducto);
     }
+
 
     private void agregarAlCarrito(Producto producto) {
         System.out.println("Producto agregado al carrito: " + producto.getNombre());
