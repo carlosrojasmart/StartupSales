@@ -75,6 +75,19 @@ public class CrearTienda {
         return random.nextInt(900000) + 100000;  // Generar un idTienda entre 100000 y 999999
     }
 
+    public boolean eliminarTienda(int idTienda) {
+        String sql = "DELETE FROM Tienda WHERE idTienda = ?";
+
+        try (Connection conexion = JDBC.ConectarBD();
+             PreparedStatement pstmt = conexion.prepareStatement(sql)) {
+            pstmt.setInt(1, idTienda);
+            return pstmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     // Obtener el archivo de imagen
     public File getArchivoImagen() {
         return archivoImagen;

@@ -210,7 +210,7 @@
                               <Insets left="15.0" top="5.0" />
                            </VBox.margin></ChoiceBox>
                      </children></VBox>
-                  <VBox layoutX="411.0" layoutY="30.0" prefHeight="166.0" prefWidth="266.0" style="-fx-background-color: #ffffff;">
+                  <VBox layoutX="411.0" layoutY="30.0" prefHeight="120.0" prefWidth="266.0" style="-fx-background-color: #ffffff;">
                      <children>
                         <Label text="Descripcion">
                            <VBox.margin>
@@ -224,14 +224,6 @@
                               <Insets left="10.0" top="5.0" />
                            </VBox.margin>
                         </TextField>
-                        <Button fx:id="btnGuardar" mnemonicParsing="false" style="-fx-background-color: #000000;" text="Guardar" textFill="WHITE">
-                           <font>
-                              <Font name="MS Reference Sans Serif" size="12.0" />
-                           </font>
-                           <VBox.margin>
-                              <Insets left="98.0" top="15.0" />
-                           </VBox.margin>
-                        </Button>
                      </children>
                   </VBox>
                   <Label layoutX="14.0" layoutY="212.0" text="Productos">
@@ -249,6 +241,26 @@
                            <Insets top="10.0" />
                        </VBox.margin>
                    </VBox>
+                  <HBox layoutX="415.0" layoutY="146.0" prefHeight="50.0" prefWidth="262.0" style="-fx-background-color: #ffffff;">
+                     <children>
+                        <Button fx:id="btnEliminar" mnemonicParsing="false" onAction="#eliminarTienda" style="-fx-background-color: #000000;" text="Eliminar" textFill="WHITE">
+                           <font>
+                              <Font name="MS Reference Sans Serif" size="13.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="48.0" top="10.0" />
+                           </HBox.margin>
+                        </Button>
+                        <Button fx:id="btnGuardar" mnemonicParsing="false" style="-fx-background-color: #000000;" text="Guardar" textFill="WHITE">
+                           <font>
+                              <Font name="MS Reference Sans Serif" size="13.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets left="20.0" top="10.0" />
+                           </HBox.margin>
+                        </Button>
+                     </children>
+                  </HBox>
                </children>
             </AnchorPane>
          </content>

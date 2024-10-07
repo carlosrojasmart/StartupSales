@@ -237,6 +237,11 @@
                         </Button>
                      </children>
                   </VBox>
+                  <Label layoutX="14.0" layoutY="6.0" prefHeight="23.0" prefWidth="110.0" text="Crear Tienda">
+                     <font>
+                        <Font name="MS Reference Sans Serif" size="17.0" />
+                     </font>
+                  </Label>
                </children></AnchorPane>
             </content>
         </ScrollPane>

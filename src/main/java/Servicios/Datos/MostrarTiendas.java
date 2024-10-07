@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.stage.Stage;
@@ -131,6 +132,21 @@ public class MostrarTiendas {
             e.printStackTrace();
         }
         return tienda;
+    }
+
+    public boolean eliminarTienda(int idTienda) {
+        String sql = "DELETE FROM Tienda WHERE idTienda = ?";
+
+        try (Connection conexion = JDBC.ConectarBD();
+             PreparedStatement pstmt = conexion.prepareStatement(sql)) {
+            pstmt.setInt(1, idTienda);
+
+            int filasEliminadas = pstmt.executeUpdate();
+            return filasEliminadas > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     // Método para actualizar la tienda en la base de datos
