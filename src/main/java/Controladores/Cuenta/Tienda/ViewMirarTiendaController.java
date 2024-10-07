@@ -14,6 +14,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -65,6 +66,12 @@ public class ViewMirarTiendaController {
 
     @FXML
     private Button BtnFacturacion;
+
+    @FXML
+    private Button btnAgregarProducto;
+
+    @FXML
+    private VBox vboxProductos; // VBox donde se agregarán dinámicamente los productos
 
     private CambiosVistas cambiosVistas = new CambiosVistas();
     private MostrarTiendas mostrarTiendas = new MostrarTiendas();
@@ -179,6 +186,11 @@ public class ViewMirarTiendaController {
         }
     }
 
+    public static Tienda getTiendaSeleccionada() {
+        return tiendaSeleccionada;
+    }
+
+
     @FXML
     public void mostrarCarrito() {
         cambiarVista(carritoCompra, "/Vistas/PantallaPrincipal/View-CarritoCompras.fxml");
@@ -202,5 +214,10 @@ public class ViewMirarTiendaController {
     @FXML
     public void mostrarInicio(ActionEvent event) {
         cambiarVista(BtnVolverInicio, "/Vistas/PantallaPrincipal/View-InicialLogeado.fxml");
+    }
+
+    @FXML
+    public void mostrarCrearProducto(ActionEvent event) {
+        cambiarVista(btnAgregarProducto, "/Vistas/PantallaCuenta/Tienda/View-Producto.fxml");
     }
 }

@@ -234,11 +234,16 @@
                         </Button>
                      </children>
                   </VBox>
-                  <Label layoutX="14.0" layoutY="204.0" text="Agregar Productos">
+                  <Label layoutX="14.0" layoutY="206.0" text="Productos">
                      <font>
                         <Font name="MS Reference Sans Serif" size="12.0" />
                      </font>
                   </Label>
+                  <Button fx:id="btnAgregarProducto" layoutX="83.0" layoutY="202.0" mnemonicParsing="false" onAction="#mostrarCrearProducto" prefHeight="23.0" prefWidth="124.0" style="-fx-background-color: #000000;" text="Agregar Producto" textFill="WHITE">
+                     <font>
+                        <Font name="MS Reference Sans Serif" size="12.0" />
+                     </font>
+                  </Button>
                </children></AnchorPane>
          </content></ScrollPane>
       <Button fx:id="btnVolverTiendas" layoutX="739.0" layoutY="72.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="117.0" style="-fx-background-color: #000000;" text="Volver a Tiendas" textFill="WHITE">
