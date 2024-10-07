@@ -31,7 +31,6 @@ public class LoginRegister {
         }
     }
 
-    // Método para manejar el login
     public void handleLogin(String username, String password, LoginCallback callback) {
         if (username.isEmpty() || password.isEmpty()) {
             callback.onFailure("Por favor, completa todos los campos.");
@@ -39,7 +38,6 @@ public class LoginRegister {
         }
 
         try (Connection conexion = JDBC.ConectarBD()) {
-            // Obtener también el campo esVendedor
             String sql = "SELECT idUsuario, nombre, correo_electronico, contraseña, esVendedor FROM Usuario WHERE correo_electronico = ?";
             try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
                 pstmt.setString(1, username);
@@ -47,17 +45,22 @@ public class LoginRegister {
 
                 if (rs.next()) {
                     String storedPassword = rs.getString("contraseña");
-                    String hashedPassword = hashPassword(password); // Hashear la contraseña ingresada
+                    String hashedPassword = hashPassword(password);
 
                     if (storedPassword.equals(hashedPassword)) {
-                        // Guardar la información del usuario activo
                         int idUsuario = rs.getInt("idUsuario");
                         String nombre = rs.getString("nombre");
                         String correo = rs.getString("correo_electronico");
-                        boolean esVendedor = rs.getBoolean("esVendedor"); // Obtener el campo esVendedor
+                        boolean esVendedor = rs.getBoolean("esVendedor");
 
-                        // Llamar a setUsuarioActivo con el booleano esVendedor
-                        UsuarioActivo.setUsuarioActivo(idUsuario, nombre, correo, esVendedor);
+                        // Obtener el idCarrito del usuario
+                        int idCarritoUsuario = obtenerIdCarritoDesdeBD(idUsuario);
+                        if (idCarritoUsuario == -1) {
+                            // Si no hay un carrito, podrías crear uno automáticamente para el usuario
+                            idCarritoUsuario = crearCarritoParaUsuario(idUsuario);
+                        }
+
+                        UsuarioActivo.setUsuarioActivo(idUsuario, nombre, correo, esVendedor, idCarritoUsuario);
 
                         callback.onSuccess("Login exitoso.");
                     } else {
@@ -72,35 +75,68 @@ public class LoginRegister {
         }
     }
 
-    // Método para registrar usuario
+    private int obtenerIdCarritoDesdeBD(int idUsuario) {
+        String sql = "SELECT idCarrito FROM carrito WHERE idUsuario = ?";
+        try (Connection conexion = JDBC.ConectarBD();
+             PreparedStatement pstmt = conexion.prepareStatement(sql)) {
+            pstmt.setInt(1, idUsuario);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                int idCarrito = rs.getInt("idCarrito");
+                System.out.println("Carrito encontrado para el usuario: " + idCarrito);
+                return idCarrito;
+            } else {
+                System.out.println("No se encontró carrito para el usuario con id: " + idUsuario);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1; // Devuelve -1 si no se encontró ningún carrito para el usuario
+    }
+
+
+    // Método para obtener el idCarrito dado un idUsuario
+    private int obtenerIdCarrito(int idUsuario, Connection conexion) throws SQLException {
+        String sql = "SELECT idCarrito FROM Carrito WHERE idUsuario = ?";
+        try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
+            pstmt.setInt(1, idUsuario);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("idCarrito");
+            } else {
+                // Si no hay carrito existente, podrías optar por crear uno o retornar un valor por defecto
+                return -1; // Valor por defecto si no existe un carrito asociado
+            }
+        }
+    }
+
     public void registrarUsuario(String usuario, String correo, String contraseña, String telefono, String direccion, RegistrationCallback callback) {
-        // Validación de campos
         if (usuario.isEmpty() || correo.isEmpty() || contraseña.isEmpty() || telefono.isEmpty() || direccion.isEmpty()) {
             callback.onFailure("Por favor, completa todos los campos.");
             return;
         }
 
-        // Generar un idUsuario aleatorio
         int idUsuario = generarIdAleatorio();
-
-        // Hashear la contraseña
         String hashedPassword = hashPassword(contraseña);
 
-        // Conexión a la base de datos y ejecución de la consulta
         try (Connection conexion = JDBC.ConectarBD()) {
-            // Aquí eliminamos el campo idTienda de la consulta, ya que no existe en la tabla Usuario
             String sql = "INSERT INTO Usuario (idUsuario, nombre, direccion, correo_electronico, telefono, contraseña) VALUES (?, ?, ?, ?, ?, ?)";
 
             try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
-                pstmt.setInt(1, idUsuario); // idUsuario generado aleatoriamente
-                pstmt.setString(2, usuario); // nombre
-                pstmt.setString(3, direccion); // direccion
-                pstmt.setString(4, correo); // correo_electronico
-                pstmt.setString(5, telefono); // telefono
-                pstmt.setString(6, hashedPassword); // contraseña hasheada
+                pstmt.setInt(1, idUsuario);
+                pstmt.setString(2, usuario);
+                pstmt.setString(3, direccion);
+                pstmt.setString(4, correo);
+                pstmt.setString(5, telefono);
+                pstmt.setString(6, hashedPassword);
 
-                // Ejecutar la inserción
                 pstmt.executeUpdate();
+
+                // Crear un carrito para el usuario registrado
+                int idCarrito = crearCarritoParaUsuario(idUsuario);
+                UsuarioActivo.setUsuarioActivo(idUsuario, usuario, correo, false, idCarrito);
+
                 callback.onSuccess("Usuario registrado exitosamente.");
             } catch (SQLException e) {
                 callback.onFailure("Error al registrar usuario: " + e.getMessage());
@@ -108,6 +144,21 @@ public class LoginRegister {
         } catch (SQLException e) {
             callback.onFailure("Error de conexión a la base de datos: " + e.getMessage());
         }
+    }
+
+    private int crearCarritoParaUsuario(int idUsuario) {
+        int idCarrito = generarIdAleatorio(); // Generar un ID para el carrito
+        String sql = "INSERT INTO carrito (idCarrito, idUsuario) VALUES (?, ?)";
+        try (Connection conexion = JDBC.ConectarBD();
+             PreparedStatement pstmt = conexion.prepareStatement(sql)) {
+            pstmt.setInt(1, idCarrito);
+            pstmt.setInt(2, idUsuario);
+            pstmt.executeUpdate();
+            return idCarrito;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1; // Devuelve -1 si no se pudo crear el carrito
     }
 
     private int generarIdAleatorio() {

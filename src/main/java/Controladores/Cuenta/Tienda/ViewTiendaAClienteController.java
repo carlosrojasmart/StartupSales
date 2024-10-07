@@ -2,7 +2,9 @@ package Controladores.Cuenta.Tienda;
 
 import Modelos.Producto;
 import Modelos.Tienda;
+import Servicios.Datos.MostrarCarrito;
 import Servicios.Datos.MostrarProductos;
+import Servicios.Datos.UsuarioActivo;
 import Servicios.Vistas.CambiosVistas;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -182,7 +184,12 @@ public class ViewTiendaAClienteController {
 
 
     private void agregarAlCarrito(Producto producto) {
-        System.out.println("Producto agregado al carrito: " + producto.getNombre());
-        // Aquí puedes implementar la lógica para agregar el producto al carrito
+        int idCarrito = UsuarioActivo.getIdCarrito(); // Ahora obtienes el ID del carrito del usuario activo
+        MostrarCarrito mostrarCarrito = new MostrarCarrito();
+
+        // Establecer la cantidad antes de agregar al carrito
+        producto.setCantidad(1); // O la cantidad deseada
+
+        mostrarCarrito.agregarProductoAlCarrito(idCarrito, producto);
     }
 }

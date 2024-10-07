@@ -4,14 +4,15 @@ public class UsuarioActivo {
     private static int idUsuario;
     private static String nombre;
     private static String correoElectronico;
-    private static boolean esVendedor;  // Nuevo campo para almacenar si es vendedor o no
+    private static boolean esVendedor;
+    private static int idCarrito; // Añade esta variable para almacenar el idCarrito
 
-    // Método para configurar los datos del usuario activo
-    public static void setUsuarioActivo(int id, String nombreUsuario, String correo, boolean vendedor) {
+    public static void setUsuarioActivo(int id, String nombreUsuario, String correo, boolean vendedor, int idCarritoUsuario) {
         idUsuario = id;
         nombre = nombreUsuario;
         correoElectronico = correo;
-        esVendedor = vendedor;  // Configurar si es vendedor
+        esVendedor = vendedor;
+        idCarrito = idCarritoUsuario; // Asigna el idCarrito
     }
 
     public static int getIdUsuario() {
@@ -28,5 +29,9 @@ public class UsuarioActivo {
 
     public static boolean isVendedor() {
         return esVendedor;
+    }
+
+    public static int getIdCarrito() {
+        return idCarrito;
     }
 }
