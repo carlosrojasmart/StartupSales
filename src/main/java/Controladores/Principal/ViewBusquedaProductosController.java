@@ -186,7 +186,11 @@ public class ViewBusquedaProductosController {
 
     @FXML
     public void mostrarCompras(ActionEvent event) {
-        cambiarVista(BtnComprasAr, "/Vistas/PantallaCuenta/Compras/View-Compras.fxml");
+        if (CambiosVistas.usuarioTieneCompras(UsuarioActivo.getIdUsuario())) {
+            cambiarVista(BtnComprasAr, "/Vistas/PantallaCuenta/Compras/View-ComprasCreada.fxml");
+        } else {
+            cambiarVista(BtnComprasAr, "/Vistas/PantallaCuenta/Compras/View-Compras.fxml");
+        }
     }
 
     @FXML

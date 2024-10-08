@@ -2,6 +2,7 @@ package Controladores.Cuenta.Tienda;
 
 import Modelos.Producto;
 import Servicios.Datos.CrearProducto;
+import Servicios.Datos.UsuarioActivo;
 import Servicios.Vistas.CambiosVistas;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -201,7 +202,11 @@ public class ViewEditarProductoController {
 
     @FXML
     public void mostrarCompras(ActionEvent event) {
-        cambiarVista(BtnCompras, "/Vistas/PantallaCuenta/Compras/View-Compras.fxml");
+        if (CambiosVistas.usuarioTieneCompras(UsuarioActivo.getIdUsuario())) {
+            cambiarVista(BtnCompras, "/Vistas/PantallaCuenta/Compras/View-ComprasCreada.fxml");
+        } else {
+            cambiarVista(BtnCompras, "/Vistas/PantallaCuenta/Compras/View-Compras.fxml");
+        }
     }
 
     @FXML

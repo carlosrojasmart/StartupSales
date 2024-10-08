@@ -5,6 +5,7 @@ import Modelos.Tienda;
 import Servicios.Datos.CrearTienda;
 import Servicios.Datos.MostrarProductos;
 import Servicios.Datos.MostrarTiendas;
+import Servicios.Datos.UsuarioActivo;
 import Servicios.Vistas.CambiosVistas;
 import Servicios.Vistas.FormatoUtil;
 import javafx.event.ActionEvent;
@@ -330,7 +331,11 @@ public class ViewMirarTiendaController {
 
     @FXML
     public void mostrarCompras(ActionEvent event) {
-        cambiarVista(BtnCompras, "/Vistas/PantallaCuenta/Compras/View-Compras.fxml");
+        if (CambiosVistas.usuarioTieneCompras(UsuarioActivo.getIdUsuario())) {
+            cambiarVista(BtnCompras, "/Vistas/PantallaCuenta/Compras/View-ComprasCreada.fxml");
+        } else {
+            cambiarVista(BtnCompras, "/Vistas/PantallaCuenta/Compras/View-Compras.fxml");
+        }
     }
 
     @FXML
