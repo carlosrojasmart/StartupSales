@@ -39,11 +39,27 @@ public class ViewComprasController {
             buscarProductos.clear();
         });
 
+        // Asignar la funcionalidad de búsqueda al presionar "Enter"
+        buscarProductos.setOnAction(event -> realizarBusqueda());
+
         carritoCompra.setOnMouseClicked(event -> {
             mostrarCarrito();
         });
     }
 
+    @FXML
+    private void realizarBusqueda() {
+        String terminoBusqueda = buscarProductos.getText().trim();
+        if (!terminoBusqueda.isEmpty()) {
+            // Almacenar el término de búsqueda para usarlo en la vista de búsqueda de productos
+            CambiosVistas.setTerminoBusqueda(terminoBusqueda);
+
+            // Cambiar a la vista de búsqueda de productos
+            cambiarVista(buscarProductos, "/Vistas/PantallaPrincipal/View-BusquedaProductos.fxml");
+        } else {
+            System.out.println("El término de búsqueda está vacío.");
+        }
+    }
 
     @FXML
     public void mostrarCarrito() {

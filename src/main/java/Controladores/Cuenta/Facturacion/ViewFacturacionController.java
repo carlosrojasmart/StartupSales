@@ -21,7 +21,6 @@ public class ViewFacturacionController {
     @FXML
     private Button BtnVolverInicio;
 
-
     @FXML
     private ImageView carritoCompra;
 
@@ -43,8 +42,24 @@ public class ViewFacturacionController {
         carritoCompra.setOnMouseClicked(event -> {
             mostrarCarrito();
         });
+
+        // Configurar la búsqueda de productos cuando se presiona "Enter"
+        buscarProductos.setOnAction(event -> realizarBusqueda());
     }
 
+    @FXML
+    private void realizarBusqueda() {
+        String terminoBusqueda = buscarProductos.getText().trim();
+        if (!terminoBusqueda.isEmpty()) {
+            // Almacenar el término de búsqueda para la vista de búsqueda de productos
+            CambiosVistas.setTerminoBusqueda(terminoBusqueda);
+
+            // Cambiar a la vista de búsqueda de productos
+            cambiarVista(buscarProductos, "/Vistas/PantallaPrincipal/View-BusquedaProductos.fxml");
+        } else {
+            System.out.println("El término de búsqueda está vacío.");
+        }
+    }
 
     @FXML
     public void mostrarCarrito() {
@@ -82,5 +97,4 @@ public class ViewFacturacionController {
         Stage stage = (Stage) nodo.getScene().getWindow();
         cambiosVistas.cambiarVista(stage, rutaFXML);
     }
-
 }

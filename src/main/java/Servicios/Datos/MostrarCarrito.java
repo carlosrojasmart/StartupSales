@@ -13,22 +13,44 @@ import java.util.List;
 public class MostrarCarrito {
 
     public void agregarProductoAlCarrito(int idCarrito, Producto producto) {
-        String sql = "INSERT INTO carrito_producto (idCarrito, idProducto, cantidad) VALUES (?, ?, ?)";
+        // Verificar si el producto ya existe en el carrito
+        String verificarSql = "SELECT cantidad FROM carrito_producto WHERE idCarrito = ? AND idProducto = ?";
+        String actualizarSql = "UPDATE carrito_producto SET cantidad = cantidad + ? WHERE idCarrito = ? AND idProducto = ?";
+        String insertarSql = "INSERT INTO carrito_producto (idCarrito, idProducto, cantidad) VALUES (?, ?, ?)";
 
-        try (Connection conexion = JDBC.ConectarBD();
-             PreparedStatement pstmt = conexion.prepareStatement(sql)) {
+        try (Connection conexion = JDBC.ConectarBD()) {
+            // Comprobar si el producto ya está en el carrito
+            try (PreparedStatement verificarStmt = conexion.prepareStatement(verificarSql)) {
+                verificarStmt.setInt(1, idCarrito);
+                verificarStmt.setInt(2, producto.getIdProducto());
+                ResultSet rs = verificarStmt.executeQuery();
 
-            pstmt.setInt(1, idCarrito); // Asegúrate de que el ID del carrito es correcto
-            pstmt.setInt(2, producto.getIdProducto()); // ID del producto
-            pstmt.setInt(3, producto.getCantidad()); // Cantidad del producto
-
-            pstmt.executeUpdate();
-            System.out.println("Producto agregado al carrito correctamente.");
+                if (rs.next()) {
+                    // El producto ya está en el carrito, actualizar la cantidad
+                    try (PreparedStatement actualizarStmt = conexion.prepareStatement(actualizarSql)) {
+                        actualizarStmt.setInt(1, producto.getCantidad());
+                        actualizarStmt.setInt(2, idCarrito);
+                        actualizarStmt.setInt(3, producto.getIdProducto());
+                        actualizarStmt.executeUpdate();
+                        System.out.println("Cantidad de producto actualizada en el carrito.");
+                    }
+                } else {
+                    // El producto no está en el carrito, agregarlo
+                    try (PreparedStatement insertarStmt = conexion.prepareStatement(insertarSql)) {
+                        insertarStmt.setInt(1, idCarrito);
+                        insertarStmt.setInt(2, producto.getIdProducto());
+                        insertarStmt.setInt(3, producto.getCantidad());
+                        insertarStmt.executeUpdate();
+                        System.out.println("Producto agregado al carrito correctamente.");
+                    }
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("Error al agregar el producto al carrito: " + e.getMessage());
+            System.out.println("Error al agregar o actualizar el producto en el carrito: " + e.getMessage());
         }
     }
+
     public List<Producto> obtenerProductosDeCarrito(int idCarrito) {
         List<Producto> productos = new ArrayList<>();
         String sql = "SELECT p.idProducto, p.nombre, p.precio, p.imagenProducto, cp.cantidad " +
@@ -87,6 +109,7 @@ public class MostrarCarrito {
             pstmt.setInt(2, idProducto);
             pstmt.setInt(3, idCarrito);
             pstmt.executeUpdate();
+            System.out.println("Cantidad de producto actualizada correctamente.");
         } catch (SQLException e) {
             System.out.println("Error al actualizar la cantidad del producto en el carrito: " + e.getMessage());
             e.printStackTrace();
