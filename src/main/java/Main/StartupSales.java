@@ -14,7 +14,7 @@ public class StartupSales extends Application {
     }
 
     public static void main(String[] args) {
-        JDBC.ConectarBD(); // Conexión a la base de datos
-        launch(); // Iniciar la aplicación JavaFX
+        JDBC.ConectarBD();
+        launch();
     }
 }

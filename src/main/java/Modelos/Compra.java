@@ -12,8 +12,8 @@ public class Compra {
     private double totalCompra;
     private LocalDate fecha;
     private LocalTime hora;
-    private Map<Producto, Integer> productos; // Mapa que relaciona productos con su cantidad
-    private String productosResumen; // Resumen de los productos en formato de texto
+    private Map<Producto, Integer> productos;
+    private String productosResumen;
 
     // Constructor vacío
     public Compra() {
@@ -30,7 +30,6 @@ public class Compra {
         this.productosResumen = generarProductosResumen();
     }
 
-    // Getters y Setters
     public int getIdCompra() {
         return idCompra;
     }
