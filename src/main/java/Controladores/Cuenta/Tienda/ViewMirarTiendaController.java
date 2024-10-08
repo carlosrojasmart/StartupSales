@@ -6,6 +6,7 @@ import Servicios.Datos.CrearTienda;
 import Servicios.Datos.MostrarProductos;
 import Servicios.Datos.MostrarTiendas;
 import Servicios.Vistas.CambiosVistas;
+import Servicios.Vistas.FormatoUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -160,20 +161,19 @@ public class ViewMirarTiendaController {
 
         // Nombre del producto
         Label nombreProducto = new Label(producto.getNombre());
-        nombreProducto.setStyle("-fx-font-size: 14px; -fx-padding: 0 10 0 10;"); // Añadir padding para separarlo de la imagen
+        nombreProducto.setStyle("-fx-font-size: 14px; -fx-padding: 0 10 0 10;");
+
+        // Formatear el precio del producto usando FormatoUtil
+        Label precioProducto = new Label(FormatoUtil.formatearPrecio(producto.getPrecio()));
+        precioProducto.setStyle("-fx-font-size: 14px; -fx-padding: 0 10 0 10;");
 
         // Botón para editar el producto
         Button btnEditarProducto = new Button("Editar Producto");
         btnEditarProducto.setStyle("-fx-background-color: #000000; -fx-text-fill: white;");
         btnEditarProducto.setOnAction(event -> editarProducto(producto));
 
-        // Botón para ir a la tienda
-        Button btnIrATienda = new Button("Ir a Tienda");
-        btnIrATienda.setStyle("-fx-background-color: #000000; -fx-text-fill: white;");
-        btnIrATienda.setOnAction(event -> irATienda(producto.getIdTienda()));
-
         // Agregar los elementos al HBox
-        hboxProducto.getChildren().addAll(imagenProducto, nombreProducto, btnEditarProducto, btnIrATienda);
+        hboxProducto.getChildren().addAll(imagenProducto, nombreProducto, precioProducto, btnEditarProducto);
 
         // Ajustar margen del HBox dentro del VBox
         VBox.setMargin(hboxProducto, new Insets(5, 0, 10, 0)); // Espacio superior e inferior de 10px

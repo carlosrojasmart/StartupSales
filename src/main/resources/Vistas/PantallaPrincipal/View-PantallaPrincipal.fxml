@@ -18,14 +18,9 @@
                   <Insets left="15.0" top="10.0" />
                </HBox.margin>
             </ImageView>
-            <TextField fx:id="buscarProductos" prefHeight="30.0" prefWidth="308.0" promptText="Buscar productos, vendedores y mas...">
-               <HBox.margin>
-                  <Insets left="20.0" top="18.0" />
-               </HBox.margin>
-            </TextField>
             <Button fx:id="ingresarBoton" onAction="#mostrarLogin" prefHeight="30.0" prefWidth="95.0" style="-fx-background-color: #000000;" text="Inicia Sesión" textFill="WHITE">
                <HBox.margin>
-                  <Insets left="100.0" top="18.0" />
+                  <Insets left="500.0" top="18.0" />
                </HBox.margin>
                <font>
                   <Font name="MS Reference Sans Serif" size="12.0" />
@@ -39,30 +34,11 @@
                   <Font name="MS Reference Sans Serif" size="12.0" />
                </font>
             </Button>
-
-            <ImageView fx:id="carritoCompra" fitHeight="38.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../Imagenes/Principal/CarritoCompra.png" />
-               </image>
-               <HBox.margin>
-                  <Insets left="20.0" top="18.0" />
-               </HBox.margin>
-            </ImageView>
          </children>
       </HBox>
-      <Label layoutX="133.0" layoutY="97.0" text="Iniciar ahora con StartupSales">
+      <Label layoutX="21.0" layoutY="261.0" prefHeight="23.0" prefWidth="102.0" text="Conocenos">
          <font>
-            <Font name="Franklin Gothic Book" size="27.0" />
-         </font>
-      </Label>
-      <Label layoutX="231.0" layoutY="129.0" text="Tu tienda, tu éxito.">
-         <font>
-            <Font name="Century Gothic" size="45.0" />
-         </font>
-      </Label>
-      <Label layoutX="19.0" layoutY="209.0" prefHeight="18.0" prefWidth="157.0" text="Productos Destacados">
-         <font>
-            <Font name="MS Reference Sans Serif" size="14.0" />
+            <Font name="MS Reference Sans Serif" size="18.0" />
          </font>
       </Label>
       <HBox layoutX="-1.0" layoutY="480.0" prefHeight="30.0" prefWidth="863.0" style="-fx-background-color: #000000;">
@@ -76,9 +52,29 @@
                </HBox.margin>
             </Label>
          </children></HBox>
-      <ImageView fitHeight="240.0" fitWidth="848.0" layoutX="19.0" layoutY="227.0" pickOnBounds="true" preserveRatio="true">
+      <Label layoutX="49.0" layoutY="261.0" prefHeight="202.0" prefWidth="550.0" text="¡Bienvenido a StartupSales! Aquí, puedes crear tu propio negocio, dar a conocer tu startup y empezar a vender tus productos de manera sencilla con nuestro software. ¿No tienes un negocio? ¡No hay problema! Puedes crear una cuenta y explorar todos los productos disponibles en nuestras startups, encontrar lo que necesitas y disfrutar de la experiencia de compra.¡Regístrate ahora y comienza a vender o a comprar en el mundo de las startups!" textAlignment="CENTER" wrapText="true">
+         <font>
+            <Font name="MS Reference Sans Serif" size="16.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="189.0" fitWidth="191.0" layoutX="641.0" layoutY="268.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../Imagenes/Principal/ImagenGafasTemporal.png" />
-         </image></ImageView>
+            <Image url="@../../Imagenes/Principal/Startuplogo.jpeg" />
+         </image>
+      </ImageView>
+      <AnchorPane layoutX="-1.0" layoutY="65.0" prefHeight="175.0" prefWidth="863.0" style="-fx-background-color: #000000;">
+         <children>
+            <Label layoutX="173.0" layoutY="34.0" text="Iniciar ahora con StartupSales" textFill="WHITE">
+               <font>
+                  <Font name="Franklin Gothic Book" size="27.0" />
+               </font>
+            </Label>
+            <Label layoutX="266.0" layoutY="72.0" text="Tu tienda, tu éxito." textFill="WHITE">
+               <font>
+                  <Font name="Century Gothic" size="45.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

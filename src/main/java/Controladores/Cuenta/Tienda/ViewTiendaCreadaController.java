@@ -61,6 +61,14 @@ public class ViewTiendaCreadaController {
         VBox vistaTiendas = mostrarTiendas.crearVistaTiendas(tiendas);
         scrollPaneTiendas.setContent(vistaTiendas);
 
+        //-------------------USO DE BARRA BUSQUEDA---------------------//
+        buscarProductos.setOnMouseClicked(event -> {buscarProductos.clear();});
+        // Realizar búsqueda cuando el usuario presione "Enter"
+        buscarProductos.setOnAction(event -> realizarBusqueda());
+        // Configurar el evento del carrito
+        carritoCompra.setOnMouseClicked(event -> mostrarCarrito());
+        //--------------------------------------------------------------//
+
     }
 
     // Método simulado para cargar tiendas
@@ -100,4 +108,16 @@ public class ViewTiendaCreadaController {
         Stage stage = (Stage) nodo.getScene().getWindow();
         cambiosVistas.cambiarVista(stage, rutaFXML);
     }
+
+    //------------USO DE BARRA BUSQUEDA-----------------//
+    private void realizarBusqueda() {
+        String terminoBusqueda = buscarProductos.getText().trim();
+        if (!terminoBusqueda.isEmpty()) {
+            CambiosVistas.setTerminoBusqueda(terminoBusqueda);
+            cambiarVista(buscarProductos, "/Vistas/PantallaPrincipal/View-BusquedaProductos.fxml");
+        } else {
+            System.out.println("El término de búsqueda está vacío.");
+        }
+    }
+
 }

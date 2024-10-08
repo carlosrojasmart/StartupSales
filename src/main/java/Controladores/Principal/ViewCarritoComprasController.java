@@ -1,9 +1,13 @@
 package Controladores.Principal;
 
+import DB.JDBC;
 import Modelos.Producto;
 import Servicios.Datos.MostrarCarrito;
 import Servicios.Datos.UsuarioActivo;
+import Servicios.Vistas.BusquedaUtil;
 import Servicios.Vistas.CambiosVistas;
+import Servicios.Vistas.FormatoUtil;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -19,7 +23,13 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.ByteArrayInputStream;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
+
+import static Servicios.Vistas.BusquedaUtil.realizarBusqueda;
 
 
 public class ViewCarritoComprasController {
@@ -43,28 +53,43 @@ public class ViewCarritoComprasController {
     private VBox vboxProductos;
 
     @FXML
-    private VBox vboxPrecio;
-
-    @FXML
     private Label lblTotal;
 
-    @FXML
-    private Button btnContinuar;
-
-    @FXML
-    private TextField codigoPromocional;
-
-    @FXML
-    private Button btnAnadirCodigo;
-
-    private CambiosVistas cambiosVistas = new CambiosVistas();
-    private MostrarCarrito mostrarCarrito = new MostrarCarrito(); // Clase que obtendrá los productos del carrito
+    private final MostrarCarrito mostrarCarrito = new MostrarCarrito();
+    private final CambiosVistas cambiosVistas = new CambiosVistas();
 
     @FXML
     private void initialize() {
         buscarProductos.setOnMouseClicked(event -> buscarProductos.clear());
         usuarioIcono.setOnMouseClicked(event -> mostrarMiPerfil());
+
+        // Cargar los productos del carrito
         cargarProductosCarrito();
+
+        // Obtener el término de búsqueda de la clase CambiosVistas
+        String terminoBusqueda = CambiosVistas.getTerminoBusqueda();
+        if (terminoBusqueda != null && !terminoBusqueda.isEmpty()) {
+            buscarProductos.setText(terminoBusqueda);
+            realizarBusqueda(); // Realiza la búsqueda si el término no está vacío
+        }
+
+        // Asignar la funcionalidad de búsqueda cuando se presiona "Enter"
+        buscarProductos.setOnAction(event -> realizarBusqueda());
+    }
+
+    @FXML
+    private void realizarBusqueda() {
+        String terminoBusqueda = buscarProductos.getText().trim();
+
+        if (!terminoBusqueda.isEmpty()) {
+            // Almacenar el término de búsqueda para la vista de búsqueda de productos
+            CambiosVistas.setTerminoBusqueda(terminoBusqueda);
+
+            // Cambiar a la vista de búsqueda de productos
+            cambiarVista(buscarProductos, "/Vistas/PantallaPrincipal/View-BusquedaProductos.fxml");
+        } else {
+            System.out.println("El término de búsqueda está vacío.");
+        }
     }
 
     private void cargarProductosCarrito() {
@@ -78,7 +103,6 @@ public class ViewCarritoComprasController {
             hboxProducto.setStyle("-fx-background-color: #ffffff; -fx-padding: 10; -fx-border-color: #dddddd;");
             hboxProducto.setPrefWidth(600);
 
-            // Imagen del producto
             ImageView imagenProducto = new ImageView();
             imagenProducto.setFitHeight(80);
             imagenProducto.setFitWidth(80);
@@ -87,42 +111,35 @@ public class ViewCarritoComprasController {
                 imagenProducto.setImage(image);
             }
 
-            // Nombre del producto
             Label nombreProducto = new Label(producto.getNombre());
             nombreProducto.setStyle("-fx-font-size: 14px;");
 
-            // Spinner para la cantidad del producto (ajustar el ancho aquí)
+            // Spinner ajustado para ser más estrecho
             Spinner<Integer> spinnerCantidad = new Spinner<>();
-            spinnerCantidad.setPrefWidth(60); // Ajustar el ancho del Spinner
-            spinnerCantidad.setMaxWidth(60);  // Limitar el ancho máximo del Spinner
+            spinnerCantidad.setPrefWidth(55); // Ajustar el ancho del Spinner
+            spinnerCantidad.setMaxWidth(55);  // Limitar el ancho máximo del Spinner
             spinnerCantidad.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, producto.getCantidad()));
             spinnerCantidad.valueProperty().addListener((obs, oldValue, newValue) -> {
-                producto.setCantidad(newValue);
-                actualizarTotal();
                 mostrarCarrito.actualizarCantidadProducto(producto.getIdProducto(), UsuarioActivo.getIdCarrito(), newValue);
+                actualizarTotal();
             });
 
-            // Precio del producto
-            Label precioProducto = new Label(String.format("$ %.2f", producto.getPrecio() * producto.getCantidad()));
+            // Formatear el precio del producto usando COP
+            Label precioProducto = new Label(FormatoUtil.formatearPrecio(producto.getPrecio() * producto.getCantidad()));
             precioProducto.setStyle("-fx-font-size: 14px;");
 
-            // Botón para eliminar el producto del carrito (cambiar texto a "Eliminar")
+            // Botón con estilo restaurado
             Button btnEliminarProducto = new Button("Eliminar");
-            btnEliminarProducto.setStyle("-fx-background-color: #000000; -fx-text-fill: white;");
+            btnEliminarProducto.setStyle("-fx-background-color: #000000; -fx-text-fill: #ffffff;");
             btnEliminarProducto.setOnAction(event -> eliminarProductoDelCarrito(producto));
 
-            // Agregar los elementos al HBox
             hboxProducto.getChildren().addAll(imagenProducto, nombreProducto, spinnerCantidad, precioProducto, btnEliminarProducto);
-
-            // Agregar el HBox al VBox de productos
             vboxProductos.getChildren().add(hboxProducto);
 
-            // Sumar al total
             total += producto.getPrecio() * producto.getCantidad();
         }
 
-        // Actualizar el total
-        lblTotal.setText(String.format("Total: $ %.2f", total));
+        lblTotal.setText("Total: " + FormatoUtil.formatearPrecio(total));
     }
 
     private void actualizarTotal() {
@@ -130,21 +147,27 @@ public class ViewCarritoComprasController {
 
         for (Node node : vboxProductos.getChildren()) {
             if (node instanceof HBox hbox) {
-                Label precioLabel = (Label) hbox.getChildren().get(3); // Aquí está el precio
-                Spinner<Integer> spinnerCantidad = (Spinner<Integer>) hbox.getChildren().get(2); // Aquí está la cantidad
+                Label precioLabel = (Label) hbox.getChildren().get(3);
+                Spinner<Integer> spinnerCantidad = (Spinner<Integer>) hbox.getChildren().get(2);
 
-                // Reemplazar las comas por puntos para evitar el error de formato
-                String precioTexto = precioLabel.getText().replace("$", "").trim().replace(",", ".");
+                // Reemplazar caracteres innecesarios y limpiar el texto del precio
+                String precioTexto = precioLabel.getText()
+                        .replace("$", "") // Eliminar el símbolo de moneda
+                        .replace("COP", "") // Eliminar cualquier referencia a "COP" si es que la tienes
+                        .replace(",", "") // Eliminar comas (si las hay)
+                        .trim(); // Eliminar espacios en blanco
+
                 try {
                     double precio = Double.parseDouble(precioTexto);
                     total += precio * spinnerCantidad.getValue();
                 } catch (NumberFormatException e) {
-                    e.printStackTrace();
                     System.out.println("Error al convertir el precio: " + precioTexto);
+                    e.printStackTrace();
                 }
             }
         }
-        lblTotal.setText(String.format("Total: $ %.2f", total));
+
+        lblTotal.setText(String.format("Total: %.2f COP", total));
     }
 
     private void eliminarProductoDelCarrito(Producto producto) {
@@ -153,8 +176,19 @@ public class ViewCarritoComprasController {
     }
 
     private void cambiarVista(Node nodo, String rutaFXML) {
-        Stage stage = (Stage) nodo.getScene().getWindow();
-        cambiosVistas.cambiarVista(stage, rutaFXML);
+        try {
+            Platform.runLater(() -> {
+                if (nodo.getScene() != null && nodo.getScene().getWindow() != null) {
+                    Stage stage = (Stage) nodo.getScene().getWindow();
+                    cambiosVistas.cambiarVista(stage, rutaFXML);
+                } else {
+                    System.out.println("El nodo aún no está asociado a un Stage.");
+                }
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("Error al cambiar de vista: " + e.getMessage());
+        }
     }
 
     @FXML
@@ -174,6 +208,12 @@ public class ViewCarritoComprasController {
     @FXML
     public void mostrarCompras(ActionEvent event) {
         cambiarVista(BtnComprasAr, "/Vistas/PantallaCuenta/Compras/View-Compras.fxml");
+    }
+
+    @FXML
+    public void mostrarCarrito() {
+        CambiosVistas.setTerminoBusqueda("");
+        cambiarVista(carritoCompra, "/Vistas/PantallaPrincipal/View-CarritoCompras.fxml");
     }
 
 }

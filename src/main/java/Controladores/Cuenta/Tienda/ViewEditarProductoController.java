@@ -74,7 +74,7 @@ public class ViewEditarProductoController {
 
         // Cargar los datos del producto en los campos de texto
         nombreProducto.setText(producto.getNombre());
-        precioProducto.setText(String.valueOf(producto.getPrecio()));
+        precioProducto.setText(String.valueOf(productoSeleccionado.getPrecio())); // Para edición de precios (sin el símbolo $)
         descProducto.setText(producto.getDescripcion());
         stockProducto.getValueFactory().setValue(producto.getStock());
         catProducto.setValue(producto.getCategoria());
@@ -161,10 +161,11 @@ public class ViewEditarProductoController {
             return;
         }
 
+        // Llamar al método para eliminar el producto y sus referencias
         boolean exito = crearProducto.eliminarProducto(productoSeleccionado.getIdProducto());
         if (exito) {
             System.out.println("Producto eliminado correctamente.");
-            mostrarMirarTienda(null);
+            mostrarMirarTienda(null); // Volver a la vista de la tienda
         } else {
             System.out.println("Error al eliminar el producto.");
         }
