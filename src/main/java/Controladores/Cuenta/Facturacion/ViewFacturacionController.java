@@ -2,12 +2,15 @@ package Controladores.Cuenta.Facturacion;
 
 import Servicios.Datos.UsuarioActivo;
 import Servicios.Vistas.CambiosVistas;
+import Servicios.Vistas.FormatoUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class ViewFacturacionController {
@@ -30,21 +33,42 @@ public class ViewFacturacionController {
     @FXML
     private Button BtnTienda;
 
+    @FXML
+    private Label lblSaldoActual;
+
+    @FXML
+    private Label lblSaldoPagar;
+
+    @FXML
+    private VBox vboxFacturas;
+
     private CambiosVistas cambiosVistas = new CambiosVistas();
 
     @FXML
     private void initialize() {
+        // Configurar el buscador de productos
         buscarProductos.setOnMouseClicked(event -> {
-            // Limpiar el campo de búsqueda al hacer clic
             buscarProductos.clear();
         });
 
-        carritoCompra.setOnMouseClicked(event -> {
-            mostrarCarrito();
-        });
-
-        // Configurar la búsqueda de productos cuando se presiona "Enter"
+        // Realizar búsqueda cuando el usuario presione "Enter"
         buscarProductos.setOnAction(event -> realizarBusqueda());
+
+        // Configurar el evento del carrito
+        carritoCompra.setOnMouseClicked(event -> mostrarCarrito());
+
+        // Cargar los saldos del usuario
+        cargarSaldosUsuario();
+    }
+
+    private void cargarSaldosUsuario() {
+        // Obtener los saldos desde el usuario activo
+        double saldoActual = UsuarioActivo.getSaldoActual();
+        double saldoPagar = UsuarioActivo.getSaldoPagar();
+
+        // Formatear los valores para que se vean como moneda
+        lblSaldoActual.setText(FormatoUtil.formatearPrecio(saldoActual));
+        lblSaldoPagar.setText(FormatoUtil.formatearPrecio(saldoPagar));
     }
 
     @FXML
@@ -78,12 +102,9 @@ public class ViewFacturacionController {
 
     @FXML
     public void mostrarMisTiendas(ActionEvent event) {
-        // Verificar si el usuario es vendedor
         if (UsuarioActivo.isVendedor()) {
-            // Si es vendedor, ir a la vista de tienda ya creada
             cambiarVista(BtnTienda, "/Vistas/PantallaCuenta/Tienda/View-TiendaCreada.fxml");
         } else {
-            // Si no es vendedor, ir a la vista para crear la tienda
             cambiarVista(BtnTienda, "/Vistas/PantallaCuenta/Tienda/View-CrearTienda.fxml");
         }
     }

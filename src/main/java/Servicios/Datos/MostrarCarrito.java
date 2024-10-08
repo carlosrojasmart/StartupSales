@@ -115,4 +115,17 @@ public class MostrarCarrito {
             e.printStackTrace();
         }
     }
+
+    public void vaciarCarrito(int idCarrito) {
+        String sql = "DELETE FROM carrito_producto WHERE idCarrito = ?";
+        try (Connection conexion = JDBC.ConectarBD();
+             PreparedStatement pstmt = conexion.prepareStatement(sql)) {
+            pstmt.setInt(1, idCarrito);
+            int filasEliminadas = pstmt.executeUpdate();
+            System.out.println("Productos eliminados del carrito: " + filasEliminadas);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error al vaciar el carrito: " + e.getMessage());
+        }
+    }
 }

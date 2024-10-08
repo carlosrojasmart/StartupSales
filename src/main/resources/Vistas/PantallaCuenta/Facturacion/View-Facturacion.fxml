@@ -149,5 +149,60 @@
                 </Button>
             </children>
         </VBox>
+      <VBox alignment="CENTER" layoutX="219.0" layoutY="107.0" prefHeight="166.0" prefWidth="280.0" style="-fx-background-color: #ffffff;">
+         <children>
+            <Label text="Saldo Actual">
+               <font>
+                  <Font name="MS Reference Sans Serif" size="15.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </Label>
+            <Label fx:id="lblSaldoActual" layoutX="20.0" layoutY="20.0" text="0 COP" textAlignment="CENTER">
+               <font>
+                  <Font name="MS Reference Sans Serif" size="18.0" />
+               </font>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </Label>
+         </children>
+      </VBox>
+      <VBox alignment="CENTER" layoutX="527.0" layoutY="107.0" prefHeight="165.0" prefWidth="280.0" style="-fx-background-color: #ffffff;">
+         <children>
+            <Label text="Saldo a Pagar">
+               <font>
+                  <Font name="MS Reference Sans Serif" size="15.0" />
+               </font>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </Label>
+            <Label fx:id="lblSaldoPagar" text="0 COP" textAlignment="CENTER">
+               <font>
+                  <Font name="MS Reference Sans Serif" size="18.0" />
+               </font>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </Label>
+         </children></VBox>
+      <VBox fx:id="vboxFacturas" layoutX="219.0" layoutY="287.0" prefHeight="186.0" prefWidth="588.0" style="-fx-background-color: #ffffff;">
+         <children>
+            <Label text="Registro de facturas">
+               <font>
+                  <Font name="MS Reference Sans Serif" size="15.0" />
+               </font>
+               <VBox.margin>
+                  <Insets left="10.0" top="10.0" />
+               </VBox.margin>
+            </Label>
+         </children></VBox>
+      <Label layoutX="175.0" layoutY="75.0" prefHeight="23.0" prefWidth="106.0" text="Facturacion">
+         <font>
+            <Font name="MS Reference Sans Serif" size="18.0" />
+         </font>
+      </Label>
     </children>
 </AnchorPane>

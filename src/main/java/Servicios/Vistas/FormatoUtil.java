@@ -6,6 +6,8 @@ import java.util.Locale;
 public class FormatoUtil {
 
     public static String formatearPrecio(double precio) {
-        return String.format("%.2f COP", precio);
+        NumberFormat format = NumberFormat.getInstance(Locale.forLanguageTag("es-CO"));
+        format.setMaximumFractionDigits(2);
+        return format.format(precio) + " COP";
     }
 }
