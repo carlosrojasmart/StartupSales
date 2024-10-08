@@ -38,7 +38,7 @@ public class LoginRegister {
         }
 
         try (Connection conexion = JDBC.ConectarBD()) {
-            String sql = "SELECT idUsuario, nombre, correo_electronico, contraseña, esVendedor FROM Usuario WHERE correo_electronico = ?";
+            String sql = "SELECT idUsuario, nombre, correo_electronico, contraseña, esVendedor, saldo_actual, saldo_pagar FROM Usuario WHERE correo_electronico = ?";
             try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
                 pstmt.setString(1, username);
                 ResultSet rs = pstmt.executeQuery();
@@ -52,6 +52,8 @@ public class LoginRegister {
                         String nombre = rs.getString("nombre");
                         String correo = rs.getString("correo_electronico");
                         boolean esVendedor = rs.getBoolean("esVendedor");
+                        double saldoActual = rs.getDouble("saldo_actual");
+                        double saldoPagar = rs.getDouble("saldo_pagar");
 
                         // Obtener el idCarrito del usuario
                         int idCarritoUsuario = obtenerIdCarritoDesdeBD(idUsuario);
@@ -60,7 +62,8 @@ public class LoginRegister {
                             idCarritoUsuario = crearCarritoParaUsuario(idUsuario);
                         }
 
-                        UsuarioActivo.setUsuarioActivo(idUsuario, nombre, correo, esVendedor, idCarritoUsuario);
+                        // Establecer los datos del usuario activo, incluyendo el saldo actual y el saldo a pagar
+                        UsuarioActivo.setUsuarioActivo(idUsuario, nombre, correo, esVendedor, idCarritoUsuario, saldoActual, saldoPagar);
 
                         callback.onSuccess("Login exitoso.");
                     } else {
@@ -119,9 +122,10 @@ public class LoginRegister {
 
         int idUsuario = generarIdAleatorio();
         String hashedPassword = hashPassword(contraseña);
+        double saldoInicial = 0.0; // El saldo inicial puede ser 0 para un nuevo usuario
 
         try (Connection conexion = JDBC.ConectarBD()) {
-            String sql = "INSERT INTO Usuario (idUsuario, nombre, direccion, correo_electronico, telefono, contraseña) VALUES (?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO Usuario (idUsuario, nombre, direccion, correo_electronico, telefono, contraseña, saldo_actual, saldo_pagar) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
             try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
                 pstmt.setInt(1, idUsuario);
@@ -130,12 +134,16 @@ public class LoginRegister {
                 pstmt.setString(4, correo);
                 pstmt.setString(5, telefono);
                 pstmt.setString(6, hashedPassword);
+                pstmt.setDouble(7, saldoInicial); // Asignar el saldo inicial
+                pstmt.setDouble(8, saldoInicial); // Asignar el saldo a pagar inicial
 
                 pstmt.executeUpdate();
 
                 // Crear un carrito para el usuario registrado
                 int idCarrito = crearCarritoParaUsuario(idUsuario);
-                UsuarioActivo.setUsuarioActivo(idUsuario, usuario, correo, false, idCarrito);
+
+                // Configurar el usuario activo con el saldo inicial
+                UsuarioActivo.setUsuarioActivo(idUsuario, usuario, correo, false, idCarrito, saldoInicial, saldoInicial);
 
                 callback.onSuccess("Usuario registrado exitosamente.");
             } catch (SQLException e) {

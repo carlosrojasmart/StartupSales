@@ -7,7 +7,6 @@ public class Cliente {
     private String correoElectronico;
     private String telefono;
     private int idTienda;
-
     public int getIdCliente() {
         return idCliente;
     }
