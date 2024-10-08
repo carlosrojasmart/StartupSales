@@ -83,6 +83,12 @@ public class ViewProductoController {
 
         btnCargarImagen.setOnAction(event -> cargarImagen());
         btnCrearProducto.setOnAction(event -> crearProducto());
+
+        buscarProductos.setOnMouseClicked(event -> {buscarProductos.clear();});
+        // Realizar búsqueda cuando el usuario presione "Enter"
+        buscarProductos.setOnAction(event -> realizarBusqueda());
+        // Configurar el evento del carrito
+        carritoCompra.setOnMouseClicked(event -> mostrarCarrito());
     }
 
     private void cargarImagen() {
@@ -179,5 +185,15 @@ public class ViewProductoController {
     private void cambiarVista(Node nodo, String rutaFXML) {
         Stage stage = (Stage) nodo.getScene().getWindow();
         cambiosVistas.cambiarVista(stage, rutaFXML);
+    }
+
+    private void realizarBusqueda() {
+        String terminoBusqueda = buscarProductos.getText().trim();
+        if (!terminoBusqueda.isEmpty()) {
+            CambiosVistas.setTerminoBusqueda(terminoBusqueda);
+            cambiarVista(buscarProductos, "/Vistas/PantallaPrincipal/View-BusquedaProductos.fxml");
+        } else {
+            System.out.println("El término de búsqueda está vacío.");
+        }
     }
 }

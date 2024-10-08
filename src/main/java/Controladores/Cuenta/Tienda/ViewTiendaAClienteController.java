@@ -77,6 +77,18 @@ public class ViewTiendaAClienteController {
         nombreTienda.setEditable(false);
         categoriaTienda.setEditable(false);
         DescTienda.setEditable(false);
+
+        // Configurar el buscador de productos
+        buscarProductos.setOnMouseClicked(event -> {
+            // Limpiar el campo de búsqueda al hacer clic
+            buscarProductos.clear();
+        });
+
+        // Realizar búsqueda cuando el usuario presione "Enter"
+        buscarProductos.setOnAction(event -> realizarBusqueda());
+
+        // Configurar el evento del carrito
+        carritoCompra.setOnMouseClicked(event -> mostrarCarrito());
     }
 
     private void cargarDatosTienda(Tienda tienda) {
@@ -191,5 +203,15 @@ public class ViewTiendaAClienteController {
         producto.setCantidad(1); // O la cantidad deseada
 
         mostrarCarrito.agregarProductoAlCarrito(idCarrito, producto);
+    }
+
+    private void realizarBusqueda() {
+        String terminoBusqueda = buscarProductos.getText().trim();
+        if (!terminoBusqueda.isEmpty()) {
+            CambiosVistas.setTerminoBusqueda(terminoBusqueda);
+            cambiarVista(buscarProductos, "/Vistas/PantallaPrincipal/View-BusquedaProductos.fxml");
+        } else {
+            System.out.println("El término de búsqueda está vacío.");
+        }
     }
 }

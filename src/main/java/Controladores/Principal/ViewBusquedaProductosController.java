@@ -6,6 +6,7 @@ import Servicios.Datos.BusquedaProductos;
 import Servicios.Datos.MostrarCarrito;
 import Servicios.Datos.UsuarioActivo;
 import Servicios.Vistas.CambiosVistas;
+import Servicios.Vistas.FormatoUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -113,8 +114,8 @@ public class ViewBusquedaProductosController {
         Label nombreProducto = new Label(producto.getNombre());
         nombreProducto.setStyle("-fx-font-size: 14px; -fx-padding: 0 10 0 10;");
 
-        // Precio del producto
-        Label precioProducto = new Label(String.format("$ %.2f", producto.getPrecio()));
+        // Formatear el precio del producto usando FormatoUtil
+        Label precioProducto = new Label(FormatoUtil.formatearPrecio(producto.getPrecio()));
         precioProducto.setStyle("-fx-font-size: 14px;");
 
         // Botón para agregar al carrito
@@ -174,6 +175,7 @@ public class ViewBusquedaProductosController {
 
     @FXML
     public void mostrarCarrito() {
+        CambiosVistas.setTerminoBusqueda(""); // Limpiar el término de búsqueda antes de cambiar a la vista del carrito
         cambiarVista(carritoCompra, "/Vistas/PantallaPrincipal/View-CarritoCompras.fxml");
     }
 

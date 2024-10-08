@@ -78,6 +78,9 @@ public class ViewMiPerfilController {
         buscarProductos.setOnMouseClicked(event -> buscarProductos.clear());
         carritoCompra.setOnMouseClicked(event -> mostrarCarrito());
 
+        // Configurar la búsqueda de productos cuando se presiona "Enter"
+        buscarProductos.setOnAction(event -> realizarBusqueda());
+
         // Cargar datos del usuario en la vista
         String nombre = UsuarioActivo.getNombre();
         String correo = UsuarioActivo.getCorreoElectronico();
@@ -96,6 +99,20 @@ public class ViewMiPerfilController {
 
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void realizarBusqueda() {
+        String terminoBusqueda = buscarProductos.getText().trim();
+        if (!terminoBusqueda.isEmpty()) {
+            // Almacenar el término de búsqueda para la vista de búsqueda de productos
+            CambiosVistas.setTerminoBusqueda(terminoBusqueda);
+
+            // Cambiar a la vista de búsqueda de productos
+            cambiarVista(buscarProductos, "/Vistas/PantallaPrincipal/View-BusquedaProductos.fxml");
+        } else {
+            System.out.println("El término de búsqueda está vacío.");
         }
     }
 
@@ -195,4 +212,5 @@ public class ViewMiPerfilController {
         Stage stage = (Stage) nodo.getScene().getWindow();
         cambiosVistas.cambiarVista(stage, rutaFXML);
     }
+
 }

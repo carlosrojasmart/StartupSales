@@ -18,7 +18,7 @@
                         <Insets left="15.0" top="10.0" />
                     </HBox.margin>
                 </ImageView>
-                <TextField fx:id="buscarProductos" prefHeight="30.0" prefWidth="308.0" promptText="Buscar productos, vendedores y mas...">
+                <TextField fx:id="buscarProductos" onAction="#realizarBusqueda" prefHeight="30.0" prefWidth="308.0" promptText="Buscar productos, vendedores y mas...">
                     <HBox.margin>
                         <Insets left="20.0" top="18.0" />
                     </HBox.margin>

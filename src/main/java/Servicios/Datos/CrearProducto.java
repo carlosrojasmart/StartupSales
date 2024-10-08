@@ -13,8 +13,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 public class CrearProducto {
@@ -121,13 +123,30 @@ public class CrearProducto {
         }
     }
 
-    public boolean eliminarProducto(int idProducto) {
-        String sql = "DELETE FROM Producto WHERE idProducto = ?";
-
+    private void eliminarProductoDeCarrito(int idProducto) {
+        String sql = "DELETE FROM carrito_producto WHERE idProducto = ?";
         try (Connection conexion = JDBC.ConectarBD();
              PreparedStatement pstmt = conexion.prepareStatement(sql)) {
             pstmt.setInt(1, idProducto);
-            return pstmt.executeUpdate() > 0;
+            int filasEliminadas = pstmt.executeUpdate();
+            System.out.println("Productos eliminados del carrito: " + filasEliminadas);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error al eliminar el producto del carrito: " + e.getMessage());
+        }
+    }
+
+    public boolean eliminarProducto(int idProducto) {
+        // Primero eliminar el producto del carrito para no violar la restricción de clave foránea
+        eliminarProductoDeCarrito(idProducto);
+
+        // Ahora eliminar el producto de la tabla Producto
+        String sql = "DELETE FROM Producto WHERE idProducto = ?";
+        try (Connection conexion = JDBC.ConectarBD();
+             PreparedStatement pstmt = conexion.prepareStatement(sql)) {
+            pstmt.setInt(1, idProducto);
+            int filasEliminadas = pstmt.executeUpdate();
+            return filasEliminadas > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -150,6 +169,11 @@ public class CrearProducto {
             e.printStackTrace();
             System.out.println("Error al cargar la vista de edición de producto.");
         }
+    }
+
+    public static String formatearPrecio(double precio) {
+        NumberFormat formatoCOP = NumberFormat.getCurrencyInstance(new Locale("es", "CO"));
+        return formatoCOP.format(precio);
     }
 
 }
