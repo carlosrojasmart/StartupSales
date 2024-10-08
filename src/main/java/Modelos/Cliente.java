@@ -1,32 +1,12 @@
 package Modelos;
 
-public class Cliente {    private int idCliente;
+public class Cliente {
+    private int idCliente;
     private String nombre;
     private String direccion;
     private String correoElectronico;
     private String telefono;
     private int idTienda;
-    private double saldoActual;
-    private double saldoPagar;
-
-    // Getters y Setters para los nuevos atributos
-    public double getSaldoActual() {
-        return saldoActual;
-    }
-
-    public void setSaldoActual(double saldoActual) {
-        this.saldoActual = saldoActual;
-    }
-
-    public double getSaldoPagar() {
-        return saldoPagar;
-    }
-
-    public void setSaldoPagar(double saldoPagar) {
-        this.saldoPagar = saldoPagar;
-    }
-
-    // Getters y Setters existentes
     public int getIdCliente() {
         return idCliente;
     }
@@ -67,11 +47,7 @@ public class Cliente {    private int idCliente;
         this.telefono = telefono;
     }
 
-    public int getIdTienda() {
-        return idTienda;
-    }
+    public int getIdTienda() {return idTienda;}
 
-    public void setIdTienda(int idTienda) {
-        this.idTienda = idTienda;
-    }
+    public void setIdTienda(int idTienda) {this.idTienda = idTienda;}
 }
