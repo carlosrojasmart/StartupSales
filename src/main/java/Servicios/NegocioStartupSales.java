@@ -10,6 +10,9 @@ public class NegocioStartupSales {
     private List<Producto> productos;
     private List<Envio> envios;
     private List<Inventario> inventarios;
+    private List<Carrito> carritos;
+    private List<Tienda> tiendas;
+    private List<Compra> compras;
 
     public NegocioStartupSales(List<Cliente> clientes, List<Venta> ventas, List<Producto> productos,
                                List<Envio> envios, List<Inventario> inventarios) {
