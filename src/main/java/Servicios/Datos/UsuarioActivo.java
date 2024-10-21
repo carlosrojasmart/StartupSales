@@ -15,7 +15,7 @@ public class UsuarioActivo {
         correoElectronico = correo;
         esVendedor = vendedor;
         idCarrito = idCarritoUsuario;
-        saldoActual = saldoActualUsuario; 
+        saldoActual = saldoActualUsuario;
         saldoPagar = saldoPagarUsuario;
     }
 
