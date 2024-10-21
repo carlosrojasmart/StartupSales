@@ -6,8 +6,8 @@ public class UsuarioActivo {
     private static String correoElectronico;
     private static boolean esVendedor;
     private static int idCarrito;
-    private static double saldoActual; // Variable para el saldo actual
-    private static double saldoPagar;  // Variable para el saldo a pagar
+    private static double saldoActual;
+    private static double saldoPagar;
 
     public static void setUsuarioActivo(int id, String nombreUsuario, String correo, boolean vendedor, int idCarritoUsuario, double saldoActualUsuario, double saldoPagarUsuario) {
         idUsuario = id;
@@ -15,8 +15,8 @@ public class UsuarioActivo {
         correoElectronico = correo;
         esVendedor = vendedor;
         idCarrito = idCarritoUsuario;
-        saldoActual = saldoActualUsuario; // Asigna el saldo actual
-        saldoPagar = saldoPagarUsuario;   // Asigna el saldo a pagar
+        saldoActual = saldoActualUsuario;
+        saldoPagar = saldoPagarUsuario;
     }
 
     public static int getIdUsuario() {

@@ -108,8 +108,7 @@ public class LoginRegister {
             if (rs.next()) {
                 return rs.getInt("idCarrito");
             } else {
-                // Si no hay carrito existente, podrías optar por crear uno o retornar un valor por defecto
-                return -1; // Valor por defecto si no existe un carrito asociado
+                return -1;
             }
         }
     }

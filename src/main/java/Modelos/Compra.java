@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Compra {
     private int idCompra;
@@ -11,7 +12,8 @@ public class Compra {
     private double totalCompra;
     private LocalDate fecha;
     private LocalTime hora;
-    private Map<Producto, Integer> productos; // Mapa que relaciona productos con su cantidad
+    private Map<Producto, Integer> productos;
+    private String productosResumen;
 
     // Constructor vacío
     public Compra() {
@@ -25,9 +27,9 @@ public class Compra {
         this.fecha = fecha;
         this.hora = hora;
         this.productos = productos;
+        this.productosResumen = generarProductosResumen();
     }
 
-    // Getters y Setters
     public int getIdCompra() {
         return idCompra;
     }
@@ -74,6 +76,15 @@ public class Compra {
 
     public void setProductos(Map<Producto, Integer> productos) {
         this.productos = productos;
+        this.productosResumen = generarProductosResumen();
+    }
+
+    public String getProductosResumen() {
+        return productosResumen;
+    }
+
+    public void setProductosResumen(String productosResumen) {
+        this.productosResumen = productosResumen;
     }
 
     // Método para calcular el total de la compra a partir de los productos y sus cantidades
@@ -82,4 +93,15 @@ public class Compra {
                 .mapToDouble(entry -> entry.getKey().getPrecio() * entry.getValue())
                 .sum();
     }
+
+    // Método para generar un resumen de los productos comprados como un String
+    private String generarProductosResumen() {
+        if (productos == null || productos.isEmpty()) {
+            return "";
+        }
+        return productos.entrySet().stream()
+                .map(entry -> entry.getKey().getNombre() + " x" + entry.getValue())
+                .collect(Collectors.joining(", "));
+    }
+
 }

@@ -24,7 +24,7 @@ public class ObtenerCarrito {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return -1; // Devuelve -1 si no se encontró ningún carrito para el usuario
+        return -1;
     }
 
 }

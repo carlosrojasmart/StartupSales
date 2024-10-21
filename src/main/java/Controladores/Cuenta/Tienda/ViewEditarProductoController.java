@@ -2,6 +2,7 @@ package Controladores.Cuenta.Tienda;
 
 import Modelos.Producto;
 import Servicios.Datos.CrearProducto;
+import Servicios.Datos.UsuarioActivo;
 import Servicios.Vistas.CambiosVistas;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -101,6 +102,12 @@ public class ViewEditarProductoController {
         // Enlazar el botón con la acción de editar
         btnEditarProducto.setOnAction(event -> editarProducto());
         btnEliminarProducto.setOnAction(event -> eliminarProducto());
+
+        buscarProductos.setOnMouseClicked(event -> {buscarProductos.clear();});
+        // Realizar búsqueda cuando el usuario presione "Enter"
+        buscarProductos.setOnAction(event -> realizarBusqueda());
+        // Configurar el evento del carrito
+        carritoCompra.setOnMouseClicked(event -> mostrarCarrito());
     }
 
     private void cargarDatosProducto() {
@@ -201,7 +208,11 @@ public class ViewEditarProductoController {
 
     @FXML
     public void mostrarCompras(ActionEvent event) {
-        cambiarVista(BtnCompras, "/Vistas/PantallaCuenta/Compras/View-Compras.fxml");
+        if (CambiosVistas.usuarioTieneCompras(UsuarioActivo.getIdUsuario())) {
+            cambiarVista(BtnCompras, "/Vistas/PantallaCuenta/Compras/View-ComprasCreada.fxml");
+        } else {
+            cambiarVista(BtnCompras, "/Vistas/PantallaCuenta/Compras/View-Compras.fxml");
+        }
     }
 
     @FXML
@@ -222,5 +233,15 @@ public class ViewEditarProductoController {
     private void cambiarVista(Node nodo, String rutaFXML) {
         Stage stage = (Stage) nodo.getScene().getWindow();
         cambiosVistas.cambiarVista(stage, rutaFXML);
+    }
+
+    private void realizarBusqueda() {
+        String terminoBusqueda = buscarProductos.getText().trim();
+        if (!terminoBusqueda.isEmpty()) {
+            CambiosVistas.setTerminoBusqueda(terminoBusqueda);
+            cambiarVista(buscarProductos, "/Vistas/PantallaPrincipal/View-BusquedaProductos.fxml");
+        } else {
+            System.out.println("El término de búsqueda está vacío.");
+        }
     }
 }
