@@ -1,9 +1,11 @@
 package Modelos;
 
+import java.math.BigDecimal;
+
 public class Producto {
     private int idProducto;
     private String nombre;
-    private double precio;
+    private BigDecimal precio; // Cambiado a BigDecimal
     private String descripcion;
     private int stock;
     private String categoria;
@@ -16,7 +18,7 @@ public class Producto {
     }
 
     // Constructor con todos los atributos
-    public Producto(int idProducto, String nombre, double precio, byte[] imagenProducto, int cantidad) {
+    public Producto(int idProducto, String nombre, BigDecimal precio, byte[] imagenProducto, int cantidad) { // Cambiado a BigDecimal
         this.idProducto = idProducto;
         this.nombre = nombre;
         this.precio = precio;
@@ -41,11 +43,11 @@ public class Producto {
         this.nombre = nombre;
     }
 
-    public double getPrecio() {
+    public BigDecimal getPrecio() { // Cambiado a BigDecimal
         return precio;
     }
 
-    public void setPrecio(double precio) {
+    public void setPrecio(BigDecimal precio) { // Cambiado a BigDecimal
         this.precio = precio;
     }
 

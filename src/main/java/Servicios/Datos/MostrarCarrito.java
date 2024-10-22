@@ -3,6 +3,7 @@ package Servicios.Datos;
 import DB.JDBC;
 import Modelos.Producto;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -67,7 +68,10 @@ public class MostrarCarrito {
                 Producto producto = new Producto();
                 producto.setIdProducto(rs.getInt("idProducto"));
                 producto.setNombre(rs.getString("nombre"));
-                producto.setPrecio(rs.getDouble("precio"));
+
+                // Obtener el precio como BigDecimal
+                producto.setPrecio(rs.getBigDecimal("precio"));
+
                 producto.setImagenProducto(rs.getBytes("imagenProducto"));
                 producto.setCantidad(rs.getInt("cantidad"));
                 productos.add(producto);

@@ -3,6 +3,7 @@ package Servicios.Datos;
 import DB.JDBC;
 import Modelos.Producto;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,7 +27,10 @@ public class MostrarProductos {
                 Producto producto = new Producto();
                 producto.setIdProducto(rs.getInt("idProducto"));
                 producto.setNombre(rs.getString("nombre"));
-                producto.setPrecio(rs.getDouble("precio"));
+
+                // Usar BigDecimal para el precio
+                producto.setPrecio(rs.getBigDecimal("precio"));
+
                 producto.setDescripcion(rs.getString("descripcion"));
                 producto.setStock(rs.getInt("stock"));
                 producto.setCategoria(rs.getString("categoria"));

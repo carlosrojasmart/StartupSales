@@ -1,15 +1,17 @@
 package Servicios.Datos;
 
+import java.math.BigDecimal;
+
 public class UsuarioActivo {
     private static int idUsuario;
     private static String nombre;
     private static String correoElectronico;
     private static boolean esVendedor;
     private static int idCarrito;
-    private static double saldoActual;
-    private static double saldoPagar;
+    private static BigDecimal saldoActual = BigDecimal.ZERO;
+    private static BigDecimal saldoPagar = BigDecimal.ZERO;
 
-    public static void setUsuarioActivo(int id, String nombreUsuario, String correo, boolean vendedor, int idCarritoUsuario, double saldoActualUsuario, double saldoPagarUsuario) {
+    public static void setUsuarioActivo(int id, String nombreUsuario, String correo, boolean vendedor, int idCarritoUsuario, BigDecimal saldoActualUsuario, BigDecimal saldoPagarUsuario) {
         idUsuario = id;
         nombre = nombreUsuario;
         correoElectronico = correo;
@@ -39,19 +41,19 @@ public class UsuarioActivo {
         return idCarrito;
     }
 
-    public static double getSaldoActual() {
+    public static BigDecimal getSaldoActual() {
         return saldoActual;
     }
 
-    public static void setSaldoActual(double nuevoSaldoActual) {
+    public static void setSaldoActual(BigDecimal nuevoSaldoActual) {
         saldoActual = nuevoSaldoActual;
     }
 
-    public static double getSaldoPagar() {
+    public static BigDecimal getSaldoPagar() {
         return saldoPagar;
     }
 
-    public static void setSaldoPagar(double nuevoSaldoPagar) {
+    public static void setSaldoPagar(BigDecimal nuevoSaldoPagar) {
         saldoPagar = nuevoSaldoPagar;
     }
 }

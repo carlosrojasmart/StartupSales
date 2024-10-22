@@ -13,6 +13,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.math.BigDecimal;
+
 public class ViewFacturacionController {
 
     @FXML
@@ -47,9 +49,7 @@ public class ViewFacturacionController {
     @FXML
     private void initialize() {
         // Configurar el buscador de productos
-        buscarProductos.setOnMouseClicked(event -> {
-            buscarProductos.clear();
-        });
+        buscarProductos.setOnMouseClicked(event -> buscarProductos.clear());
 
         // Realizar búsqueda cuando el usuario presione "Enter"
         buscarProductos.setOnAction(event -> realizarBusqueda());
@@ -62,9 +62,9 @@ public class ViewFacturacionController {
     }
 
     private void cargarSaldosUsuario() {
-        // Obtener los saldos desde el usuario activo
-        double saldoActual = UsuarioActivo.getSaldoActual();
-        double saldoPagar = UsuarioActivo.getSaldoPagar();
+        // Obtener los saldos directamente como BigDecimal
+        BigDecimal saldoActual = UsuarioActivo.getSaldoActual();
+        BigDecimal saldoPagar = UsuarioActivo.getSaldoPagar();
 
         // Formatear los valores para que se vean como moneda
         lblSaldoActual.setText(FormatoUtil.formatearPrecio(saldoActual));
