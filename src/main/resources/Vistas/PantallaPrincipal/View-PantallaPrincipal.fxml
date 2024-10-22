@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="503.0" prefWidth="854.0" style="-fx-background-color: #FFFFFFFF;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.Principal.ViewPaginaPrincipal">
+   <children>
+      <HBox layoutX="-1.0" prefHeight="66.0" prefWidth="863.0" style="-fx-background-color: #000000;">
+         <children>
+            <ImageView fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../Imagenes/Principal/StartUpSalesALT.png" />
+               </image>
+               <HBox.margin>
+                  <Insets left="15.0" top="10.0" />
+               </HBox.margin>
+            </ImageView>
+            <Button fx:id="ingresarBoton" onAction="#mostrarLogin" prefHeight="30.0" style="-fx-background-color: #000000;" text="Inicia Sesión" textFill="WHITE">
+               <HBox.margin>
+                  <Insets left="500.0" top="18.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="MS Reference Sans Serif" size="12.0" />
+               </font>
+            </Button>
+            <Button fx:id="crearCuentaBoton" onAction="#mostrarCrearCuenta" prefHeight="30.0" prefWidth="110.0" style="-fx-background-color: #000000;" text="Crea tu cuenta" textFill="WHITE">
+               <HBox.margin>
+                  <Insets top="18.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="MS Reference Sans Serif" size="12.0" />
+               </font>
+            </Button>
+         </children>
+      </HBox>
+      <Label layoutX="274.0" layoutY="257.0" prefHeight="23.0" prefWidth="83.0" text="Conocenos" textAlignment="CENTER">
+         <font>
+            <Font name="MS Reference Sans Serif" size="15.0" />
+         </font>
+      </Label>
+      <HBox layoutX="-1.0" layoutY="480.0" prefHeight="30.0" prefWidth="863.0" style="-fx-background-color: #000000;">
+         <children>
+            <Label text="© 2025 StartupSales. Todos los derechos reservados." textFill="WHITE">
+               <font>
+                  <Font name="MS Reference Sans Serif" size="10.0" />
+               </font>
+               <HBox.margin>
+                  <Insets left="10.0" top="8.0" />
+               </HBox.margin>
+            </Label>
+         </children></HBox>
+      <ImageView fitHeight="189.0" fitWidth="191.0" layoutX="641.0" layoutY="268.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../Imagenes/Principal/Startuplogo.jpeg" />
+         </image>
+      </ImageView>
+      <AnchorPane layoutX="-1.0" layoutY="65.0" prefHeight="175.0" prefWidth="863.0" style="-fx-background-color: #000000;">
+         <children>
+            <Label layoutX="172.0" layoutY="-2.0" text="Iniciar ahora con StartupSales" textFill="WHITE">
+               <font>
+                  <Font name="Franklin Gothic Book" size="27.0" />
+               </font>
+            </Label>
+            <Label layoutX="232.0" layoutY="58.0" text="Tu tienda, tu éxito." textFill="WHITE">
+               <font>
+                  <Font name="Century Gothic" size="45.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <TextArea layoutX="54.0" layoutY="296.0" prefHeight="89.0" prefWidth="239.0" text="Con Startup Sales puedes dar a conocer&#10;  tu propio negocio y empezar a vender &#10;     tus productos de manera sencilla,&#10;puedes crear hasta mas de una tienda " />
+      <TextArea layoutX="343.0" layoutY="296.0" prefHeight="96.0" prefWidth="239.0" text="               ¿No tienes un negocio?&#10; No hay problema aca tambien puedes &#10;explorar todos los productos disponibles &#10;               en nuestras startups " />
+      <TextArea layoutX="244.0" layoutY="405.0" prefHeight="52.0" prefWidth="143.0" text="¿Que estas esperando? &#10;     Registrate ahora!! " />
+   </children>
+</AnchorPane>

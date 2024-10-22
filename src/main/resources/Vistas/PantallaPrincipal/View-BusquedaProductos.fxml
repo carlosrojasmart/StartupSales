@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="503.0" prefWidth="854.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.Principal.ViewBusquedaProductosController">
+    <children>
+        <HBox layoutX="-1.0" prefHeight="66.0" prefWidth="863.0" style="-fx-background-color: #000000;">
+            <children>
+                <ImageView fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../Imagenes/Principal/StartUpSalesALT.png" />
+                    </image>
+                    <HBox.margin>
+                        <Insets left="15.0" top="10.0" />
+                    </HBox.margin>
+                </ImageView>
+                <TextField fx:id="buscarProductos" onAction="#realizarBusqueda" prefHeight="30.0" prefWidth="308.0" promptText="Buscar productos, vendedores y más...">
+                    <HBox.margin>
+                        <Insets left="20.0" top="18.0" />
+                    </HBox.margin>
+                </TextField>
+                <Button fx:id="BtnMisTiendas" onAction="#mostrarMisTiendas" prefHeight="30.0" prefWidth="86.0" style="-fx-background-color: #000000;" text="Mis Tiendas" textFill="WHITE">
+                    <HBox.margin>
+                        <Insets left="115.0" top="18.0" />
+                    </HBox.margin>
+                    <font>
+                        <Font name="MS Reference Sans Serif" size="12.0" />
+                    </font>
+                </Button>
+                <Button fx:id="BtnComprasAr" onAction="#mostrarCompras" prefHeight="30.0" prefWidth="72.0" style="-fx-background-color: #000000;" text="Compras" textFill="WHITE">
+                    <HBox.margin>
+                        <Insets top="18.0" />
+                    </HBox.margin>
+                    <font>
+                        <Font name="MS Reference Sans Serif" size="12.0" />
+                    </font>
+                </Button>
+                <ImageView fx:id="carritoCompra" fitHeight="38.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../Imagenes/Principal/CarritoCompra.png" />
+                    </image>
+                    <HBox.margin>
+                        <Insets left="20.0" top="18.0" />
+                    </HBox.margin>
+                </ImageView>
+                <ImageView fx:id="usuarioIcono" fitHeight="38.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../Imagenes/Principal/usuario.png" />
+                    </image>
+                    <HBox.margin>
+                        <Insets left="20.0" top="17.0" />
+                    </HBox.margin>
+                </ImageView>
+            </children>
+        </HBox>
+        <HBox layoutX="-1.0" layoutY="480.0" prefHeight="30.0" prefWidth="863.0" style="-fx-background-color: #000000;">
+            <children>
+                <Label text="© 2025 StartupSales. Todos los derechos reservados." textFill="WHITE">
+                    <font>
+                        <Font name="MS Reference Sans Serif" size="10.0" />
+                    </font>
+                    <HBox.margin>
+                        <Insets left="10.0" top="8.0" />
+                    </HBox.margin>
+                </Label>
+            </children>
+        </HBox>
+        <VBox layoutY="66.0" prefHeight="415.0" prefWidth="166.0" style="-fx-background-color: #ffffff;" />
+        <ScrollPane fitToWidth="true" layoutX="166.0" layoutY="66.0" prefHeight="415.0" prefWidth="696.0" style="-fx-background-color: #ffffff;">
+            <content>
+                <VBox fx:id="vboxProductos" spacing="10">
+                    <padding>
+                        <Insets bottom="10" left="10" right="10" top="40" />
+                    </padding>
+                    <!-- Los productos se agregarán dinámicamente aquí -->
+                </VBox>
+            </content>
+        </ScrollPane>
+        <Label fx:id="lblProductos" layoutX="180.0" layoutY="77.0" prefHeight="28.0" prefWidth="78.0" text="Productos">
+            <font>
+                <Font name="MS Reference Sans Serif" size="15.0" />
+            </font>
+        </Label>
+        <Button fx:id="btnVolverInicio" layoutX="710.0" layoutY="70.0" mnemonicParsing="false" onAction="#volverInicio" prefHeight="28.0" prefWidth="121.0" style="-fx-background-color: #000000;" text="Volver a Inicio" textFill="WHITE">
+            <font>
+                <Font name="MS Reference Sans Serif" size="14.0" />
+            </font>
+        </Button>
+    </children>
+</AnchorPane>
