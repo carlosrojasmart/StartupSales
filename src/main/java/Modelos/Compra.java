@@ -5,11 +5,12 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import java.math.BigDecimal;
 
 public class Compra {
     private int idCompra;
     private int idUsuario;
-    private double totalCompra;
+    private BigDecimal totalCompra;
     private LocalDate fecha;
     private LocalTime hora;
     private Map<Producto, Integer> productos;
@@ -17,10 +18,11 @@ public class Compra {
 
     // Constructor vacío
     public Compra() {
+        this.totalCompra = BigDecimal.ZERO; // Inicializar con 0
     }
 
     // Constructor con parámetros
-    public Compra(int idCompra, int idUsuario, double totalCompra, LocalDate fecha, LocalTime hora, Map<Producto, Integer> productos) {
+    public Compra(int idCompra, int idUsuario, BigDecimal totalCompra, LocalDate fecha, LocalTime hora, Map<Producto, Integer> productos) {
         this.idCompra = idCompra;
         this.idUsuario = idUsuario;
         this.totalCompra = totalCompra;
@@ -46,11 +48,11 @@ public class Compra {
         this.idUsuario = idUsuario;
     }
 
-    public double getTotalCompra() {
+    public BigDecimal getTotalCompra() {
         return totalCompra;
     }
 
-    public void setTotalCompra(double totalCompra) {
+    public void setTotalCompra(BigDecimal totalCompra) {
         this.totalCompra = totalCompra;
     }
 
@@ -87,14 +89,6 @@ public class Compra {
         this.productosResumen = productosResumen;
     }
 
-    // Método para calcular el total de la compra a partir de los productos y sus cantidades
-    public void calcularTotalCompra() {
-        totalCompra = productos.entrySet().stream()
-                .mapToDouble(entry -> entry.getKey().getPrecio() * entry.getValue())
-                .sum();
-    }
-
-    // Método para generar un resumen de los productos comprados como un String
     private String generarProductosResumen() {
         if (productos == null || productos.isEmpty()) {
             return "";
@@ -103,5 +97,17 @@ public class Compra {
                 .map(entry -> entry.getKey().getNombre() + " x" + entry.getValue())
                 .collect(Collectors.joining(", "));
     }
+
+    // Método para calcular el total de la compra a partir de los productos y sus cantidades
+    public void calcularTotalCompra() {
+        totalCompra = productos.entrySet().stream()
+                .map(entry -> {
+                    BigDecimal precio = entry.getKey().getPrecio(); // Asumiendo que getPrecio() retorna BigDecimal
+                    BigDecimal cantidad = BigDecimal.valueOf(entry.getValue()); // Convertir la cantidad a BigDecimal
+                    return precio.multiply(cantidad); // Multiplicar precio por cantidad
+                })
+                .reduce(BigDecimal.ZERO, BigDecimal::add); // Sumar todos los valores
+    }
+
 
 }

@@ -1,12 +1,13 @@
 package Modelos;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
 public class Venta {
     private int idVenta;
     private Date fecha;
-    private double total;
+    private BigDecimal total; // Cambiado a BigDecimal
     private String metodoPago;
     private List<Producto> productos;
     private Cliente cliente;
@@ -36,11 +37,11 @@ public class Venta {
         this.metodoPago = metodoPago;
     }
 
-    public double getTotal() {
+    public BigDecimal getTotal() { // Cambiado a BigDecimal
         return total;
     }
 
-    public void setTotal(double total) {
+    public void setTotal(BigDecimal total) { // Cambiado a BigDecimal
         this.total = total;
     }
 
@@ -68,4 +69,5 @@ public class Venta {
         this.factura = factura;
     }
 }
+
 

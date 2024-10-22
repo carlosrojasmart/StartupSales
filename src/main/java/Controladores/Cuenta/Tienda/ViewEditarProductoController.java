@@ -14,6 +14,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.*;
+import java.math.BigDecimal;
 
 public class ViewEditarProductoController {
 
@@ -135,7 +136,7 @@ public class ViewEditarProductoController {
         try {
             // Actualizar los datos del producto desde los campos de texto
             productoSeleccionado.setNombre(nombreProducto.getText());
-            productoSeleccionado.setPrecio(Double.parseDouble(precioProducto.getText()));
+            productoSeleccionado.setPrecio(new BigDecimal(precioProducto.getText())); // Cambio aquí
             productoSeleccionado.setDescripcion(descProducto.getText());
             productoSeleccionado.setStock(stockProducto.getValue());
             productoSeleccionado.setCategoria(catProducto.getValue());
@@ -160,6 +161,7 @@ public class ViewEditarProductoController {
             System.out.println("Error al procesar los datos del producto.");
         }
     }
+
 
     @FXML
     private void eliminarProducto() {
