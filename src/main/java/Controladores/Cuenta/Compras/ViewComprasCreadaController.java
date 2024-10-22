@@ -22,6 +22,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ViewComprasCreadaController {
@@ -107,6 +108,10 @@ public class ViewComprasCreadaController {
 
     private void cargarCompras() {
         List<Compra> compras = obtenerComprasUsuario(UsuarioActivo.getIdUsuario());
+
+        // Invertir el orden de las compras para que las más recientes aparezcan primero
+        Collections.reverse(compras);
+
         vboxCompras.getChildren().clear();
 
         for (Compra compra : compras) {
@@ -149,6 +154,7 @@ public class ViewComprasCreadaController {
             vboxCompras.getChildren().add(hboxCompra);
         }
     }
+
 
 
     private List<Compra> obtenerComprasUsuario(int idUsuario) {
