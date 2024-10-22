@@ -2,15 +2,13 @@ package Servicios.Datos;
 
 import DB.JDBC;
 import Modelos.Producto;
-import Servicios.Vistas.CambiosVistas;
-import javafx.fxml.FXML;
-
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.math.BigDecimal;
 
 public class BusquedaProductos {
 
@@ -29,7 +27,10 @@ public class BusquedaProductos {
                 Producto producto = new Producto();
                 producto.setIdProducto(resultSet.getInt("idProducto"));
                 producto.setNombre(resultSet.getString("nombre"));
-                producto.setPrecio(resultSet.getDouble("precio"));
+
+                // Obtener el precio como BigDecimal
+                producto.setPrecio(resultSet.getBigDecimal("precio")); // Cambio aquí
+
                 producto.setDescripcion(resultSet.getString("descripcion"));
                 producto.setStock(resultSet.getInt("stock"));
                 producto.setCategoria(resultSet.getString("categoria"));
@@ -44,5 +45,4 @@ public class BusquedaProductos {
 
         return productos;
     }
-
 }

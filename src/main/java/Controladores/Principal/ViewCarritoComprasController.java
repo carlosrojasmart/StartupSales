@@ -4,7 +4,6 @@ import DB.JDBC;
 import Modelos.Producto;
 import Servicios.Datos.MostrarCarrito;
 import Servicios.Datos.UsuarioActivo;
-import Servicios.Vistas.BusquedaUtil;
 import Servicios.Vistas.CambiosVistas;
 import Servicios.Vistas.FormatoUtil;
 import javafx.application.Platform;
@@ -24,16 +23,10 @@ import javafx.stage.Stage;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.util.Locale;
-
+import java.util.List;
 import java.io.ByteArrayInputStream;
 import java.sql.*;
-import java.util.List;
-
-import static Servicios.Vistas.BusquedaUtil.realizarBusqueda;
-
+import java.util.Locale;
 
 public class ViewCarritoComprasController {
 
@@ -100,7 +93,7 @@ public class ViewCarritoComprasController {
         List<Producto> productos = mostrarCarrito.obtenerProductosDeCarrito(UsuarioActivo.getIdCarrito());
         vboxProductos.getChildren().clear();
 
-        double total = 0;
+        BigDecimal total = BigDecimal.ZERO;
         for (Producto producto : productos) {
             HBox hboxProducto = new HBox(10);
             hboxProducto.setStyle("-fx-background-color: #ffffff; -fx-padding: 10; -fx-border-color: #dddddd;");
@@ -126,7 +119,8 @@ public class ViewCarritoComprasController {
                 actualizarTotal();
             });
 
-            Label precioProducto = new Label(FormatoUtil.formatearPrecio(producto.getPrecio() * producto.getCantidad()));
+            // Aquí corregimos para mostrar el precio unitario, NO multiplicado por la cantidad.
+            Label precioProducto = new Label(FormatoUtil.formatearPrecio(producto.getPrecio()));
             precioProducto.setStyle("-fx-font-size: 14px;");
 
             Button btnEliminarProducto = new Button("Eliminar");
@@ -136,14 +130,16 @@ public class ViewCarritoComprasController {
             hboxProducto.getChildren().addAll(imagenProducto, nombreProducto, spinnerCantidad, precioProducto, btnEliminarProducto);
             vboxProductos.getChildren().add(hboxProducto);
 
-            total += producto.getPrecio() * producto.getCantidad();
+            // En este punto no sumamos el total, ya que debe calcularse solo en obtenerTotalCarrito().
         }
 
-        lblTotal.setText("Total: " + FormatoUtil.formatearPrecio(total));
+        // Llamamos a actualizarTotal() para recalcular después de cargar los productos
+        actualizarTotal();
     }
 
+
     private void actualizarTotal() {
-        double total = 0;
+        BigDecimal total = BigDecimal.ZERO;
 
         for (Node node : vboxProductos.getChildren()) {
             if (node instanceof HBox hbox) {
@@ -151,21 +147,20 @@ public class ViewCarritoComprasController {
                 Spinner<Integer> spinnerCantidad = (Spinner<Integer>) hbox.getChildren().get(2);
 
                 String precioTexto = precioLabel.getText()
-                        .replace("$", "")
                         .replace("COP", "")
                         .replace(",", "")
                         .trim();
 
                 try {
-                    double precio = Double.parseDouble(precioTexto);
-                    total += precio * spinnerCantidad.getValue();
+                    BigDecimal precio = new BigDecimal(precioTexto);
+                    total = total.add(precio.multiply(BigDecimal.valueOf(spinnerCantidad.getValue())));
                 } catch (NumberFormatException e) {
                     System.out.println("Error al convertir el precio: " + precioTexto);
                 }
             }
         }
 
-        lblTotal.setText(String.format("Total: %.2f COP", total));
+        lblTotal.setText("Total: " + FormatoUtil.formatearPrecio(total));
     }
 
     private void eliminarProductoDelCarrito(Producto producto) {
@@ -174,58 +169,99 @@ public class ViewCarritoComprasController {
     }
 
     @FXML
-    private void procesarCompra() {
-        double saldoActual = UsuarioActivo.getSaldoActual(); // Obtiene el saldo actual del usuario
-        double totalCarrito = obtenerTotalCarrito(); // Obtiene el total del carrito
+    public void procesarCompra() {
+        // Obtener el saldo actual y el total del carrito como BigDecimal
+        BigDecimal saldoActual = UsuarioActivo.getSaldoActual();
+        BigDecimal totalCarrito = obtenerTotalCarrito();  // Usamos el método correcto para obtener el total
 
         System.out.println("Saldo actual: " + saldoActual);
         System.out.println("Total del carrito: " + totalCarrito);
 
-        if (saldoActual < totalCarrito) {
+        // Verificar si el saldo es suficiente
+        if (saldoActual.compareTo(totalCarrito) < 0) {
             lblAvisoSaldo.setText("Saldo Insuficiente");
         } else {
-            // Descuenta el total del carrito del saldo actual del usuario
-            double nuevoSaldo = saldoActual - totalCarrito;
+            // Descontar el total del carrito del saldo actual
+            BigDecimal nuevoSaldo = saldoActual.subtract(totalCarrito);
+            System.out.println("Nuevo saldo después de compra: " + nuevoSaldo);
+
             UsuarioActivo.setSaldoActual(nuevoSaldo);
 
-            // Registra la compra en la base de datos
+            // Registrar la compra y actualizar el saldo
             registrarCompra(UsuarioActivo.getIdUsuario(), UsuarioActivo.getIdCarrito(), totalCarrito);
-
-            // Actualiza el saldo del usuario en la base de datos
             actualizarSaldoUsuario(UsuarioActivo.getIdUsuario(), nuevoSaldo);
 
+            // Mostrar éxito y vaciar el carrito
             lblAvisoSaldo.setText("Compra realizada con éxito");
             lblTotal.setText("Total: 0.00 COP");
 
-            // Limpia el carrito después de la compra exitosa
+            // Vaciar el carrito después de la compra
             mostrarCarrito.vaciarCarrito(UsuarioActivo.getIdCarrito());
-            cargarProductosCarrito(); // Refresca la vista del carrito para mostrarlo vacío
-        }
-    }
-
-    private double obtenerTotalCarrito() {
-        String totalTexto = lblTotal.getText().replace("Total: ", "").replace("COP", "").trim();
-
-        try {
-            // Cambia el formato para usar el separador de miles como coma y el punto como separador decimal
-            NumberFormat format = NumberFormat.getInstance(Locale.forLanguageTag("es-CO")); // Esto ajusta para la región de Colombia
-            Number number = format.parse(totalTexto);
-            return number.doubleValue();
-        } catch (ParseException e) {
-            System.out.println("Error al convertir el total del carrito: " + totalTexto);
-            e.printStackTrace();
-            return 0.0;
+            cargarProductosCarrito(); // Refrescar la vista del carrito vacío
         }
     }
 
 
-    public void registrarCompra(int idUsuario, int idCarrito, double totalCompra) {
+
+    private BigDecimal obtenerTotalCarrito() {
+        BigDecimal total = BigDecimal.ZERO;
+
+        for (Node node : vboxProductos.getChildren()) {
+            if (node instanceof HBox hbox) {
+                // El precio del producto está en la posición 3 del HBox
+                Label precioLabel = (Label) hbox.getChildren().get(3);
+                // La cantidad seleccionada está en la posición 2 del HBox
+                Spinner<Integer> spinnerCantidad = (Spinner<Integer>) hbox.getChildren().get(2);
+
+                // Obtener el precio desde el label y convertirlo a BigDecimal
+                String precioTexto = precioLabel.getText()
+                        .replace("COP", "")
+                        .replace(",", "")
+                        .trim();
+
+                try {
+                    // Imprimir el valor original para depuración
+                    System.out.println("Precio texto (original): " + precioTexto);
+
+                    // Convertir el texto del precio en un BigDecimal
+                    BigDecimal precio = new BigDecimal(precioTexto);
+
+                    // Obtener la cantidad del spinner
+                    BigDecimal cantidad = BigDecimal.valueOf(spinnerCantidad.getValue());
+
+                    // Imprimir la cantidad para asegurarnos de que sea correcta
+                    System.out.println("Cantidad del producto: " + cantidad);
+
+                    // Multiplicar el precio por la cantidad para obtener el precio total del producto
+                    BigDecimal precioTotalProducto = precio.multiply(cantidad);
+
+                    // Añadir al total
+                    total = total.add(precioTotalProducto);
+
+                    // Imprimir el valor calculado de precio total para depuración
+                    System.out.println("Precio calculado para el producto: " + precio + " x " + cantidad + " = " + precioTotalProducto);
+
+                } catch (NumberFormatException e) {
+                    System.out.println("Error al convertir el precio: " + precioTexto);
+                }
+            }
+        }
+
+        // Imprimir el total calculado antes de devolverlo
+        System.out.println("Total calculado del carrito: " + total);
+
+        return total.setScale(2, RoundingMode.HALF_UP);  // Asegurarse de que el total tenga dos decimales
+    }
+
+
+
+    public void registrarCompra(int idUsuario, int idCarrito, BigDecimal totalCompra) {
         String sqlInsertCompra = "INSERT INTO Compra (idUsuario, total_compra, fecha, hora) VALUES (?, ?, CURDATE(), CURTIME())";
         try (Connection conexion = JDBC.ConectarBD();
              PreparedStatement pstmt = conexion.prepareStatement(sqlInsertCompra, Statement.RETURN_GENERATED_KEYS)) {
-            // Asegúrate de que no estás multiplicando el total por 100
+
             pstmt.setInt(1, idUsuario);
-            pstmt.setBigDecimal(2, BigDecimal.valueOf(totalCompra).setScale(2, RoundingMode.HALF_UP));
+            pstmt.setBigDecimal(2, totalCompra.setScale(2, RoundingMode.HALF_UP));
             int filasInsertadas = pstmt.executeUpdate();
 
             if (filasInsertadas > 0) {
@@ -244,7 +280,6 @@ public class ViewCarritoComprasController {
         }
     }
 
-
     private void registrarProductosDeCompra(int idCompra, int idCarrito) {
         String sqlInsertProductos = "INSERT INTO compra_producto (idCompra, idProducto, cantidad) " +
                 "SELECT ?, idProducto, cantidad FROM carrito_producto WHERE idCarrito = ?";
@@ -260,17 +295,15 @@ public class ViewCarritoComprasController {
         }
     }
 
-    public void actualizarSaldoUsuario(int idUsuario, double nuevoSaldo) {
+    private void actualizarSaldoUsuario(int idUsuario, BigDecimal nuevoSaldo) {
         String sql = "UPDATE Usuario SET saldo_actual = ? WHERE idUsuario = ?";
         try (Connection conexion = JDBC.ConectarBD();
              PreparedStatement pstmt = conexion.prepareStatement(sql)) {
-            pstmt.setDouble(1, nuevoSaldo);
+            pstmt.setBigDecimal(1, nuevoSaldo);
             pstmt.setInt(2, idUsuario);
-            int filasActualizadas = pstmt.executeUpdate();
-            System.out.println("Saldo actualizado correctamente para el usuario " + idUsuario + ": " + filasActualizadas + " filas actualizadas.");
+            pstmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("Error al actualizar el saldo del usuario: " + e.getMessage());
         }
     }
 
