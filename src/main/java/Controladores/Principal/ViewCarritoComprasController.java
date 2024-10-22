@@ -119,8 +119,8 @@ public class ViewCarritoComprasController {
                 actualizarTotal();
             });
 
-            BigDecimal precioProductoTotal = producto.getPrecio().multiply(BigDecimal.valueOf(producto.getCantidad()));
-            Label precioProducto = new Label(FormatoUtil.formatearPrecio(precioProductoTotal));
+            // Aquí corregimos para mostrar el precio unitario, NO multiplicado por la cantidad.
+            Label precioProducto = new Label(FormatoUtil.formatearPrecio(producto.getPrecio()));
             precioProducto.setStyle("-fx-font-size: 14px;");
 
             Button btnEliminarProducto = new Button("Eliminar");
@@ -130,11 +130,13 @@ public class ViewCarritoComprasController {
             hboxProducto.getChildren().addAll(imagenProducto, nombreProducto, spinnerCantidad, precioProducto, btnEliminarProducto);
             vboxProductos.getChildren().add(hboxProducto);
 
-            total = total.add(precioProductoTotal);
+            // En este punto no sumamos el total, ya que debe calcularse solo en obtenerTotalCarrito().
         }
 
-        lblTotal.setText("Total: " + FormatoUtil.formatearPrecio(total));
+        // Llamamos a actualizarTotal() para recalcular después de cargar los productos
+        actualizarTotal();
     }
+
 
     private void actualizarTotal() {
         BigDecimal total = BigDecimal.ZERO;
@@ -206,42 +208,51 @@ public class ViewCarritoComprasController {
 
         for (Node node : vboxProductos.getChildren()) {
             if (node instanceof HBox hbox) {
+                // El precio del producto está en la posición 3 del HBox
                 Label precioLabel = (Label) hbox.getChildren().get(3);
+                // La cantidad seleccionada está en la posición 2 del HBox
                 Spinner<Integer> spinnerCantidad = (Spinner<Integer>) hbox.getChildren().get(2);
 
+                // Obtener el precio desde el label y convertirlo a BigDecimal
                 String precioTexto = precioLabel.getText()
                         .replace("COP", "")
                         .replace(",", "")
                         .trim();
 
                 try {
-                    // Vamos a imprimir aquí el valor original para asegurarnos de que no haya errores de formato
+                    // Imprimir el valor original para depuración
                     System.out.println("Precio texto (original): " + precioTexto);
 
-                    // Si el precio es incorrecto, lo ajustamos manualmente usando el valor del producto.
-                    // Aquí extraemos el valor correctamente como BigDecimal
+                    // Convertir el texto del precio en un BigDecimal
                     BigDecimal precio = new BigDecimal(precioTexto);
+
+                    // Obtener la cantidad del spinner
                     BigDecimal cantidad = BigDecimal.valueOf(spinnerCantidad.getValue());
 
-                    // Multiplicamos la cantidad por el precio del producto
+                    // Imprimir la cantidad para asegurarnos de que sea correcta
+                    System.out.println("Cantidad del producto: " + cantidad);
+
+                    // Multiplicar el precio por la cantidad para obtener el precio total del producto
                     BigDecimal precioTotalProducto = precio.multiply(cantidad);
 
-                    // Añadimos al total
+                    // Añadir al total
                     total = total.add(precioTotalProducto);
 
-                    // Imprimimos el valor calculado de precio para depuración
+                    // Imprimir el valor calculado de precio total para depuración
                     System.out.println("Precio calculado para el producto: " + precio + " x " + cantidad + " = " + precioTotalProducto);
+
                 } catch (NumberFormatException e) {
                     System.out.println("Error al convertir el precio: " + precioTexto);
                 }
             }
         }
 
-        // Imprimir el total antes de devolverlo
+        // Imprimir el total calculado antes de devolverlo
         System.out.println("Total calculado del carrito: " + total);
 
-        return total.setScale(2, RoundingMode.HALF_UP);  // Asegurar que el total tenga dos decimales
+        return total.setScale(2, RoundingMode.HALF_UP);  // Asegurarse de que el total tenga dos decimales
     }
+
 
 
     public void registrarCompra(int idUsuario, int idCarrito, BigDecimal totalCompra) {
