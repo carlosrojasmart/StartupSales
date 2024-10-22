@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.Random;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-
+import java.math.BigDecimal;
 
 import DB.JDBC;
 
@@ -52,8 +52,9 @@ public class LoginRegister {
                         String nombre = rs.getString("nombre");
                         String correo = rs.getString("correo_electronico");
                         boolean esVendedor = rs.getBoolean("esVendedor");
-                        double saldoActual = rs.getDouble("saldo_actual");
-                        double saldoPagar = rs.getDouble("saldo_pagar");
+                        // Convertir los valores a BigDecimal
+                        BigDecimal saldoActual = rs.getBigDecimal("saldo_actual");
+                        BigDecimal saldoPagar = rs.getBigDecimal("saldo_pagar");
 
                         // Obtener el idCarrito del usuario
                         int idCarritoUsuario = obtenerIdCarritoDesdeBD(idUsuario);
@@ -97,7 +98,6 @@ public class LoginRegister {
         return -1; // Devuelve -1 si no se encontró ningún carrito para el usuario
     }
 
-
     // Método para obtener el idCarrito dado un idUsuario
     private int obtenerIdCarrito(int idUsuario, Connection conexion) throws SQLException {
         String sql = "SELECT idCarrito FROM Carrito WHERE idUsuario = ?";
@@ -121,7 +121,7 @@ public class LoginRegister {
 
         int idUsuario = generarIdAleatorio();
         String hashedPassword = hashPassword(contraseña);
-        double saldoInicial = 0.0; // El saldo inicial puede ser 0 para un nuevo usuario
+        BigDecimal saldoInicial = BigDecimal.ZERO; // El saldo inicial es 0 para un nuevo usuario
 
         try (Connection conexion = JDBC.ConectarBD()) {
             String sql = "INSERT INTO Usuario (idUsuario, nombre, direccion, correo_electronico, telefono, contraseña, saldo_actual, saldo_pagar) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -133,8 +133,8 @@ public class LoginRegister {
                 pstmt.setString(4, correo);
                 pstmt.setString(5, telefono);
                 pstmt.setString(6, hashedPassword);
-                pstmt.setDouble(7, saldoInicial); // Asignar el saldo inicial
-                pstmt.setDouble(8, saldoInicial); // Asignar el saldo a pagar inicial
+                pstmt.setBigDecimal(7, saldoInicial); // Asignar el saldo inicial
+                pstmt.setBigDecimal(8, saldoInicial); // Asignar el saldo a pagar inicial
 
                 pstmt.executeUpdate();
 

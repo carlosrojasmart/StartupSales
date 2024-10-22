@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -32,7 +33,10 @@ public class CrearProducto {
              PreparedStatement pstmt = conexion.prepareStatement(sql)) {
             pstmt.setInt(1, producto.getIdProducto());
             pstmt.setString(2, producto.getNombre());
-            pstmt.setDouble(3, producto.getPrecio());
+
+            // Usar BigDecimal para manejar precios
+            pstmt.setBigDecimal(3, producto.getPrecio());
+
             pstmt.setString(4, producto.getDescripcion());
             pstmt.setInt(5, producto.getStock());
             pstmt.setString(6, producto.getCategoria());
@@ -87,7 +91,10 @@ public class CrearProducto {
                 Producto producto = new Producto();
                 producto.setIdProducto(resultSet.getInt("idProducto"));
                 producto.setNombre(resultSet.getString("nombre"));
-                producto.setPrecio(resultSet.getDouble("precio"));
+
+                // Obtener el precio como BigDecimal
+                producto.setPrecio(resultSet.getBigDecimal("precio"));
+
                 producto.setDescripcion(resultSet.getString("descripcion"));
                 producto.setStock(resultSet.getInt("stock"));
                 producto.setCategoria(resultSet.getString("categoria"));
@@ -109,7 +116,10 @@ public class CrearProducto {
         try (Connection conexion = JDBC.ConectarBD();
              PreparedStatement pstmt = conexion.prepareStatement(sql)) {
             pstmt.setString(1, producto.getNombre());
-            pstmt.setDouble(2, producto.getPrecio());
+
+            // Usar BigDecimal para actualizar el precio
+            pstmt.setBigDecimal(2, producto.getPrecio());
+
             pstmt.setString(3, producto.getDescripcion());
             pstmt.setInt(4, producto.getStock());
             pstmt.setString(5, producto.getCategoria());
@@ -171,7 +181,8 @@ public class CrearProducto {
         }
     }
 
-    public static String formatearPrecio(double precio) {
+    // Modificar para que funcione con BigDecimal
+    public static String formatearPrecio(BigDecimal precio) {
         NumberFormat formatoCOP = NumberFormat.getCurrencyInstance(new Locale("es", "CO"));
         return formatoCOP.format(precio);
     }

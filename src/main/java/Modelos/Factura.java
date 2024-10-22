@@ -1,16 +1,18 @@
 package Modelos;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
 public class Factura {
     private int numeroFactura;
     private Date fecha;
-    private double total;
+    private BigDecimal total; // Cambiado a BigDecimal
     private int idVenta;
     private int cantidad_total;
     private List<Venta> detalleVenta;
 
+    // Getters y Setters
     public int getNumeroFactura() {
         return numeroFactura;
     }
@@ -27,11 +29,11 @@ public class Factura {
         this.detalleVenta = detalleVenta;
     }
 
-    public double getTotal() {
+    public BigDecimal getTotal() { // Cambiado a BigDecimal
         return total;
     }
 
-    public void setTotal(double total) {
+    public void setTotal(BigDecimal total) { // Cambiado a BigDecimal
         this.total = total;
     }
 
@@ -43,11 +45,20 @@ public class Factura {
         this.fecha = fecha;
     }
 
-    public int getIdVenta() {return idVenta;}
+    public int getIdVenta() {
+        return idVenta;
+    }
 
-    public void setIdVenta(int idVenta) {this.idVenta = idVenta;}
+    public void setIdVenta(int idVenta) {
+        this.idVenta = idVenta;
+    }
 
-    public int getCantidad_total() {return cantidad_total;}
+    public int getCantidad_total() {
+        return cantidad_total;
+    }
 
-    public void setCantidad_total(int cantidad_total) {this.cantidad_total = cantidad_total;}
+    public void setCantidad_total(int cantidad_total) {
+        this.cantidad_total = cantidad_total;
+    }
 }
+

@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.math.BigDecimal;
 
 public class ViewProductoController {
 
@@ -121,7 +122,10 @@ public class ViewProductoController {
             // Crear un nuevo producto
             Producto producto = new Producto();
             producto.setNombre(nombreProducto.getText());
-            producto.setPrecio(Double.parseDouble(precioProducto.getText()));
+
+            // Cambiar el precio a BigDecimal
+            producto.setPrecio(new BigDecimal(precioProducto.getText())); // Cambio aquí
+
             producto.setDescripcion(descProducto.getText());
             producto.setStock(stockProducto.getValue());
             producto.setCategoria(catProducto.getValue());
@@ -151,6 +155,7 @@ public class ViewProductoController {
             System.out.println("Error al procesar los datos del producto.");
         }
     }
+
 
     @FXML
     public void mostrarCarrito() {

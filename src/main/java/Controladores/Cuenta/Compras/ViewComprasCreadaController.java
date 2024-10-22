@@ -16,6 +16,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -121,8 +122,9 @@ public class ViewComprasCreadaController {
             Label horaLabel = new Label("Hora: " + compra.getHora());
             horaLabel.setStyle("-fx-font-size: 14px;");
 
-            // Label para el total de la compra
+            // Label para el total de la compra (ahora usando BigDecimal)
             Label totalCompra = new Label("Total: " + FormatoUtil.formatearPrecio(compra.getTotalCompra()));
+
             totalCompra.setStyle("-fx-font-size: 14px;");
 
             // Crear un VBox para los productos y añadir cada producto en una nueva línea con el prefijo "Productos:"
@@ -167,7 +169,9 @@ public class ViewComprasCreadaController {
             while (rs.next()) {
                 Compra compra = new Compra();
                 compra.setIdCompra(rs.getInt("idCompra"));
-                compra.setTotalCompra(rs.getDouble("total_compra"));
+
+                // Cambiado para manejar BigDecimal
+                compra.setTotalCompra(rs.getBigDecimal("total_compra"));
                 compra.setFecha(rs.getDate("fecha").toLocalDate());
                 compra.setHora(rs.getTime("hora").toLocalTime());
 
