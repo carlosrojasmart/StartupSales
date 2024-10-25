@@ -84,7 +84,7 @@
                   <Insets left="22.0" top="12.0" />
                </VBox.margin>
             </ChoiceBox>
-            <CheckBox fx:id="CkTiendas" mnemonicParsing="false" text="Tiendas">
+            <CheckBox fx:id="CkTiendas" mnemonicParsing="false" selected="true" text="Tiendas">
                <font>
                   <Font name="MS Reference Sans Serif" size="14.0" />
                </font>
@@ -92,7 +92,7 @@
                   <Insets left="30.0" top="15.0" />
                </VBox.margin>
             </CheckBox>
-            <CheckBox fx:id="CkProductos" layoutX="40.0" layoutY="92.0" mnemonicParsing="false" text="Productos">
+            <CheckBox fx:id="CkProductos" layoutX="40.0" layoutY="92.0" mnemonicParsing="false" selected="true" text="Productos">
                <font>
                   <Font name="MS Reference Sans Serif" size="14.0" />
                </font>
@@ -142,7 +142,7 @@
                   <Insets left="10.0" top="25.0" />
                </VBox.margin>
             </Label>
-            <CheckBox fx:id="CkGratis" layoutX="40.0" layoutY="92.0" mnemonicParsing="false" selected="true" text="Envio Gratis">
+            <CheckBox fx:id="CkGratis" disable="true" layoutX="40.0" layoutY="92.0" mnemonicParsing="false" selected="true" text="Envio Gratis">
                <font>
                   <Font name="MS Reference Sans Serif" size="14.0" />
                </font>

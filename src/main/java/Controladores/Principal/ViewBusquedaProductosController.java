@@ -10,9 +10,7 @@ import Servicios.Vistas.FormatoUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -22,6 +20,7 @@ import Servicios.Datos.MostrarTiendas;
 
 
 import java.io.ByteArrayInputStream;
+import java.math.BigDecimal;
 import java.util.List;
 
 public class ViewBusquedaProductosController {
@@ -48,6 +47,21 @@ public class ViewBusquedaProductosController {
     private Label lblProductos;
 
     @FXML
+    private TextField FMin;
+
+    @FXML
+    private TextField FMax;
+
+    @FXML
+    private ChoiceBox<String> CbCategorias;
+
+    @FXML
+    private CheckBox CkTiendas;
+
+    @FXML
+    private CheckBox CkProductos;
+
+    @FXML
     private VBox vboxProductos;
 
     private CambiosVistas cambiosVistas = new CambiosVistas();
@@ -68,26 +82,57 @@ public class ViewBusquedaProductosController {
 
         usuarioIcono.setOnMouseClicked(event -> mostrarMiPerfil());
         carritoCompra.setOnMouseClicked(event -> mostrarCarrito());
+
+        cargarCategorias();
     }
+
+    private void cargarCategorias() {
+        // Obtener las categorías desde el servicio
+        List<String> categorias = mostrarTiendas.obtenerCategorias();
+
+        // Agregar las categorías al ChoiceBox
+        CbCategorias.getItems().clear();
+        CbCategorias.getItems().addAll(categorias);
+    }
+
 
     @FXML
     private void realizarBusqueda() {
         String terminoBusqueda = buscarProductos.getText().trim();
+        String categoriaSeleccionada = CbCategorias.getSelectionModel().getSelectedItem();
+        boolean tiendasSeleccionadas = CkTiendas.isSelected();
+        boolean productosSeleccionados = CkProductos.isSelected();
+        BigDecimal precioMin = FMin.getText().isEmpty() ? null : new BigDecimal(FMin.getText());
+        BigDecimal precioMax = FMax.getText().isEmpty() ? null : new BigDecimal(FMax.getText());
 
-        // Actualizar el texto de la etiqueta dependiendo del término de búsqueda
-        if (terminoBusqueda.isEmpty()) {
-            lblProductos.setText("Productos");
-            vboxProductos.getChildren().clear();
-            System.out.println("El término de búsqueda está vacío.");
-            return;
-        } else {
-            lblProductos.setText(terminoBusqueda);
+        // Limpiar los resultados anteriores
+        vboxProductos.getChildren().clear();
+
+        // Mostrar tiendas si están seleccionadas
+        if (tiendasSeleccionadas) {
+            List<Tienda> tiendas = mostrarTiendas.buscarTiendasPorNombre(terminoBusqueda);
+            if (!tiendas.isEmpty()) {
+                Label labelTiendas = new Label("Tiendas:");
+                labelTiendas.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
+                vboxProductos.getChildren().add(labelTiendas);
+                mostrarResultadosTiendas(tiendas);
+            }
         }
 
-        // Realizar la búsqueda y mostrar los resultados
-        List<Producto> productos = busquedaProductos.buscarProductosPorNombre(terminoBusqueda);
-        mostrarResultadosBusqueda(productos);
+        // Mostrar productos si están seleccionados
+        if (productosSeleccionados) {
+            List<Producto> productos = busquedaProductos.buscarConFiltros(terminoBusqueda, categoriaSeleccionada, precioMin, precioMax);
+            if (!productos.isEmpty()) {
+                Label labelProductos = new Label("Productos:");
+                labelProductos.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
+                vboxProductos.getChildren().add(labelProductos);
+                mostrarResultadosBusqueda(productos);
+            }
+        }
     }
+
+
+
 
     private void mostrarResultadosBusqueda(List<Producto> productos) {
         vboxProductos.getChildren().clear();
@@ -96,12 +141,18 @@ public class ViewBusquedaProductosController {
         }
     }
 
+    private void mostrarResultadosTiendas(List<Tienda> tiendas) {
+        vboxProductos.getChildren().clear();
+        for (Tienda tienda : tiendas) {
+            agregarTiendaAVista(tienda);
+        }
+    }
+
     private void agregarProductoAVista(Producto producto) {
         HBox hboxProducto = new HBox(10);
-        hboxProducto.setStyle("-fx-background-color: #ffffff; -fx-padding: 10; -fx-alignment: CENTER_LEFT; -fx-border-color: #dddddd;");
+        hboxProducto.setStyle("-fx-background-color: #ffffff; -fx-padding: 10; -fx-border-color: #dddddd;");
         hboxProducto.setPrefWidth(600);
 
-        // Imagen del producto
         ImageView imagenProducto = new ImageView();
         imagenProducto.setFitHeight(80);
         imagenProducto.setFitWidth(80);
@@ -110,30 +161,46 @@ public class ViewBusquedaProductosController {
             imagenProducto.setImage(image);
         }
 
-        // Nombre del producto
         Label nombreProducto = new Label(producto.getNombre());
-        nombreProducto.setStyle("-fx-font-size: 14px; -fx-padding: 0 10 0 10;");
+        nombreProducto.setStyle("-fx-font-size: 14px;");
 
-        // Formatear el precio del producto usando FormatoUtil
         Label precioProducto = new Label(FormatoUtil.formatearPrecio(producto.getPrecio()));
         precioProducto.setStyle("-fx-font-size: 14px;");
 
-        // Botón para agregar al carrito
         Button btnAgregarCarrito = new Button("Agregar al Carrito");
-        btnAgregarCarrito.setStyle("-fx-background-color: #000000; -fx-text-fill: white;");
         btnAgregarCarrito.setOnAction(event -> agregarAlCarrito(producto));
 
-        // Botón para ir a la tienda
-        Button btnIrATienda = new Button("Ir a Tienda");
-        btnIrATienda.setStyle("-fx-background-color: #000000; -fx-text-fill: white;");
-        btnIrATienda.setOnAction(event -> irATienda(producto.getIdTienda()));
-
-        // Agregar los elementos al HBox
-        hboxProducto.getChildren().addAll(imagenProducto, nombreProducto, precioProducto, btnAgregarCarrito, btnIrATienda);
-
-        // Agregar el HBox al VBox de productos
+        hboxProducto.getChildren().addAll(imagenProducto, nombreProducto, precioProducto, btnAgregarCarrito);
         vboxProductos.getChildren().add(hboxProducto);
     }
+
+    private void agregarTiendaAVista(Tienda tienda) {
+        HBox hboxTienda = new HBox(10);
+        hboxTienda.setStyle("-fx-background-color: #ffffff; -fx-padding: 10; -fx-border-color: #dddddd;");
+        hboxTienda.setPrefWidth(600);
+
+        ImageView imagenTienda = new ImageView();
+        imagenTienda.setFitHeight(80);
+        imagenTienda.setFitWidth(80);
+
+        if (tienda.getImagen() != null) {
+            Image image = new Image(new ByteArrayInputStream(tienda.getImagen()));
+            imagenTienda.setImage(image);
+            System.out.println("Imagen cargada para la tienda: " + tienda.getNombre());
+        } else {
+            System.out.println("No se encontró imagen para la tienda: " + tienda.getNombre());
+        }
+
+        Label nombreTienda = new Label(tienda.getNombre());
+        nombreTienda.setStyle("-fx-font-size: 14px;");
+
+        Button btnVerTienda = new Button("Ver Tienda");
+        btnVerTienda.setOnAction(event -> irATienda(tienda.getIdTienda()));
+
+        hboxTienda.getChildren().addAll(imagenTienda, nombreTienda, btnVerTienda);
+        vboxProductos.getChildren().add(hboxTienda);
+    }
+
 
     private void irATienda(int idTienda) {
         // Obtener la tienda por el ID
