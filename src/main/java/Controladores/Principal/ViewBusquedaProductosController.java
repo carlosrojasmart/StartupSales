@@ -62,7 +62,9 @@ public class ViewBusquedaProductosController {
     private CheckBox CkProductos;
 
     @FXML
-    private VBox vboxProductos;
+    private VBox vboxTiendas;  // VBox para tiendas
+    @FXML
+    private VBox vboxProductos;  // VBox para productos
 
     private CambiosVistas cambiosVistas = new CambiosVistas();
     private BusquedaProductos busquedaProductos = new BusquedaProductos();
@@ -71,10 +73,12 @@ public class ViewBusquedaProductosController {
 
     @FXML
     private void initialize() {
-        // Obtener el término de búsqueda de la clase CambiosVistas
-        String terminoBusqueda = CambiosVistas.getTerminoBusqueda();
+        // Establecer un margen más grande para vboxTiendas
+        vboxTiendas.setStyle("-fx-padding: 100 0 0 0;");  // 20px de margen superior
+        vboxProductos.setStyle("-fx-padding: 20 0 0 0;");  // 20px de margen superior para los productos
 
-        // Realizar la búsqueda automáticamente si hay un término
+        // Restablecer el resto del código de inicialización
+        String terminoBusqueda = CambiosVistas.getTerminoBusqueda();
         if (terminoBusqueda != null && !terminoBusqueda.isEmpty()) {
             buscarProductos.setText(terminoBusqueda);
             realizarBusqueda();
@@ -105,48 +109,54 @@ public class ViewBusquedaProductosController {
         BigDecimal precioMin = FMin.getText().isEmpty() ? null : new BigDecimal(FMin.getText());
         BigDecimal precioMax = FMax.getText().isEmpty() ? null : new BigDecimal(FMax.getText());
 
-        // Limpiar los resultados anteriores
+        // Limpiar los contenedores
+        vboxTiendas.getChildren().clear();
         vboxProductos.getChildren().clear();
 
         // Mostrar tiendas si están seleccionadas
         if (tiendasSeleccionadas) {
             List<Tienda> tiendas = mostrarTiendas.buscarTiendasPorNombre(terminoBusqueda);
+
+            // Filtro adicional por categoría si la categoría está seleccionada
+            if (categoriaSeleccionada != null && !categoriaSeleccionada.isEmpty()) {
+                tiendas = tiendas.stream()
+                        .filter(tienda -> tienda.getCategoria().equals(categoriaSeleccionada))
+                        .toList();  // Filtrar las tiendas por categoría seleccionada
+            }
+
             if (!tiendas.isEmpty()) {
                 Label labelTiendas = new Label("Tiendas:");
                 labelTiendas.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
-                vboxProductos.getChildren().add(labelTiendas);
+                vboxTiendas.getChildren().add(labelTiendas); // Agregar etiqueta "Tiendas:"
                 mostrarResultadosTiendas(tiendas);
             }
         }
 
-        // Mostrar productos si están seleccionados
+        // Mostrar productos si están seleccionados (aplicar filtro de categoría)
         if (productosSeleccionados) {
             List<Producto> productos = busquedaProductos.buscarConFiltros(terminoBusqueda, categoriaSeleccionada, precioMin, precioMax);
             if (!productos.isEmpty()) {
                 Label labelProductos = new Label("Productos:");
                 labelProductos.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
-                vboxProductos.getChildren().add(labelProductos);
+                vboxProductos.getChildren().add(labelProductos); // Agregar etiqueta "Productos:"
                 mostrarResultadosBusqueda(productos);
             }
         }
     }
 
 
-
+    private void mostrarResultadosTiendas(List<Tienda> tiendas) {
+        for (Tienda tienda : tiendas) {
+            agregarTiendaAVista(tienda);
+        }
+    }
 
     private void mostrarResultadosBusqueda(List<Producto> productos) {
-        vboxProductos.getChildren().clear();
         for (Producto producto : productos) {
             agregarProductoAVista(producto);
         }
     }
 
-    private void mostrarResultadosTiendas(List<Tienda> tiendas) {
-        vboxProductos.getChildren().clear();
-        for (Tienda tienda : tiendas) {
-            agregarTiendaAVista(tienda);
-        }
-    }
 
     private void agregarProductoAVista(Producto producto) {
         HBox hboxProducto = new HBox(10);

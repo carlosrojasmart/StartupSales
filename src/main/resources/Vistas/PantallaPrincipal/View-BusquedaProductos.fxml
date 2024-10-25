@@ -153,19 +153,22 @@
          </children></VBox>
         <ScrollPane fitToWidth="true" layoutX="166.0" layoutY="66.0" prefHeight="415.0" prefWidth="696.0" style="-fx-background-color: #ffffff;">
             <content>
+                <VBox fx:id="vboxTiendas" spacing="10">
+                    <padding>
+                        <Insets bottom="10" left="10" right="10" top="10" />
+                    </padding>
+                    <!-- Las tiendas se agregarán aquí -->
+                </VBox>
+
                 <VBox fx:id="vboxProductos" spacing="10">
                     <padding>
-                        <Insets bottom="10" left="10" right="10" top="40" />
+                        <Insets bottom="10" left="10" right="10" top="10" />
                     </padding>
-                    <!-- Los productos se agregarán dinámicamente aquí -->
+                    <!-- Los productos se agregarán aquí -->
                 </VBox>
+
             </content>
         </ScrollPane>
-        <Label fx:id="lblProductos" layoutX="180.0" layoutY="77.0" prefHeight="28.0" prefWidth="78.0" text="Productos">
-            <font>
-                <Font name="MS Reference Sans Serif" size="15.0" />
-            </font>
-        </Label>
         <Button fx:id="btnVolverInicio" layoutX="710.0" layoutY="70.0" mnemonicParsing="false" onAction="#volverInicio" prefHeight="28.0" prefWidth="121.0" style="-fx-background-color: #000000;" text="Volver a Inicio" textFill="WHITE">
             <font>
                 <Font name="MS Reference Sans Serif" size="14.0" />
