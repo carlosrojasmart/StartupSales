@@ -10,8 +10,10 @@ public class StartupSales extends Application {
 
     @Override
     public void start(Stage stage) {
-        cambiosVistas.cargarVista(stage, "/Vistas/PantallaPrincipal/View-PantallaPrincipal.fxml", "Bienvenido a Main.StartupSales!", 854, 503);
+        cambiosVistas.cargarVista(stage, "/Vistas/PantallaPrincipal/View-PantallaPrincipal.fxml", "Bienvenido a Main.StartupSales!", 854, 803);
         //854 503
+        stage.setMaximized(true);
+
     }
 
     public static void main(String[] args) {
