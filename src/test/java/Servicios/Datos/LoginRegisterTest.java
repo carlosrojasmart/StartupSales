@@ -32,6 +32,8 @@ public class LoginRegisterTest {
         }
     }
 
+
+    //Prueba de un login exitoso
     @Test
     public void handleLogin() throws SQLException{
         //Insertar un usuario de prueba
@@ -65,13 +67,48 @@ public class LoginRegisterTest {
             }
         };
 
-        //Ejecutar el metodo al probar una contraseña incorrecta
-        loginRegister.handleLogin("m.perez@gmail.com", "contraseñaInvalida", callback);
-
         //Ejecutar el metodo con la contraseña correcta
         loginRegister.handleLogin("m.perez@gmail.com", "12345", callback);
 
     }
+
+    @Test
+    public void handleLogin_invalidPassword() throws SQLException{
+        //Se inserta un usuario de prueba
+        String sql = "INSERT INTO Usuario (idUsuario, nombre, direccion, correo_electronico, contraseña, saldo_actual, saldo_pagar, esVendedor) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, 1);
+            ps.setString(2, "Juan");
+            ps.setString(3, "calle 7");
+            ps.setString(4, "juan@gmail.com");
+            ps.setString(5, "12345");
+            ps.setDouble(6, 100.0);
+            ps.setDouble(7, 50.0);
+            ps.setBoolean(8, false);
+            ps.executeUpdate();
+        }
+
+        // Crear un callback de prueba
+        LoginRegister.LoginCallback callback = new LoginRegister.LoginCallback() {
+            @Override
+            public void onSuccess(String message) {
+                // Falla si el login es exitoso con contraseña incorrecta
+                fail("Expected failure, but got success: " + message);
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                // Verifica que el mensaje sea el esperado
+                assertEquals("Contraseña incorrecta.", errorMessage);
+            }
+        };
+
+        // Ejecutar el método a probar con una contraseña incorrecta
+        loginRegister.handleLogin("juan@gmail.com", "invalidPassword", callback);
+    }
+
+    @Test
+
 
     @Test
     public void registrarUsuario() {
