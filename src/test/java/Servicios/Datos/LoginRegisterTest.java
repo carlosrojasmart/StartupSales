@@ -107,7 +107,29 @@ public class LoginRegisterTest {
         loginRegister.handleLogin("juan@gmail.com", "invalidPassword", callback);
     }
 
+    //Prueba cuando no existe el usuario
     @Test
+    public void testUserNotFound(){
+        // Crear un callback de prueba
+        LoginRegister.LoginCallback callback = new LoginRegister.LoginCallback() {
+            @Override
+            public void onSuccess(String message) {
+                // Falla si el login es exitoso
+                fail("Expected failure, but got success: " + message);
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                // Verifica que el mensaje sea el esperado
+                assertEquals("Correo no existe.", errorMessage);
+            }
+        };
+
+        // Ejecutar el método a probar
+        loginRegister.handleLogin("correoNoExiste@gmail.com", "password", callback);
+    }
+
+    //Prueba para verificar el fallo de cuando los campos estan vacios
 
 
     @Test
