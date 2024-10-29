@@ -30,6 +30,7 @@ public class CambiosVistas {
             Scene scene = new Scene(root, ancho, alto);
             stage.setTitle(titulo);
             stage.setScene(scene);
+            stage.setMaximized(true);
             stage.show();
         } catch (Exception e) {
             e.printStackTrace();
