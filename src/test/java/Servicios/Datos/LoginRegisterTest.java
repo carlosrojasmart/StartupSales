@@ -12,69 +12,71 @@ import java.sql.SQLException;
 
 public class LoginRegisterTest {
 
-    //Se instancia un objeto de la clase login y una conexion para la BD
+    // Se instancia un objeto de la clase login y una conexión para la BD
     private LoginRegister loginRegister;
     private Connection connection;
 
-    //Se hace la conexion a la base de datos
+    // Se hace la conexión a la base de datos
     @Before
-    public void setUp() throws SQLException{
-        loginRegister= new LoginRegister();
-        connection= JDBC.ConectarBDPruebas();
+    public void setUp() throws SQLException {
+        loginRegister = new LoginRegister();
+        connection = JDBC.ConectarBDPruebas();
     }
 
-    //Despues de la prueba se cierra la conexion y limpia la base de datos
+    // Después de la prueba se cierra la conexión y limpia la base de datos
     @After
-    public void tearDown() throws SQLException{
-
-        if(connection != null && !connection.isClosed()){
+    public void tearDown() throws SQLException {
+        if (connection != null && !connection.isClosed()) {
             connection.close();
         }
     }
 
-
-    //Prueba de un login exitoso
+    // Prueba de un login exitoso
     @Test
-    public void handleLogin() throws SQLException{
-        //Insertar un usuario de prueba
-        String sql= "INSERT INTO Usuario (idUsuario, nombre, direccion, correo_electronico, contraseña, saldo_actual, saldo_pagar, esVendedor) VALUES (?,?,?,?,?,?,?,?)";
-        try(PreparedStatement pst= connection.prepareStatement(sql)){
-            pst.setInt(1,1);
-            pst.setString(2, "Mariana");
-            pst.setString(3, "calle 88");
-            pst.setString(4, "m.perez@gmail.com");
-            pst.setString(5, "12345");
-            pst.setDouble(6, 100.0 );
-            pst.setDouble(7, 50.0);
-            pst.setBoolean(8, false);
-            //Lo inserta en la BD
-            pst.executeUpdate();
+    public void handleLoginExitoso() throws SQLException {
+        // Eliminar usuario de prueba si ya existe
+        String deleteSql = "DELETE FROM Usuario WHERE idUsuario = ?";
+        try (PreparedStatement pstDelete = connection.prepareStatement(deleteSql)) {
+            pstDelete.setInt(1, 1);  // ID de prueba
+            pstDelete.executeUpdate();
         }
 
-        //Se crea un callback de prueba
-        LoginRegister.LoginCallback callback= new LoginRegister.LoginCallback() {
+        // Insertar un usuario de prueba
+        String insertSql = "INSERT INTO Usuario (idUsuario, nombre, direccion, correo_electronico, contraseña, saldo_actual, saldo_pagar, esVendedor) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement pstInsert = connection.prepareStatement(insertSql)) {
+            pstInsert.setInt(1, 1);
+            pstInsert.setString(2, "Mariana");
+            pstInsert.setString(3, "calle 88");
+            pstInsert.setString(4, "m.perez@gmail.com");
+            pstInsert.setString(5, "12345");
+            pstInsert.setDouble(6, 100.0);
+            pstInsert.setDouble(7, 50.0);
+            pstInsert.setBoolean(8, false);
+            pstInsert.executeUpdate();
+        }
+
+        // Crear un callback de prueba
+        LoginRegister.LoginCallback callback = new LoginRegister.LoginCallback() {
             @Override
             public void onSuccess(String message) {
-                //Verifica que el mensaje sea el esperado
-                assertEquals("Login exitoso ", message);
-
+                // Verificar que el mensaje sea el esperado
+                assertEquals("Login exitoso.", message);
             }
 
             @Override
             public void onFailure(String errorMessage) {
-               //Falla si el login no es exitoso
-                fail("Expected success, but got failurre" + errorMessage);
+                // Fallar si el login no es exitoso
+                fail("Expected success, but got failure: " + errorMessage);
             }
         };
 
-        //Ejecutar el metodo con la contraseña correcta
+        // Ejecutar el método con la contraseña correcta
         loginRegister.handleLogin("m.perez@gmail.com", "12345", callback);
-
     }
 
     @Test
-    public void handleLogin_invalidPassword() throws SQLException{
-        //Se inserta un usuario de prueba
+    public void handleLogin_invalidPassword() throws SQLException {
+        // Se inserta un usuario de prueba
         String sql = "INSERT INTO Usuario (idUsuario, nombre, direccion, correo_electronico, contraseña, saldo_actual, saldo_pagar, esVendedor) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, 1);
@@ -107,9 +109,9 @@ public class LoginRegisterTest {
         loginRegister.handleLogin("juan@gmail.com", "invalidPassword", callback);
     }
 
-    //Prueba cuando no existe el usuario
+    // Prueba cuando no existe el usuario
     @Test
-    public void testUserNotFound(){
+    public void testUserNotFound() {
         // Crear un callback de prueba
         LoginRegister.LoginCallback callback = new LoginRegister.LoginCallback() {
             @Override
@@ -129,9 +131,9 @@ public class LoginRegisterTest {
         loginRegister.handleLogin("correoNoExiste@gmail.com", "password", callback);
     }
 
-    //Prueba para verificar el fallo de cuando los campos estan vacios
+    // Prueba para verificar el fallo de cuando los campos están vacíos
     @Test
-    public void test_EmptyFields(){
+    public void test_EmptyFields() {
         // Crear un callback de prueba
         LoginRegister.LoginCallback callback = new LoginRegister.LoginCallback() {
             @Override
@@ -154,8 +156,8 @@ public class LoginRegisterTest {
         loginRegister.handleLogin("username", "", callback);
     }
 
-
     @Test
     public void registrarUsuario() {
+        // Implementar la prueba para registrar un usuario
     }
 }
