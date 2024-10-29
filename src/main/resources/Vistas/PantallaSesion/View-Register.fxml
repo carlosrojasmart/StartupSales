@@ -6,9 +6,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<HBox prefHeight="503.0" prefWidth="854.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.Sesion.ViewRegisterController">
+<HBox prefHeight="503.0" prefWidth="854.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.Sesion.ViewRegisterController" spacing="10" HBox.hgrow="ALWAYS">
     <children>
-        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="427.0" style="-fx-background-color: #FFFFFFFF;" HBox.hgrow="ALWAYS">
+        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="427.0" style="-fx-background-color: #FFFFFFFF;" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
             <children>
                 <Label text="Registro">
                     <font>
@@ -100,7 +100,7 @@
                 </VBox>
             </children>
         </VBox>
-        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="427.0" style="-fx-background-color: #000000;">
+        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="427.0" style="-fx-background-color: #000000;" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
             <children>
                 <ImageView fitHeight="300.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                     <VBox.margin>
