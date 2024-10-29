@@ -8,7 +8,7 @@
 
 <HBox prefHeight="503.0" prefWidth="854.0" style="-fx-background-color: #FFFFFFFF;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.Sesion.ViewLoginController">
    <children>
-      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="427.0" HBox.hgrow="ALWAYS">
+      <VBox alignment="CENTER" prefHeight="503.0" prefWidth="427.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
          <children>
             <Label text="Iniciar Sesión">
                <font>
@@ -16,18 +16,16 @@
                </font>
                <VBox.margin>
                   <Insets bottom="10.0" />
-               </VBox.margin></Label>
-            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+               </VBox.margin>
+            </Label>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="300.0" spacing="10" VBox.vgrow="ALWAYS">
                <children>
-                  <Label prefHeight="30.0" prefWidth="169.0" text="Correo Electronico">
+                  <Label prefHeight="30.0" prefWidth="169.0" text="Correo Electrónico">
                      <font>
                         <Font size="20.0" />
                      </font>
-                     <VBox.margin>
-                        <Insets bottom="10.0" right="125.0" top="10.0" />
-                     </VBox.margin>
                   </Label>
-                  <TextField fx:id="txtUser" maxWidth="300.0">
+                  <TextField fx:id="txtUser" maxWidth="250.0">
                      <font>
                         <Font size="18.0" />
                      </font>
@@ -36,56 +34,37 @@
                      <font>
                         <Font size="20.0" />
                      </font>
-                     <VBox.margin>
-                        <Insets bottom="10.0" right="200.0" top="10.0" />
-                     </VBox.margin>
                   </Label>
-                  <PasswordField fx:id="txtPassword" maxWidth="300.0">
+                  <PasswordField fx:id="txtPassword" maxWidth="250.0">
                      <font>
                         <Font size="18.0" />
                      </font>
-                     <VBox.margin>
-                        <Insets bottom="12.0" />
-                     </VBox.margin>
                   </PasswordField>
                   <Label fx:id="lblMensaje" text="Inicia Sesión" />
                   <Button fx:id="btnLogin" maxWidth="150.0" mnemonicParsing="false" text="Ingresar">
                      <font>
                         <Font size="15.0" />
                      </font>
-                     <VBox.margin>
-                        <Insets top="12.0" />
-                     </VBox.margin>
                   </Button>
                   <Button fx:id="btnCrearUnaCuenta" maxWidth="150.0" mnemonicParsing="false" onAction="#mostrarCrearCuenta" text="Crear una cuenta">
-                     <VBox.margin>
-                        <Insets top="15.0" />
-                     </VBox.margin>
                      <font>
                         <Font size="15.0" />
                      </font>
                   </Button>
-                  <Button fx:id="btnSeguirSinCuenta" mnemonicParsing="false" onAction="#volverVistaInicial" style="-fx-background-color: #ffffffff;" text="Quiero viendo seguir sin crear una cuenta">
-                     <VBox.margin>
-                        <Insets top="20.0" />
-                     </VBox.margin>
+                  <Button fx:id="btnSeguirSinCuenta" maxWidth="200.0" mnemonicParsing="false" onAction="#volverVistaInicial" style="-fx-background-color: #FFFFFFFF;" text="Seguir sin crear una cuenta">
                   </Button>
                </children>
-               <VBox.margin>
-                  <Insets left="30.0" right="30.0" />
-               </VBox.margin>
             </VBox>
          </children>
       </VBox>
-      <VBox alignment="CENTER" prefHeight="200.0" prefWidth="427.0" style="-fx-background-color: #000000;">
+      <VBox alignment="CENTER" prefHeight="503.0" prefWidth="427.0" style="-fx-background-color: #000000;" VBox.vgrow="ALWAYS">
          <children>
             <ImageView fitHeight="300.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
                <image>
                   <Image url="@../../Imagenes/Principal/Startuplogo.jpeg" />
-               </image></ImageView>
-         </children></VBox>
+               </image>
+            </ImageView>
+         </children>
+      </VBox>
    </children>
 </HBox>
