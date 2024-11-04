@@ -12,7 +12,7 @@ import java.security.NoSuchAlgorithmException;
 import DB.JDBC;
 
 public class LoginRegister {
-    private String hashPassword(String password) {
+    String hashPassword(String password) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             byte[] hashBytes = md.digest(password.getBytes());
