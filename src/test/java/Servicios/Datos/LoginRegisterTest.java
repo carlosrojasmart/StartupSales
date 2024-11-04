@@ -184,4 +184,27 @@ public class LoginRegisterTest {
         assertTrue(registroExitoso[0]);
         assertEquals("Usuario registrado exitosamente.", mensajeRecibido[0]);
     }
+
+    @Test
+    public void testRegistrarUsuarioCamposVacios() {
+        boolean[] registroExitoso = {true};
+        String[] mensajeError = {null};
+
+        LoginRegister.RegistrationCallback callback = new LoginRegister.RegistrationCallback() {
+            @Override
+            public void onSuccess(String message) {
+                registroExitoso[0] = true;
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                registroExitoso[0] = false;
+                mensajeError[0] = errorMessage;
+            }
+        };
+
+        loginRegister.registrarUsuario("", "", "", "", "", callback);
+        assertFalse(registroExitoso[0]);
+        assertEquals("Por favor, completa todos los campos.", mensajeError[0]);
+    }
 }
