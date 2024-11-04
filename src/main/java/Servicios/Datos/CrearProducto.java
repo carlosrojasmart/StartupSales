@@ -23,25 +23,20 @@ import java.util.Random;
 public class CrearProducto {
 
     public boolean crearProducto(Producto producto, Stage stage) {
-        // Generar un idProducto aleatorio antes de guardar
-        producto.setIdProducto(generarIdProductoAleatorio());
-
-        String sql = "INSERT INTO Producto (idProducto, nombre, precio, descripcion, stock, categoria, imagenProducto, idTienda) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        // Eliminar la generación manual del ID de producto
+        String sql = "INSERT INTO Producto (nombre, precio, descripcion, stock, categoria, imagenProducto, idTienda) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conexion = JDBC.ConectarBD();
              PreparedStatement pstmt = conexion.prepareStatement(sql)) {
-            pstmt.setInt(1, producto.getIdProducto());
-            pstmt.setString(2, producto.getNombre());
 
-            // Usar BigDecimal para manejar precios
-            pstmt.setBigDecimal(3, producto.getPrecio());
-
-            pstmt.setString(4, producto.getDescripcion());
-            pstmt.setInt(5, producto.getStock());
-            pstmt.setString(6, producto.getCategoria());
-            pstmt.setBytes(7, producto.getImagenProducto());
-            pstmt.setInt(8, producto.getIdTienda());
+            pstmt.setString(1, producto.getNombre());
+            pstmt.setBigDecimal(2, producto.getPrecio()); // Usar BigDecimal para manejar precios
+            pstmt.setString(3, producto.getDescripcion());
+            pstmt.setInt(4, producto.getStock());
+            pstmt.setString(5, producto.getCategoria());
+            pstmt.setBytes(6, producto.getImagenProducto());
+            pstmt.setInt(7, producto.getIdTienda());
 
             int filasInsertadas = pstmt.executeUpdate();
             if (filasInsertadas > 0) {
@@ -69,12 +64,6 @@ public class CrearProducto {
             e.printStackTrace();
             System.out.println("Error al cargar la vista de la tienda.");
         }
-    }
-
-    // Método para generar un idProducto aleatorio
-    public int generarIdProductoAleatorio() {
-        Random random = new Random();
-        return random.nextInt(900000) + 100000; // Generar un idProducto entre 100000 y 999999
     }
 
     public List<Producto> obtenerProductosDeTienda(int idTienda) {

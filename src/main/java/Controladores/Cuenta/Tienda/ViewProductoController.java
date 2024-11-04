@@ -110,7 +110,6 @@ public class ViewProductoController {
     }
 
     private void crearProducto() {
-        // Validar campos
         if (nombreProducto.getText().isEmpty() || precioProducto.getText().isEmpty() ||
                 descProducto.getText().isEmpty() || stockProducto.getValue() == null ||
                 catProducto.getValue() == null || archivoImagen == null) {
@@ -119,20 +118,14 @@ public class ViewProductoController {
         }
 
         try {
-            // Crear un nuevo producto
             Producto producto = new Producto();
             producto.setNombre(nombreProducto.getText());
-
-            // Cambiar el precio a BigDecimal
-            producto.setPrecio(new BigDecimal(precioProducto.getText())); // Cambio aquí
-
+            producto.setPrecio(new BigDecimal(precioProducto.getText()));
             producto.setDescripcion(descProducto.getText());
             producto.setStock(stockProducto.getValue());
             producto.setCategoria(catProducto.getValue());
             producto.setImagenProducto(new FileInputStream(archivoImagen).readAllBytes());
-            producto.setIdProducto(crearProducto.generarIdProductoAleatorio());
 
-            // Asegurarse de usar el idTienda de la tienda seleccionada
             if (ViewMirarTiendaController.getTiendaSeleccionada() != null) {
                 producto.setIdTienda(ViewMirarTiendaController.getTiendaSeleccionada().getIdTienda());
             } else {
@@ -140,10 +133,7 @@ public class ViewProductoController {
                 return;
             }
 
-            // Obtener el Stage actual
             Stage stage = (Stage) nombreProducto.getScene().getWindow();
-
-            // Guardar el producto en la base de datos y cambiar la vista si es exitoso
             boolean exito = crearProducto.crearProducto(producto, stage);
             if (exito) {
                 System.out.println("Producto creado exitosamente.");

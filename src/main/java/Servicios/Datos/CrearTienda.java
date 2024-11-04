@@ -39,21 +39,20 @@ public class CrearTienda {
     }
 
     // Método para crear la tienda
-    public void crearTienda(int idTienda, String nombre, String descripcion, int idUsuario, String categoria, File archivoImagen) throws SQLException, IOException {
+    public void crearTienda(String nombre, String descripcion, int idUsuario, String categoria, File archivoImagen) throws SQLException, IOException {
         try (Connection conexion = JDBC.ConectarBD()) {
-            // Insertar la nueva tienda en la tabla Tienda
-            String sqlTienda = "INSERT INTO Tienda (idTienda, nombre, descripcion, idUsuario, categoria, imagenTienda) VALUES (?, ?, ?, ?, ?, ?)";
+            // Insertar la nueva tienda sin especificar el idTienda (MySQL lo generará automáticamente)
+            String sqlTienda = "INSERT INTO Tienda (nombre, descripcion, idUsuario, categoria, imagenTienda) VALUES (?, ?, ?, ?, ?)";
 
             try (PreparedStatement pstmtTienda = conexion.prepareStatement(sqlTienda)) {
-                pstmtTienda.setInt(1, idTienda);
-                pstmtTienda.setString(2, nombre);
-                pstmtTienda.setString(3, descripcion);
-                pstmtTienda.setInt(4, idUsuario);
-                pstmtTienda.setString(5, categoria);
+                pstmtTienda.setString(1, nombre);
+                pstmtTienda.setString(2, descripcion);
+                pstmtTienda.setInt(3, idUsuario);
+                pstmtTienda.setString(4, categoria);
 
                 // Leer la imagen como un flujo binario
                 FileInputStream fis = new FileInputStream(archivoImagen);
-                pstmtTienda.setBinaryStream(6, fis, (int) archivoImagen.length());
+                pstmtTienda.setBinaryStream(5, fis, (int) archivoImagen.length());
 
                 pstmtTienda.executeUpdate();
                 fis.close();
@@ -67,12 +66,6 @@ public class CrearTienda {
                 pstmtUsuario.executeUpdate();
             }
         }
-    }
-
-    // Método para generar un idTienda aleatorio
-    public int generarIdAleatorio() {
-        Random random = new Random();
-        return random.nextInt(900000) + 100000;  // Generar un idTienda entre 100000 y 999999
     }
 
     public boolean eliminarTienda(int idTienda) {

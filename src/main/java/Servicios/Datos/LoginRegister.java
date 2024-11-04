@@ -4,11 +4,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Random;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.math.BigDecimal;
-
 import DB.JDBC;
 
 public class LoginRegister {
@@ -52,20 +50,15 @@ public class LoginRegister {
                         String nombre = rs.getString("nombre");
                         String correo = rs.getString("correo_electronico");
                         boolean esVendedor = rs.getBoolean("esVendedor");
-                        // Convertir los valores a BigDecimal
                         BigDecimal saldoActual = rs.getBigDecimal("saldo_actual");
                         BigDecimal saldoPagar = rs.getBigDecimal("saldo_pagar");
 
-                        // Obtener el idCarrito del usuario
                         int idCarritoUsuario = obtenerIdCarritoDesdeBD(idUsuario);
                         if (idCarritoUsuario == -1) {
-                            // Si no hay un carrito, podrías crear uno automáticamente para el usuario
                             idCarritoUsuario = crearCarritoParaUsuario(idUsuario);
                         }
 
-                        // Establecer los datos del usuario activo, incluyendo el saldo actual y el saldo a pagar
                         UsuarioActivo.setUsuarioActivo(idUsuario, nombre, correo, esVendedor, idCarritoUsuario, saldoActual, saldoPagar);
-
                         callback.onSuccess("Login exitoso.");
                     } else {
                         callback.onFailure("Contraseña incorrecta.");
@@ -95,22 +88,7 @@ public class LoginRegister {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return -1; // Devuelve -1 si no se encontró ningún carrito para el usuario
-    }
-
-    // Método para obtener el idCarrito dado un idUsuario
-    private int obtenerIdCarrito(int idUsuario, Connection conexion) throws SQLException {
-        String sql = "SELECT idCarrito FROM Carrito WHERE idUsuario = ?";
-        try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
-            pstmt.setInt(1, idUsuario);
-            ResultSet rs = pstmt.executeQuery();
-
-            if (rs.next()) {
-                return rs.getInt("idCarrito");
-            } else {
-                return -1;
-            }
-        }
+        return -1;
     }
 
     public void registrarUsuario(String usuario, String correo, String contraseña, String telefono, String direccion, RegistrationCallback callback) {
@@ -119,32 +97,35 @@ public class LoginRegister {
             return;
         }
 
-        int idUsuario = generarIdAleatorio();
         String hashedPassword = hashPassword(contraseña);
-        BigDecimal saldoInicial = BigDecimal.ZERO; // El saldo inicial es 0 para un nuevo usuario
+        BigDecimal saldoInicial = BigDecimal.ZERO;
 
         try (Connection conexion = JDBC.ConectarBD()) {
-            String sql = "INSERT INTO Usuario (idUsuario, nombre, direccion, correo_electronico, telefono, contraseña, saldo_actual, saldo_pagar) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO Usuario (nombre, direccion, correo_electronico, telefono, contraseña, saldo_actual, saldo_pagar) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-            try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
-                pstmt.setInt(1, idUsuario);
-                pstmt.setString(2, usuario);
-                pstmt.setString(3, direccion);
-                pstmt.setString(4, correo);
-                pstmt.setString(5, telefono);
-                pstmt.setString(6, hashedPassword);
-                pstmt.setBigDecimal(7, saldoInicial); // Asignar el saldo inicial
-                pstmt.setBigDecimal(8, saldoInicial); // Asignar el saldo a pagar inicial
+            try (PreparedStatement pstmt = conexion.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+                pstmt.setString(1, usuario);
+                pstmt.setString(2, direccion);
+                pstmt.setString(3, correo);
+                pstmt.setString(4, telefono);
+                pstmt.setString(5, hashedPassword);
+                pstmt.setBigDecimal(6, saldoInicial);
+                pstmt.setBigDecimal(7, saldoInicial);
 
                 pstmt.executeUpdate();
 
-                // Crear un carrito para el usuario registrado
-                int idCarrito = crearCarritoParaUsuario(idUsuario);
+                try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        int idUsuario = generatedKeys.getInt(1);
 
-                // Configurar el usuario activo con el saldo inicial
-                UsuarioActivo.setUsuarioActivo(idUsuario, usuario, correo, false, idCarrito, saldoInicial, saldoInicial);
+                        int idCarrito = crearCarritoParaUsuario(idUsuario);
 
-                callback.onSuccess("Usuario registrado exitosamente.");
+                        UsuarioActivo.setUsuarioActivo(idUsuario, usuario, correo, false, idCarrito, saldoInicial, saldoInicial);
+                        callback.onSuccess("Usuario registrado exitosamente.");
+                    } else {
+                        callback.onFailure("Error al obtener el ID del usuario recién registrado.");
+                    }
+                }
             } catch (SQLException e) {
                 callback.onFailure("Error al registrar usuario: " + e.getMessage());
             }
@@ -154,24 +135,21 @@ public class LoginRegister {
     }
 
     private int crearCarritoParaUsuario(int idUsuario) {
-        int idCarrito = generarIdAleatorio(); // Generar un ID para el carrito
-        String sql = "INSERT INTO carrito (idCarrito, idUsuario) VALUES (?, ?)";
+        String sql = "INSERT INTO carrito (idUsuario) VALUES (?)";
         try (Connection conexion = JDBC.ConectarBD();
-             PreparedStatement pstmt = conexion.prepareStatement(sql)) {
-            pstmt.setInt(1, idCarrito);
-            pstmt.setInt(2, idUsuario);
+             PreparedStatement pstmt = conexion.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            pstmt.setInt(1, idUsuario);
             pstmt.executeUpdate();
-            return idCarrito;
+
+            try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    return generatedKeys.getInt(1);
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return -1; // Devuelve -1 si no se pudo crear el carrito
-    }
-
-    private int generarIdAleatorio() {
-        // Generar un número aleatorio de 6 dígitos como idCliente
-        Random random = new Random();
-        return random.nextInt(900000) + 100000; // Genera un número entre 100000 y 999999
+        return -1;
     }
 
     public interface LoginCallback {

@@ -129,17 +129,18 @@ public class ViewCreandoTiendaController {
                 return;
             }
 
-            // Pasar el archivo de imagen junto con los otros parámetros
-            crearTienda.crearTienda(crearTienda.generarIdAleatorio(), nombre, descripcion, idUsuario, categoria, crearTienda.getArchivoImagen());
+            // Pasar los parámetros al método (sin idTienda)
+            crearTienda.crearTienda(nombre, descripcion, idUsuario, categoria, crearTienda.getArchivoImagen());
 
             // Cambiar a la vista de Tienda Creada después de crear la tienda
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();  // Obtener el Stage desde el evento
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             cambiosVistas.cambiarVista(stage, "/Vistas/PantallaCuenta/Tienda/View-TiendaCreada.fxml");
 
         } catch (SQLException | IOException e) {
             e.printStackTrace();
         }
     }
+
 
     private void realizarBusqueda() {
         String terminoBusqueda = buscarProductos.getText().trim();
