@@ -80,7 +80,7 @@
                     </Label>
                   <AnchorPane layoutY="-6.0" prefHeight="165.0" prefWidth="862.0" style="-fx-background-color: #000000;">
                      <children>
-                          <Label layoutX="175.0" layoutY="27.0" text="Iniciar ahora con Main.StartupSales" textFill="WHITE">
+                          <Label layoutX="175.0" layoutY="27.0" text="Iniciar ahora con StartupSales" textFill="WHITE">
                               <font>
                                   <Font name="Franklin Gothic Book" size="27.0" />
                               </font>

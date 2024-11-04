@@ -3,19 +3,16 @@ package Servicios.Datos;
 import Controladores.Cuenta.Tienda.ViewMirarTiendaController;
 import DB.JDBC;
 import Modelos.Tienda;
-import Servicios.Vistas.CambiosVistas;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.layout.Pane;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.sql.Connection;
@@ -113,25 +110,64 @@ public class MostrarTiendas {
         }
     }
 
-    // Método para obtener una tienda por ID
+    // Método adicional para obtener una tienda por su ID si es necesario
     public Tienda obtenerTiendaPorId(int idTienda) {
         Tienda tienda = null;
-        String sql = "SELECT nombre, descripcion, categoria, imagenTienda FROM Tienda WHERE idTienda = ?";
+        String sql = "SELECT * FROM Tienda WHERE idTienda = ?";
+
         try (Connection conexion = JDBC.ConectarBD();
              PreparedStatement pstmt = conexion.prepareStatement(sql)) {
+
             pstmt.setInt(1, idTienda);
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                String nombre = rs.getString("nombre");
-                String descripcion = rs.getString("descripcion");
-                String categoria = rs.getString("categoria");
-                byte[] imagen = rs.getBytes("imagenTienda");
-                tienda = new Tienda(idTienda, nombre, descripcion, categoria, imagen);
+            ResultSet resultSet = pstmt.executeQuery();
+
+            if (resultSet.next()) {
+                tienda = new Tienda();
+                tienda.setIdTienda(resultSet.getInt("idTienda"));
+                tienda.setNombre(resultSet.getString("nombre"));
+                tienda.setDescripcion(resultSet.getString("descripcion"));
+                tienda.setCategoria(resultSet.getString("categoria"));
+                tienda.setImagen(resultSet.getBytes("imagenTienda"));
             }
-        } catch (Exception e) {
+
+        } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return tienda;
+    }
+
+    public List<Tienda> buscarTiendasPorNombre(String nombreTienda) {
+        List<Tienda> tiendas = new ArrayList<>();
+        String sql = "SELECT * FROM Tienda WHERE nombre LIKE ?";
+
+        try (Connection conexion = JDBC.ConectarBD();
+             PreparedStatement pstmt = conexion.prepareStatement(sql)) {
+
+            pstmt.setString(1, "%" + nombreTienda + "%");
+            ResultSet resultSet = pstmt.executeQuery();
+
+            while (resultSet.next()) {
+                Tienda tienda = new Tienda();
+                tienda.setIdTienda(resultSet.getInt("idTienda"));
+                tienda.setNombre(resultSet.getString("nombre"));
+                tienda.setDescripcion(resultSet.getString("descripcion"));
+                tienda.setCategoria(resultSet.getString("categoria"));
+
+                // Verificar si el campo imagen no es null antes de asignarlo
+                byte[] imagen = resultSet.getBytes("imagenTienda");
+                if (imagen != null) {
+                    tienda.setImagen(imagen);
+                }
+
+                tiendas.add(tienda);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return tiendas;
     }
 
     public boolean eliminarTienda(int idTienda) {
@@ -180,4 +216,5 @@ public class MostrarTiendas {
         categorias.add("Mascotas");
         return categorias;
     }
+
 }
