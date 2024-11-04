@@ -48,18 +48,13 @@ public class ViewLoginController {
         String username = txtUser.getText().trim();
         String password = txtPassword.getText().trim();
 
-        loginRegister.handleLogin(username, password, new LoginRegister.LoginCallback() {
-            @Override
-            public void onSuccess(String message) {
-                mostrarMensaje(message);
-                volverVistaInicialLogeado(); // Llama a tu método para volver a la vista inicial
-            }
-
-            @Override
-            public void onFailure(String errorMessage) {
-                mostrarMensaje(errorMessage);
-            }
-        });
+        boolean loginExitoso = loginRegister.handleLogin(username, password);
+        if (loginExitoso) {
+            mostrarMensaje("Login exitoso.");
+            volverVistaInicialLogeado();
+        } else {
+            mostrarMensaje("Error en el inicio de sesión.");
+        }
     }
 
 

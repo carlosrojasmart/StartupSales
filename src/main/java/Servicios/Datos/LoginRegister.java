@@ -29,10 +29,10 @@ public class LoginRegister {
         }
     }
 
-    public void handleLogin(String username, String password, LoginCallback callback) {
+    public boolean handleLogin(String username, String password) {
         if (username.isEmpty() || password.isEmpty()) {
-            callback.onFailure("Por favor, completa todos los campos.");
-            return;
+            System.out.println("Por favor, completa todos los campos.");
+            return false;
         }
 
         try (Connection conexion = JDBC.ConectarBD()) {
@@ -59,16 +59,20 @@ public class LoginRegister {
                         }
 
                         UsuarioActivo.setUsuarioActivo(idUsuario, nombre, correo, esVendedor, idCarritoUsuario, saldoActual, saldoPagar);
-                        callback.onSuccess("Login exitoso.");
+                        System.out.println("Login exitoso.");
+                        return true;
                     } else {
-                        callback.onFailure("Contraseña incorrecta.");
+                        System.out.println("Contraseña incorrecta.");
+                        return false;
                     }
                 } else {
-                    callback.onFailure("Correo no existe.");
+                    System.out.println("Correo no existe.");
+                    return false;
                 }
             }
         } catch (SQLException e) {
-            callback.onFailure("Error de conexión a la base de datos: " + e.getMessage());
+            System.out.println("Error de conexión a la base de datos: " + e.getMessage());
+            return false;
         }
     }
 
@@ -91,10 +95,10 @@ public class LoginRegister {
         return -1;
     }
 
-    public void registrarUsuario(String usuario, String correo, String contraseña, String telefono, String direccion, RegistrationCallback callback) {
+    public boolean registrarUsuario(String usuario, String correo, String contraseña, String telefono, String direccion) {
         if (usuario.isEmpty() || correo.isEmpty() || contraseña.isEmpty() || telefono.isEmpty() || direccion.isEmpty()) {
-            callback.onFailure("Por favor, completa todos los campos.");
-            return;
+            System.out.println("Por favor, completa todos los campos.");
+            return false;
         }
 
         String hashedPassword = hashPassword(contraseña);
@@ -112,25 +116,25 @@ public class LoginRegister {
                 pstmt.setBigDecimal(6, saldoInicial);
                 pstmt.setBigDecimal(7, saldoInicial);
 
-                pstmt.executeUpdate();
+                int rowsInserted = pstmt.executeUpdate();
+                if (rowsInserted > 0) {
+                    try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
+                        if (generatedKeys.next()) {
+                            int idUsuario = generatedKeys.getInt(1);
 
-                try (ResultSet generatedKeys = pstmt.getGeneratedKeys()) {
-                    if (generatedKeys.next()) {
-                        int idUsuario = generatedKeys.getInt(1);
-
-                        int idCarrito = crearCarritoParaUsuario(idUsuario);
-
-                        UsuarioActivo.setUsuarioActivo(idUsuario, usuario, correo, false, idCarrito, saldoInicial, saldoInicial);
-                        callback.onSuccess("Usuario registrado exitosamente.");
-                    } else {
-                        callback.onFailure("Error al obtener el ID del usuario recién registrado.");
+                            int idCarrito = crearCarritoParaUsuario(idUsuario);
+                            UsuarioActivo.setUsuarioActivo(idUsuario, usuario, correo, false, idCarrito, saldoInicial, saldoInicial);
+                            System.out.println("Usuario registrado exitosamente.");
+                            return true;
+                        }
                     }
                 }
-            } catch (SQLException e) {
-                callback.onFailure("Error al registrar usuario: " + e.getMessage());
+                System.out.println("Error al registrar usuario.");
+                return false;
             }
         } catch (SQLException e) {
-            callback.onFailure("Error de conexión a la base de datos: " + e.getMessage());
+            System.out.println("Error de conexión a la base de datos: " + e.getMessage());
+            return false;
         }
     }
 
@@ -151,14 +155,5 @@ public class LoginRegister {
         }
         return -1;
     }
-
-    public interface LoginCallback {
-        void onSuccess(String message);
-        void onFailure(String errorMessage);
-    }
-
-    public interface RegistrationCallback {
-        void onSuccess(String message);
-        void onFailure(String errorMessage);
-    }
+    
 }
