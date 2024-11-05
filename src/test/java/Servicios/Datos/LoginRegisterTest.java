@@ -12,6 +12,7 @@ import java.sql.SQLException;
 
 public class LoginRegisterTest {
 
+
     // Se instancia un objeto de la clase login y una conexión para la BD
     private LoginRegister loginRegister;
     private Connection connection;
@@ -21,6 +22,8 @@ public class LoginRegisterTest {
     public void setUp() throws SQLException {
         loginRegister = new LoginRegister();
         connection = JDBC.ConectarBDPruebas();
+        assertNotNull("Connection should not be null", connection);
+        assertFalse("Connection should not be closed", connection.isClosed());
         clearDatabase();
     }
 
@@ -44,20 +47,22 @@ public class LoginRegisterTest {
 
     // Prueba de un login exitoso
     @Test
-    public void handleLoginExitoso() throws SQLException {
+    public void testLoginExitoso() throws SQLException {
+        System.out.println("Ejecutando handleLogin");
         // Insertar un usuario de prueba
         String insertSql = "INSERT INTO Usuario (idUsuario, nombre, direccion, correo_electronico, contraseña, saldo_actual, saldo_pagar, esVendedor) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pstInsert = connection.prepareStatement(insertSql)) {
             pstInsert.setInt(1, 1);
             pstInsert.setString(2, "Mariana");
-            pstInsert.setString(3, "calle 88");
+            pstInsert.setString(3, "calle88");
             pstInsert.setString(4, "m.perez@gmail.com");
             pstInsert.setString(5, loginRegister.hashPassword("12345")); // Asegurarse de usar el método de hash correcto
-            pstInsert.setDouble(6, 100.0);
-            pstInsert.setDouble(7, 50.0);
+            pstInsert.setDouble(6, 0.0);
+            pstInsert.setDouble(7, 0.0);
             pstInsert.setBoolean(8, false);
             pstInsert.executeUpdate();
         }
+
 
         // Crear un callback de prueba
         LoginRegister.LoginCallback callback = new LoginRegister.LoginCallback() {
@@ -70,7 +75,7 @@ public class LoginRegisterTest {
             @Override
             public void onFailure(String errorMessage) {
                 // Fallar si el login no es exitoso
-                fail("Expected success, but got failure: " + errorMessage);
+                fail("Expected success, got failure :( : " + errorMessage);
             }
         };
 
@@ -80,7 +85,7 @@ public class LoginRegisterTest {
 
     // Prueba de login con contraseña incorrecta
     @Test
-    public void handleLogin_invalidPassword() throws SQLException {
+    public void testLoginContrasenaIncorrecta() throws SQLException {
         // Insertar un usuario de prueba
         String sql = "INSERT INTO Usuario (idUsuario, nombre, direccion, correo_electronico, contraseña, saldo_actual, saldo_pagar, esVendedor) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -88,9 +93,9 @@ public class LoginRegisterTest {
             ps.setString(2, "Juan");
             ps.setString(3, "calle 7");
             ps.setString(4, "juan@gmail.com");
-            ps.setString(5, loginRegister.hashPassword("12345")); // Asegurarse de usar el método de hash correcto
-            ps.setDouble(6, 100.0);
-            ps.setDouble(7, 50.0);
+            ps.setString(5, loginRegister.hashPassword("12345"));
+            ps.setDouble(6, 0.0);
+            ps.setDouble(7, 0.0);
             ps.setBoolean(8, false);
             ps.executeUpdate();
         }
@@ -99,12 +104,12 @@ public class LoginRegisterTest {
         LoginRegister.LoginCallback callback = new LoginRegister.LoginCallback() {
             @Override
             public void onSuccess(String message) {
-                fail("Expected failure, but got success: " + message);
+                assertEquals("Contraseña incorrecta.", message);
             }
 
             @Override
             public void onFailure(String errorMessage) {
-                assertEquals("Contraseña incorrecta.", errorMessage);
+                fail("Expected failure, but got success: " + errorMessage);
             }
         };
 
@@ -114,7 +119,7 @@ public class LoginRegisterTest {
 
     // Prueba cuando el usuario no existe
     @Test
-    public void testUserNotFound() {
+    public void testLoginUsuarioNoEncontrado() {
         // Crear un callback de prueba
         LoginRegister.LoginCallback callback = new LoginRegister.LoginCallback() {
             @Override
@@ -134,7 +139,7 @@ public class LoginRegisterTest {
 
     // Prueba para verificar el fallo cuando los campos están vacíos
     @Test
-    public void test_EmptyFields() {
+    public void testLoginCamposVacios() {
         // Crear un callback de prueba
         LoginRegister.LoginCallback callback = new LoginRegister.LoginCallback() {
             @Override
@@ -155,7 +160,7 @@ public class LoginRegisterTest {
 
     // Prueba para cuando se registra un usuario correctamente
     @Test
-    public void registrarUsuario() {
+    public void testRegistrarUsuario() {
         // Se crean dos variables tipo arreglo mutable para poder modificarlas dentro del callback
         //Se inicializa el booleano en false
         boolean[] registroExitoso = {false};
@@ -180,16 +185,21 @@ public class LoginRegisterTest {
         };
 
         //Se ejecuta el método para registrar un usuario mandando un usuario de ejemplo
-        loginRegister.registrarUsuario("Mari", "mari@gmail.com", "123", "53666218", "calle87", callback);
+        loginRegister.registrarUsuario("Mari", "mari@gmail.com", loginRegister.hashPassword("123"), "536662", "calle87", callback);
         assertTrue(registroExitoso[0]);
         assertEquals("Usuario registrado exitosamente.", mensajeRecibido[0]);
     }
 
+    //Prueba para registrar usuario en el caso que se manden campos vacios
     @Test
     public void testRegistrarUsuarioCamposVacios() {
+        // Se crean dos variables tipo arreglo mutable para poder modificarlas dentro del callback
+        //Se inicializa el booleano en false
         boolean[] registroExitoso = {true};
+        //Se inicializa el mensaje en null
         String[] mensajeError = {null};
 
+        //Se crea un callback de prueba para el registro
         LoginRegister.RegistrationCallback callback = new LoginRegister.RegistrationCallback() {
             @Override
             public void onSuccess(String message) {
@@ -203,8 +213,54 @@ public class LoginRegisterTest {
             }
         };
 
+        //Se ejecuta el método para registrar un usuario mandando campos vacíos
         loginRegister.registrarUsuario("", "", "", "", "", callback);
         assertFalse(registroExitoso[0]);
         assertEquals("Por favor, completa todos los campos.", mensajeError[0]);
     }
+
+    //Prueba para registrar usuario en el caso que quiera ingresar con un correo ya registrado
+    @Test
+    public void testRegistrarUsuarioCorreoDuplicado() throws SQLException {
+        // Insertar un usuario para poder probar luego el ingreso de un correo duplicado
+        String sql = "INSERT INTO Usuario (idUsuario, nombre, direccion, correo_electronico, telefono, contraseña, saldo_actual, saldo_pagar) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, 12);
+            ps.setString(2, "nicolas");
+            ps.setString(3, "calle15");
+            ps.setString(4, "nicolas@gmail.com");
+            ps.setString(5, "7688899");
+            ps.setString(6, loginRegister.hashPassword("1234"));
+            ps.setDouble(7, 0.0);
+            ps.setDouble(8, 0.0);
+            ps.executeUpdate();
+        }
+
+        // Se crean dos variables tipo arreglo mutable para poder modificarlas dentro del callback
+        //Se inicializa el booleano en false
+        boolean[] registroExitoso = {true};
+        //Se inicializa el mensaje en null
+        String[] mensajeError = {null};
+
+        //Se crea un callback de prueba para el registro
+        LoginRegister.RegistrationCallback callback = new LoginRegister.RegistrationCallback() {
+            @Override
+            public void onSuccess(String message) {
+                registroExitoso[0] = true;
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                registroExitoso[0] = false;
+                mensajeError[0] = errorMessage;
+            }
+        };
+
+        //Se ejecuta el método para registrar un usuario mandando un correo que ya existe
+        loginRegister.registrarUsuario("nico", "nicolas@gmail.com", loginRegister.hashPassword("123"), "654321", "calle8", callback);
+        assertFalse(registroExitoso[0]);
+        assertTrue(mensajeError[0].contains("Error al registrar usuario"));
+    }
 }
+
