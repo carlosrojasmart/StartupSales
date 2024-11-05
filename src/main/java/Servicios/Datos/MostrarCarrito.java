@@ -3,7 +3,6 @@ package Servicios.Datos;
 import DB.JDBC;
 import Modelos.Producto;
 
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

@@ -2,11 +2,11 @@ package Servicios.Perfil;
 
 import DB.JDBC;
 import Servicios.Datos.UsuarioActivo;
-import javafx.scene.image.Image;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
@@ -16,22 +16,19 @@ import java.sql.SQLException;
 
 public class ModificarPerfil {
 
-    // Método para guardar la imagen de perfil en la base de datos
     public void guardarImagenPerfil(File archivoImagen) throws SQLException, IOException {
         try (Connection conexion = JDBC.ConectarBD()) {
             String sql = "UPDATE Usuario SET imagen_perfil = ? WHERE idUsuario = ?";
-            try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
-                FileInputStream fis = new FileInputStream(archivoImagen);
+            try (PreparedStatement pstmt = conexion.prepareStatement(sql);
+                 FileInputStream fis = new FileInputStream(archivoImagen)) {
                 pstmt.setBinaryStream(1, fis, (int) archivoImagen.length());
                 pstmt.setInt(2, UsuarioActivo.getIdUsuario());
                 pstmt.executeUpdate();
-                fis.close();
             }
         }
     }
 
-    // Método para cargar la imagen de perfil desde la base de datos
-    public Image cargarImagenPerfil() throws SQLException {
+    public byte[] cargarImagenPerfil() throws SQLException, IOException {
         try (Connection conexion = JDBC.ConectarBD()) {
             String sql = "SELECT imagen_perfil FROM Usuario WHERE idUsuario = ?";
             try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
@@ -39,19 +36,22 @@ public class ModificarPerfil {
                 ResultSet rs = pstmt.executeQuery();
 
                 if (rs.next()) {
-                    // Si hay una imagen almacenada, devolverla como objeto Image
-                    if (rs.getBinaryStream("imagen_perfil") != null) {
-                        return new Image(rs.getBinaryStream("imagen_perfil"));
+                    try (InputStream inputStream = rs.getBinaryStream("imagen_perfil")) {
+                        if (inputStream != null) {
+                            return inputStream.readAllBytes();
+                        }
                     }
                 }
             }
         }
-        // Si no hay imagen, devolver la imagen por defecto
-        return new Image(getClass().getResourceAsStream("/Imagenes/Cuenta/ImagenPerfilDef.jpg"));
+        // Si no hay imagen, carga la imagen predeterminada
+        try (InputStream inputStream = getClass().getResourceAsStream("/Imagenes/Cuenta/ImagenPerfilDef.jpg")) {
+            return inputStream != null ? inputStream.readAllBytes() : null;
+        }
     }
 
     public String[] obtenerDatosUsuario(int idUsuario) throws SQLException {
-        String[] datos = new String[4]; // Almacenar usuario, correo, telefono, direccion
+        String[] datos = new String[4];
         try (Connection conexion = JDBC.ConectarBD()) {
             String sql = "SELECT nombre, correo_electronico, telefono, direccion FROM Usuario WHERE idUsuario = ?";
             try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
@@ -69,21 +69,17 @@ public class ModificarPerfil {
         return datos;
     }
 
-    // Método para guardar los cambios en el perfil del usuario
     public void guardarCambiosPerfil(int idUsuario, String nuevoUsuario, String nuevoCorreo, String nuevaContraseña, String nuevoTelefono, String nuevaDireccion) throws SQLException {
         try (Connection conexion = JDBC.ConectarBD()) {
             String sql = "UPDATE Usuario SET nombre = ?, correo_electronico = ?, telefono = ?, direccion = ? WHERE idUsuario = ?";
-
             try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
                 pstmt.setString(1, nuevoUsuario);
                 pstmt.setString(2, nuevoCorreo);
                 pstmt.setString(3, nuevoTelefono);
                 pstmt.setString(4, nuevaDireccion);
                 pstmt.setInt(5, idUsuario);
-
                 pstmt.executeUpdate();
 
-                // Si se cambió la contraseña, actualizarla
                 if (!nuevaContraseña.isEmpty()) {
                     actualizarContraseña(idUsuario, nuevaContraseña);
                 }
@@ -91,12 +87,11 @@ public class ModificarPerfil {
         }
     }
 
-    // Método separado para actualizar la contraseña
     private void actualizarContraseña(int idUsuario, String nuevaContraseña) throws SQLException {
         try (Connection conexion = JDBC.ConectarBD()) {
             String sql = "UPDATE Usuario SET contraseña = ? WHERE idUsuario = ?";
             try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
-                String hashedPassword = hashPassword(nuevaContraseña); // Método para hashear la contraseña
+                String hashedPassword = hashPassword(nuevaContraseña);
                 pstmt.setString(1, hashedPassword);
                 pstmt.setInt(2, idUsuario);
                 pstmt.executeUpdate();
@@ -112,9 +107,7 @@ public class ModificarPerfil {
 
             for (byte b : hashBytes) {
                 String hex = Integer.toHexString(0xff & b);
-                if (hex.length() == 1) {
-                    hexString.append('0');
-                }
+                if (hex.length() == 1) hexString.append('0');
                 hexString.append(hex);
             }
             return hexString.toString();
@@ -122,9 +115,4 @@ public class ModificarPerfil {
             throw new RuntimeException("Error al generar el hash de la contraseña", e);
         }
     }
-
-
-
-
-
 }

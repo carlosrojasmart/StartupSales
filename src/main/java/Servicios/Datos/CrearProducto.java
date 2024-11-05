@@ -1,179 +1,100 @@
 package Servicios.Datos;
 
-import Controladores.Cuenta.Tienda.ViewEditarProductoController;
 import DB.JDBC;
 import Modelos.Producto;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.stage.Stage;
-
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Random;
 
 public class CrearProducto {
 
-    public boolean crearProducto(Producto producto, Stage stage) {
-        // Eliminar la generación manual del ID de producto
+    // Atributo para almacenar el archivo de imagen seleccionado
+    private File archivoImagen;
+
+    public void setArchivoImagen(File archivoImagen) {
+        this.archivoImagen = archivoImagen;
+    }
+
+    public File getArchivoImagen() {
+        return archivoImagen;
+    }
+
+    public boolean crearProducto(Producto producto) {
         String sql = "INSERT INTO Producto (nombre, precio, descripcion, stock, categoria, imagenProducto, idTienda) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conexion = JDBC.ConectarBD();
-             PreparedStatement pstmt = conexion.prepareStatement(sql)) {
+             PreparedStatement pstmt = conexion.prepareStatement(sql);
+             FileInputStream fis = new FileInputStream(archivoImagen)) {  // Usar archivoImagen directamente
 
             pstmt.setString(1, producto.getNombre());
-            pstmt.setBigDecimal(2, producto.getPrecio()); // Usar BigDecimal para manejar precios
+            pstmt.setBigDecimal(2, producto.getPrecio());
             pstmt.setString(3, producto.getDescripcion());
             pstmt.setInt(4, producto.getStock());
             pstmt.setString(5, producto.getCategoria());
-            pstmt.setBytes(6, producto.getImagenProducto());
+
+            // Cargar la imagen desde archivoImagen
+            pstmt.setBinaryStream(6, fis, (int) archivoImagen.length());
+
             pstmt.setInt(7, producto.getIdTienda());
 
-            int filasInsertadas = pstmt.executeUpdate();
-            if (filasInsertadas > 0) {
-                // Cambiar de vista a la tienda después de la creación exitosa
-                irAVistaTienda(stage);
-                return true;
-            }
-            return false;
+            return pstmt.executeUpdate() > 0;
 
-        } catch (SQLException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
             return false;
         }
-    }
-
-    private void irAVistaTienda(Stage stage) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Vistas/PantallaCuenta/Tienda/View-MirarTienda.fxml"));
-            Parent root = loader.load();
-
-            // Cambiar la escena del stage a la vista de la tienda
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Error al cargar la vista de la tienda.");
-        }
-    }
-
-    public List<Producto> obtenerProductosDeTienda(int idTienda) {
-        List<Producto> productos = new ArrayList<>();
-        String sql = "SELECT * FROM Producto WHERE idTienda = ?";
-
-        try (Connection conexion = JDBC.ConectarBD();
-             PreparedStatement pstmt = conexion.prepareStatement(sql)) {
-
-            pstmt.setInt(1, idTienda);
-            ResultSet resultSet = pstmt.executeQuery();
-
-            while (resultSet.next()) {
-                Producto producto = new Producto();
-                producto.setIdProducto(resultSet.getInt("idProducto"));
-                producto.setNombre(resultSet.getString("nombre"));
-
-                // Obtener el precio como BigDecimal
-                producto.setPrecio(resultSet.getBigDecimal("precio"));
-
-                producto.setDescripcion(resultSet.getString("descripcion"));
-                producto.setStock(resultSet.getInt("stock"));
-                producto.setCategoria(resultSet.getString("categoria"));
-                producto.setImagenProducto(resultSet.getBytes("imagenProducto"));
-
-                productos.add(producto);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return productos;
     }
 
     public boolean actualizarProducto(Producto producto) {
         String sql = "UPDATE Producto SET nombre = ?, precio = ?, descripcion = ?, stock = ?, categoria = ?, imagenProducto = ? WHERE idProducto = ?";
-
         try (Connection conexion = JDBC.ConectarBD();
              PreparedStatement pstmt = conexion.prepareStatement(sql)) {
+
             pstmt.setString(1, producto.getNombre());
-
-            // Usar BigDecimal para actualizar el precio
             pstmt.setBigDecimal(2, producto.getPrecio());
-
             pstmt.setString(3, producto.getDescripcion());
             pstmt.setInt(4, producto.getStock());
             pstmt.setString(5, producto.getCategoria());
-            pstmt.setBytes(6, producto.getImagenProducto());
-            pstmt.setInt(7, producto.getIdProducto());
 
+            // Verificar si hay una imagen para actualizar
+            if (archivoImagen != null) {
+                try (FileInputStream fis = new FileInputStream(archivoImagen)) {
+                    pstmt.setBinaryStream(6, fis, (int) archivoImagen.length());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                pstmt.setNull(6, java.sql.Types.BLOB);
+            }
+
+            pstmt.setInt(7, producto.getIdProducto());
             return pstmt.executeUpdate() > 0;
+
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
-        }
-    }
-
-    private void eliminarProductoDeCarrito(int idProducto) {
-        String sql = "DELETE FROM carrito_producto WHERE idProducto = ?";
-        try (Connection conexion = JDBC.ConectarBD();
-             PreparedStatement pstmt = conexion.prepareStatement(sql)) {
-            pstmt.setInt(1, idProducto);
-            int filasEliminadas = pstmt.executeUpdate();
-            System.out.println("Productos eliminados del carrito: " + filasEliminadas);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("Error al eliminar el producto del carrito: " + e.getMessage());
         }
     }
 
     public boolean eliminarProducto(int idProducto) {
-        // Primero eliminar el producto del carrito para no violar la restricción de clave foránea
-        eliminarProductoDeCarrito(idProducto);
-
-        // Ahora eliminar el producto de la tabla Producto
-        String sql = "DELETE FROM Producto WHERE idProducto = ?";
-        try (Connection conexion = JDBC.ConectarBD();
-             PreparedStatement pstmt = conexion.prepareStatement(sql)) {
-            pstmt.setInt(1, idProducto);
-            int filasEliminadas = pstmt.executeUpdate();
-            return filasEliminadas > 0;
+        String sqlEliminarDeCarrito = "DELETE FROM carrito_producto WHERE idProducto = ?";
+        String sqlEliminarProducto = "DELETE FROM Producto WHERE idProducto = ?";
+        try (Connection conexion = JDBC.ConectarBD()) {
+            try (PreparedStatement pstmtCarrito = conexion.prepareStatement(sqlEliminarDeCarrito)) {
+                pstmtCarrito.setInt(1, idProducto);
+                pstmtCarrito.executeUpdate();
+            }
+            try (PreparedStatement pstmtProducto = conexion.prepareStatement(sqlEliminarProducto)) {
+                pstmtProducto.setInt(1, idProducto);
+                return pstmtProducto.executeUpdate() > 0;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
-
-    public void editarProducto(Stage stage, Producto producto) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Vistas/PantallaCuenta/Tienda/View-EditarProducto.fxml"));
-            Parent root = loader.load();
-
-            // Obtener el controlador de la vista de edición
-            ViewEditarProductoController controller = loader.getController();
-            controller.setProductoSeleccionado(producto); // Pasar el producto al controlador de edición
-
-            // Mostrar la nueva vista
-            stage.setScene(new Scene(root));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Error al cargar la vista de edición de producto.");
-        }
-    }
-
-    // Modificar para que funcione con BigDecimal
-    public static String formatearPrecio(BigDecimal precio) {
-        NumberFormat formatoCOP = NumberFormat.getCurrencyInstance(new Locale("es", "CO"));
-        return formatoCOP.format(precio);
-    }
-
 }

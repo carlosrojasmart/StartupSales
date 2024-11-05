@@ -7,10 +7,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -53,23 +56,16 @@ public class ViewCreandoTiendaController {
     private Button BtnCrearTienda;
 
     private CambiosVistas cambiosVistas = new CambiosVistas();
-    private CrearTienda crearTienda = new CrearTienda();  // Instancia de CrearTienda
+    private CrearTienda crearTienda = new CrearTienda();
 
     @FXML
     private void initialize() {
         buscarProductos.setOnMouseClicked(event -> buscarProductos.clear());
-
         carritoCompra.setOnMouseClicked(event -> mostrarCarrito());
 
-        // Rellenar el ChoiceBox con las categorías de tienda
         boxCategoria.getItems().addAll("Electrónica", "Ropa y Moda", "Hogar y Jardín", "Salud y Belleza", "Deportes", "Juguetes", "Alimentos", "Automóviles", "Libros", "Mascotas");
 
-        buscarProductos.setOnMouseClicked(event -> {buscarProductos.clear();});
-        // Realizar búsqueda cuando el usuario presione "Enter"
         buscarProductos.setOnAction(event -> realizarBusqueda());
-        // Configurar el evento del carrito
-        carritoCompra.setOnMouseClicked(event -> mostrarCarrito());
-
     }
 
     @FXML
@@ -106,33 +102,46 @@ public class ViewCreandoTiendaController {
         cambiosVistas.cambiarVista(stage, rutaFXML);
     }
 
-    // Llamar al método para cargar la imagen
     @FXML
     private void cargarImagen(ActionEvent event) {
-        crearTienda.cargarImagen(imagenTienda);  // Pasar el ImageView para mostrar la imagen
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Imágenes", "*.png", "*.jpg", "*.jpeg")
+        );
+
+        // Selecciona el archivo de imagen
+        File archivoSeleccionado = fileChooser.showOpenDialog(null);
+
+        if (archivoSeleccionado != null) {
+            crearTienda.setArchivoImagen(archivoSeleccionado); // Asigna la imagen al servicio
+
+            try {
+                // Convierte el archivo de imagen a Image para mostrar en el ImageView
+                Image image = new Image(new FileInputStream(archivoSeleccionado));
+                imagenTienda.setImage(image);
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("Error al cargar la imagen en el controlador.");
+            }
+        }
     }
 
-    // Llamar al método para crear la tienda
+
     @FXML
     private void crearTienda(ActionEvent event) {
         try {
             String nombre = nombreTienda.getText();
             String descripcion = descTienda.getText();
             String categoria = boxCategoria.getValue();
-
-            // Obtener el idUsuario del usuario activo
             int idUsuario = UsuarioActivo.getIdUsuario();
 
-            // Validar que todos los campos estén completos
             if (nombre.isEmpty() || descripcion.isEmpty() || categoria == null || crearTienda.getArchivoImagen() == null) {
                 System.out.println("Por favor, complete todos los campos.");
                 return;
             }
 
-            // Pasar los parámetros al método (sin idTienda)
             crearTienda.crearTienda(nombre, descripcion, idUsuario, categoria, crearTienda.getArchivoImagen());
 
-            // Cambiar a la vista de Tienda Creada después de crear la tienda
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             cambiosVistas.cambiarVista(stage, "/Vistas/PantallaCuenta/Tienda/View-TiendaCreada.fxml");
 
@@ -140,7 +149,6 @@ public class ViewCreandoTiendaController {
             e.printStackTrace();
         }
     }
-
 
     private void realizarBusqueda() {
         String terminoBusqueda = buscarProductos.getText().trim();
@@ -151,7 +159,4 @@ public class ViewCreandoTiendaController {
             System.out.println("El término de búsqueda está vacío.");
         }
     }
-
-
-
 }

@@ -9,13 +9,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.Image;
 import javafx.event.ActionEvent;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-import java.io.FileInputStream;
-import javafx.stage.FileChooser;
-import javafx.scene.image.Image;
+import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -74,29 +75,39 @@ public class ViewMiPerfilController {
 
     @FXML
     private void initialize() {
-        // Configuración del buscador y carrito
         buscarProductos.setOnMouseClicked(event -> buscarProductos.clear());
         carritoCompra.setOnMouseClicked(event -> mostrarCarrito());
 
-        // Configurar la búsqueda de productos cuando se presiona "Enter"
+        // Configuración de la acción de búsqueda
         buscarProductos.setOnAction(event -> realizarBusqueda());
 
-        // Cargar datos del usuario en la vista
-        String nombre = UsuarioActivo.getNombre();
-        String correo = UsuarioActivo.getCorreoElectronico();
-        nombreUsuario.setText(nombre);
-        correoUsuario.setText(correo);
+        nombreUsuario.setText(UsuarioActivo.getNombre());
+        correoUsuario.setText(UsuarioActivo.getCorreoElectronico());
 
         try {
-            // Cargar la imagen de perfil desde la base de datos
-            Image imagen = modificarPerfil.cargarImagenPerfil();
-            if (imagen != null) {
-                imagenPerfil.setImage(imagen);
-            }
-
-            // Cargar los demás datos del usuario en los TextField
+            cargarImagenPerfil();
             cargarDatosUsuario();
+        } catch (SQLException | IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    private void cargarImagenPerfil() throws SQLException, IOException {
+        byte[] imageBytes = modificarPerfil.cargarImagenPerfil();
+        if (imageBytes != null) {
+            Image imagen = new Image(new ByteArrayInputStream(imageBytes));
+            imagenPerfil.setImage(imagen);
+        }
+    }
+
+    private void cargarDatosUsuario() {
+        try {
+            String[] datosUsuario = modificarPerfil.obtenerDatosUsuario(UsuarioActivo.getIdUsuario());
+            cambiarUsuario.setText(datosUsuario[0]);
+            cambiarCorreo.setText(datosUsuario[1]);
+            cambiarTelefono.setText(datosUsuario[2]);
+            cambiarDireccion.setText(datosUsuario[3]);
+            cambiarContraseña.setText("");
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -106,46 +117,24 @@ public class ViewMiPerfilController {
     private void realizarBusqueda() {
         String terminoBusqueda = buscarProductos.getText().trim();
         if (!terminoBusqueda.isEmpty()) {
-            // Almacenar el término de búsqueda para la vista de búsqueda de productos
+            // Asigna el término de búsqueda para ser usado en la vista de resultados
             CambiosVistas.setTerminoBusqueda(terminoBusqueda);
-
-            // Cambiar a la vista de búsqueda de productos
             cambiarVista(buscarProductos, "/Vistas/PantallaPrincipal/View-BusquedaProductos.fxml");
         } else {
             System.out.println("El término de búsqueda está vacío.");
         }
     }
 
-    private void cargarDatosUsuario() {
-        try {
-            // Obtener los datos actuales del usuario desde la base de datos
-            String[] datosUsuario = modificarPerfil.obtenerDatosUsuario(UsuarioActivo.getIdUsuario());
-
-            // Asignar los valores a los TextField correspondientes
-            cambiarUsuario.setText(datosUsuario[0]);
-            cambiarCorreo.setText(datosUsuario[1]);
-            cambiarTelefono.setText(datosUsuario[2]);
-            cambiarDireccion.setText(datosUsuario[3]);
-            cambiarContraseña.setText(""); // Por seguridad, no mostrar la contraseña
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     @FXML
     public void guardarCambios() {
         try {
-            // Obtener los datos ingresados por el usuario
             String nuevoUsuario = cambiarUsuario.getText();
             String nuevoCorreo = cambiarCorreo.getText();
             String nuevaContraseña = cambiarContraseña.getText();
             String nuevoTelefono = cambiarTelefono.getText();
             String nuevaDireccion = cambiarDireccion.getText();
 
-            // Guardar los cambios en la base de datos
             modificarPerfil.guardarCambiosPerfil(UsuarioActivo.getIdUsuario(), nuevoUsuario, nuevoCorreo, nuevaContraseña, nuevoTelefono, nuevaDireccion);
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -162,20 +151,15 @@ public class ViewMiPerfilController {
 
         if (archivoSeleccionado != null) {
             try {
-                // Cargar la imagen en el ImageView
                 Image nuevaImagen = new Image(new FileInputStream(archivoSeleccionado));
                 imagenPerfil.setImage(nuevaImagen);
-
-                // Guardar la imagen en la base de datos usando ModificarPerfil
                 modificarPerfil.guardarImagenPerfil(archivoSeleccionado);
-
             } catch (IOException | SQLException e) {
                 e.printStackTrace();
             }
         }
     }
 
-    // Métodos para cambiar las vistas
     @FXML
     public void mostrarCarrito() {
         cambiarVista(carritoCompra, "/Vistas/PantallaPrincipal/View-CarritoCompras.fxml");
@@ -192,12 +176,9 @@ public class ViewMiPerfilController {
 
     @FXML
     public void mostrarMisTiendas(ActionEvent event) {
-        // Verificar si el usuario es vendedor
         if (UsuarioActivo.isVendedor()) {
-            // Si es vendedor, ir a la vista de tienda ya creada
             cambiarVista(BtnTienda, "/Vistas/PantallaCuenta/Tienda/View-TiendaCreada.fxml");
         } else {
-            // Si no es vendedor, ir a la vista para crear la tienda
             cambiarVista(BtnTienda, "/Vistas/PantallaCuenta/Tienda/View-CrearTienda.fxml");
         }
     }
@@ -216,5 +197,4 @@ public class ViewMiPerfilController {
         Stage stage = (Stage) nodo.getScene().getWindow();
         cambiosVistas.cambiarVista(stage, rutaFXML);
     }
-
 }
