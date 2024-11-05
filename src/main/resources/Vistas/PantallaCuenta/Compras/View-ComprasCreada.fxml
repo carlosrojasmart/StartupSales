@@ -165,3 +165,108 @@
         </ScrollPane>
     </children>
 </AnchorPane>
+
+<!--
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="503.0" prefWidth="854.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.Cuenta.Compras.ViewComprasCreadaController">
+    <children>
+        <HBox prefHeight="66.0" style="-fx-background-color: #000000;" spacing="10.0" alignment="CENTER_LEFT">
+            <children>
+                <ImageView fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../../Imagenes/Principal/StartUpSalesALT.png" />
+                    </image>
+                </ImageView>
+                <TextField fx:id="buscarProductos" prefHeight="30.0" promptText="Buscar productos, vendedores y más...">
+                    <HBox.margin>
+                        <Insets top="18.0" />
+                    </HBox.margin>
+                </TextField>
+                <Button fx:id="BtnVolverInicio" onAction="#mostrarInicio" prefHeight="30.0" style="-fx-background-color: #000000;" text="Inicio" textFill="WHITE">
+                    <font>
+                        <Font name="MS Reference Sans Serif" size="12.0" />
+                    </font>
+                </Button>
+                <ImageView fx:id="carritoCompra" fitHeight="38.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../../Imagenes/Principal/CarritoCompra.png" />
+                    </image>
+                </ImageView>
+                <ImageView fx:id="usuarioIcono" fitHeight="38.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../../Imagenes/Principal/usuario.png" />
+                    </image>
+                </ImageView>
+            </children>
+        </HBox>
+        <HBox layoutY="480.0" style="-fx-background-color: #000000;" alignment="CENTER">
+            <children>
+                <Label text="© 2025 Main.StartupSales. Todos los derechos reservados." textFill="WHITE">
+                    <font>
+                        <Font name="MS Reference Sans Serif" size="10.0" />
+                    </font>
+                </Label>
+            </children>
+        </HBox>
+        <VBox layoutY="66.0" style="-fx-background-color: #F5F5F5;" alignment="TOP_LEFT">
+            <children>
+                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../../Imagenes/Cuenta/menu.png" />
+                    </image>
+                </ImageView>
+                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../../Imagenes/Cuenta/Perfil.png" />
+                    </image>
+                </ImageView>
+                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../../Imagenes/Cuenta/bolsa-de-la-compraAzul.png" />
+                    </image>
+                </ImageView>
+                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../../Imagenes/Cuenta/tienda.png" />
+                    </image>
+                </ImageView>
+                <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../../Imagenes/Cuenta/factura.png" />
+                    </image>
+                </ImageView>
+            </children>
+        </VBox>
+        <VBox layoutX="50.0" layoutY="66.0" style="-fx-background-color: #F5F5F5;" spacing="10.0">
+            <children>
+                <Button fx:id="btnMiCuenta" mnemonicParsing="false" style="-fx-background-color: #F5F5F5;" text="Mi Cuenta" />
+                <Button fx:id="BtnMiPerfil" mnemonicParsing="false" onAction="#mostrarMiPerfil" style="-fx-background-color: #F5F5F5;" text="Mi Perfil" />
+                <Button fx:id="BtnCompras" mnemonicParsing="false" style="-fx-background-color: #F5F5F5;" text="Compras" textFill="#4c91f9" />
+                <Button fx:id="BtnTienda" mnemonicParsing="false" onAction="#mostrarMisTiendas" style="-fx-background-color: #F5F5F5;" text="Tiendas" />
+                <Button fx:id="BtnFacturacion" mnemonicParsing="false" onAction="#mostrarFacturacion" style="-fx-background-color: #F5F5F5;" text="Facturación" />
+            </children>
+        </VBox>
+        <ScrollPane layoutX="164.0" layoutY="66.0" prefWidth="698.0" fitToWidth="true">
+            <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="696.0">
+                    <children>
+                        <Label layoutX="14.0" layoutY="11.0" text="Tus Compras">
+                            <font>
+                                <Font name="MS Reference Sans Serif" size="16.0" />
+                            </font>
+                        </Label>
+                        <VBox fx:id="vboxCompras" layoutX="14.0" layoutY="44.0" style="-fx-background-color: #ffffff;" />
+                    </children>
+                </AnchorPane>
+            </content>
+        </ScrollPane>
+    </children>
+</AnchorPane>
+-->
