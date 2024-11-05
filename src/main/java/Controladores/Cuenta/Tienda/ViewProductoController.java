@@ -15,8 +15,8 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.math.BigDecimal;
 
 public class ViewProductoController {
 
@@ -65,7 +65,6 @@ public class ViewProductoController {
     @FXML
     private Button btnVolverTienda;
 
-    private File archivoImagen;
     private CrearProducto crearProducto = new CrearProducto();
     private CambiosVistas cambiosVistas = new CambiosVistas();
 
@@ -84,11 +83,7 @@ public class ViewProductoController {
         btnCargarImagen.setOnAction(event -> cargarImagen());
         btnCrearProducto.setOnAction(event -> crearProducto());
 
-        buscarProductos.setOnMouseClicked(event -> {buscarProductos.clear();});
-        // Realizar búsqueda cuando el usuario presione "Enter"
         buscarProductos.setOnAction(event -> realizarBusqueda());
-        // Configurar el evento del carrito
-        carritoCompra.setOnMouseClicked(event -> mostrarCarrito());
     }
 
     private void cargarImagen() {
@@ -96,39 +91,41 @@ public class ViewProductoController {
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Imágenes", "*.png", "*.jpg", "*.jpeg")
         );
-        archivoImagen = fileChooser.showOpenDialog(null);
 
-        if (archivoImagen != null) {
+        // Selecciona el archivo de imagen
+        File archivoSeleccionado = fileChooser.showOpenDialog(null);
+
+        if (archivoSeleccionado != null) {
+            crearProducto.setArchivoImagen(archivoSeleccionado); // Asigna la imagen al servicio
             try {
-                Image nuevaImagen = new Image(new FileInputStream(archivoImagen));
-                imagenProducto.setImage(nuevaImagen);
-            } catch (FileNotFoundException e) {
+                // Convierte el archivo de imagen a Image para mostrar en el ImageView
+                Image image = new Image(new FileInputStream(archivoSeleccionado));
+                imagenProducto.setImage(image);
+            } catch (IOException e) {
                 e.printStackTrace();
+                System.out.println("Error al cargar la imagen en el controlador.");
             }
         }
     }
 
+
     private void crearProducto() {
-        // Validar campos
         if (nombreProducto.getText().isEmpty() || precioProducto.getText().isEmpty() ||
                 descProducto.getText().isEmpty() || stockProducto.getValue() == null ||
-                catProducto.getValue() == null || archivoImagen == null) {
+                catProducto.getValue() == null || crearProducto.getArchivoImagen() == null) {
             System.out.println("Todos los campos son obligatorios.");
             return;
         }
 
         try {
-            // Crear un nuevo producto
             Producto producto = new Producto();
             producto.setNombre(nombreProducto.getText());
-            producto.setPrecio(Double.parseDouble(precioProducto.getText()));
+            producto.setPrecio(new BigDecimal(precioProducto.getText()));
             producto.setDescripcion(descProducto.getText());
             producto.setStock(stockProducto.getValue());
             producto.setCategoria(catProducto.getValue());
-            producto.setImagenProducto(new FileInputStream(archivoImagen).readAllBytes());
-            producto.setIdProducto(crearProducto.generarIdProductoAleatorio());
+            producto.setImagenProducto(new FileInputStream(crearProducto.getArchivoImagen()).readAllBytes());
 
-            // Asegurarse de usar el idTienda de la tienda seleccionada
             if (ViewMirarTiendaController.getTiendaSeleccionada() != null) {
                 producto.setIdTienda(ViewMirarTiendaController.getTiendaSeleccionada().getIdTienda());
             } else {
@@ -136,13 +133,10 @@ public class ViewProductoController {
                 return;
             }
 
-            // Obtener el Stage actual
-            Stage stage = (Stage) nombreProducto.getScene().getWindow();
-
-            // Guardar el producto en la base de datos y cambiar la vista si es exitoso
-            boolean exito = crearProducto.crearProducto(producto, stage);
+            boolean exito = crearProducto.crearProducto(producto);
             if (exito) {
                 System.out.println("Producto creado exitosamente.");
+                cambiarVista(btnCrearProducto, "/Vistas/PantallaCuenta/Tienda/View-TiendaCreada.fxml");
             } else {
                 System.out.println("Error al crear el producto.");
             }

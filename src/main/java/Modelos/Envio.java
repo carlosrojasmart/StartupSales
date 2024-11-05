@@ -1,5 +1,6 @@
 package Modelos;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
@@ -9,11 +10,12 @@ public class Envio {
     private Date fechaEnvio;
     private Date fechaEntregaEstimada;
     private String estadoEnvio;
-    private double costoEnvio;
+    private BigDecimal costoEnvio; // Cambiado a BigDecimal
     private String metodoEnvio;
     private int idVentda;
     private List<Producto> productos;
 
+    // Getters y Setters
     public int getIdEnvio() {
         return idEnvio;
     }
@@ -54,11 +56,11 @@ public class Envio {
         this.fechaEntregaEstimada = fechaEntregaEstimada;
     }
 
-    public double getCostoEnvio() {
+    public BigDecimal getCostoEnvio() { // Cambiado a BigDecimal
         return costoEnvio;
     }
 
-    public void setCostoEnvio(double costoEnvio) {
+    public void setCostoEnvio(BigDecimal costoEnvio) { // Cambiado a BigDecimal
         this.costoEnvio = costoEnvio;
     }
 
@@ -78,7 +80,11 @@ public class Envio {
         this.productos = productos;
     }
 
-    public int getIdVentda() {return idVentda;}
+    public int getIdVentda() {
+        return idVentda;
+    }
 
-    public void setIdVentda(int idVentda) {this.idVentda = idVentda;}
+    public void setIdVentda(int idVentda) {
+        this.idVentda = idVentda;
+    }
 }

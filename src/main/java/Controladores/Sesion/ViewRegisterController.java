@@ -62,19 +62,14 @@ public class ViewRegisterController {
         String telefono = txtTelefono.getText();
         String direccion = txtDireccion.getText();
 
-        loginRegister.registrarUsuario(usuario, correo, contraseña, telefono, direccion, new LoginRegister.RegistrationCallback() {
-            @Override
-            public void onSuccess(String message) {
-                mostrarMensaje(message);
-                limpiarCampos(); // Llama a limpiar los campos después de registrar
-                mostrarLogin(); // Muestra la vista de login
-            }
-
-            @Override
-            public void onFailure(String errorMessage) {
-                mostrarMensaje(errorMessage);
-            }
-        });
+        boolean exito = loginRegister.registrarUsuario(usuario, correo, contraseña, telefono, direccion);
+        if (exito) {
+            mostrarMensaje("Usuario registrado exitosamente.");
+            limpiarCampos();
+            mostrarLogin();
+        } else {
+            mostrarMensaje("Error al registrar usuario.");
+        }
     }
 
     private void limpiarCampos() {

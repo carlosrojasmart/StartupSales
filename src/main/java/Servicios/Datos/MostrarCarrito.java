@@ -67,7 +67,10 @@ public class MostrarCarrito {
                 Producto producto = new Producto();
                 producto.setIdProducto(rs.getInt("idProducto"));
                 producto.setNombre(rs.getString("nombre"));
-                producto.setPrecio(rs.getDouble("precio"));
+
+                // Obtener el precio como BigDecimal
+                producto.setPrecio(rs.getBigDecimal("precio"));
+
                 producto.setImagenProducto(rs.getBytes("imagenProducto"));
                 producto.setCantidad(rs.getInt("cantidad"));
                 productos.add(producto);
