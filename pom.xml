@@ -144,7 +144,6 @@
                     <target>${java.version}</target>
                 </configuration>
             </plugin>
-            <!-- JavaFX Maven Plugin -->
             <plugin>
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
@@ -156,12 +155,11 @@
                             <goal>run</goal>
                         </goals>
                         <configuration>
-                            <mainClass>Controladores.HelloApplication</mainClass> <!-- Ajusta esto según tu clase principal -->
+                            <mainClass>Controladores.HelloApplication</mainClass>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
-
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.2</version>
@@ -173,7 +171,7 @@
                     </dependency>
                 </dependencies>
             </plugin>
-                </plugins>
+        </plugins>
     </build>
 
 </project>
