@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane prefWidth="795.0" style="-fx-background-color: #FFFFFFFF;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.Principal.ViewPaginaPrincipal">
+<AnchorPane style="-fx-background-color: #FFFFFFFF;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.Principal.ViewPaginaPrincipal">
    <children>
       <!-- Encabezado -->
-      <HBox prefHeight="66.0" prefWidth="655.0" style="-fx-background-color: #000000;" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="194.0" AnchorPane.topAnchor="0">
+      <HBox AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" prefHeight="66.0" style="-fx-background-color: #000000;">
          <children>
             <ImageView fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -19,18 +23,34 @@
                   <Insets left="15.0" top="10.0" />
                </HBox.margin>
             </ImageView>
+            <Button fx:id="ingresarBoton" onAction="#mostrarLogin" prefHeight="30.0" style="-fx-background-color: #000000;" text="Inicia Sesión" textFill="WHITE">
+               <HBox.margin>
+                  <Insets left="1150.0" top="18.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="MS Reference Sans Serif" size="12.0" />
+               </font>
+            </Button>
+            <Button fx:id="crearCuentaBoton" onAction="#mostrarCrearCuenta" prefHeight="30.0" prefWidth="110.0" style="-fx-background-color: #000000;" text="Crea tu cuenta" textFill="WHITE">
+               <HBox.margin>
+                  <Insets top="18.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="MS Reference Sans Serif" size="12.0" />
+               </font>
+            </Button>
          </children>
       </HBox>
 
       <!-- Sección de Conocimiento -->
-      <Label prefHeight="23.0" text="Conocenos" textAlignment="CENTER" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="250.0">
+      <Label AnchorPane.topAnchor="250.0" AnchorPane.leftAnchor="450.0" prefHeight="23.0" text="Conocenos" textAlignment="CENTER">
          <font>
             <Font name="MS Reference Sans Serif" size="15.0" />
          </font>
       </Label>
 
       <!-- Pie de página -->
-      <HBox prefHeight="30.0" style="-fx-background-color: #000000;" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0">
+      <HBox AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" prefHeight="30.0" style="-fx-background-color: #000000;">
          <children>
             <Label text="© 2025 Main.StartupSales. Todos los derechos reservados." textFill="WHITE">
                <font>
@@ -44,51 +64,31 @@
       </HBox>
 
       <!-- Logo Central -->
-      <ImageView fitHeight="189.0" fitWidth="191.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="250.0">
+      <ImageView fitHeight="189.0" fitWidth="191.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="250.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../Imagenes/Principal/Startuplogo.jpeg" />
          </image>
       </ImageView>
 
       <!-- Sección de Introducción -->
-      <AnchorPane prefHeight="175.0" style="-fx-background-color: #000000;" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="66.0">
+      <AnchorPane AnchorPane.topAnchor="66.0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" prefHeight="175.0" style="-fx-background-color: #000000;">
          <children>
-            <Label layoutX="172.0" layoutY="-2.0" text="Iniciar ahora con Main.StartupSales" textFill="WHITE">
+            <Label layoutX="500.0" layoutY="-2.0" text="Iniciar ahora con Main.StartupSales" textFill="WHITE">
                <font>
                   <Font name="Franklin Gothic Book" size="27.0" />
                </font>
             </Label>
-            <Label layoutX="232.0" layoutY="58.0" text="Tu tienda, tu éxito." textFill="WHITE">
+            <Label layoutX="505.0" layoutY="58.0" text="Tu tienda, tu éxito." textFill="WHITE">
                <font>
                   <Font name="Century Gothic" size="45.0" />
                </font>
             </Label>
-            <HBox alignment="TOP_RIGHT" layoutX="589.0" layoutY="-70.0" prefHeight="100.0" prefWidth="260.0" style="-fx-background-color: #000000;">
-               <children>
-                  <Button fx:id="crearCuentaBoton" onAction="#mostrarCrearCuenta" prefHeight="30.0" prefWidth="110.0" style="-fx-background-color: #000000;" text="Crea tu cuenta" textFill="WHITE">
-                     <HBox.margin>
-                        <Insets top="18.0" />
-                     </HBox.margin>
-                     <font>
-                        <Font name="MS Reference Sans Serif" size="12.0" />
-                     </font>
-                  </Button>
-                  <Button fx:id="ingresarBoton" onAction="#mostrarLogin" prefHeight="30.0" style="-fx-background-color: #000000;" text="Inicia Sesión" textFill="WHITE">
-                     <HBox.margin>
-                        <Insets top="18.0" />
-                     </HBox.margin>
-                     <font>
-                        <Font name="MS Reference Sans Serif" size="12.0" />
-                     </font>
-                  </Button>
-               </children>
-            </HBox>
          </children>
       </AnchorPane>
 
       <!-- Textos Informativos -->
-      <TextArea prefHeight="89.0" prefWidth="239.0" text="Con Startup Sales puedes dar a conocer&#10;  tu propio negocio y empezar a vender &#10;     tus productos de manera sencilla,&#10;puedes crear hasta mas de una tienda " AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="296.0" />
-      <TextArea prefHeight="96.0" prefWidth="239.0" text="               ¿No tienes un negocio?&#10; No hay problema aca tambien puedes &#10;explorar todos los productos disponibles &#10;               en nuestras startups " AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="296.0" />
-      <TextArea prefHeight="52.0" prefWidth="143.0" text="¿Que estas esperando? &#10;     Registrate ahora!! " AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="405.0" />
+      <TextArea AnchorPane.leftAnchor="450.0" AnchorPane.topAnchor="296.0" prefHeight="89.0" prefWidth="239.0" text="Con Startup Sales puedes dar a conocer&#10;  tu propio negocio y empezar a vender &#10;     tus productos de manera sencilla,&#10;puedes crear hasta mas de una tienda " />
+      <TextArea AnchorPane.leftAnchor="750.0" AnchorPane.topAnchor="296.0" prefHeight="96.0" prefWidth="239.0" text="               ¿No tienes un negocio?&#10; No hay problema aca tambien puedes &#10;explorar todos los productos disponibles &#10;               en nuestras startups " />
+      <TextArea AnchorPane.leftAnchor="650.0" AnchorPane.topAnchor="405.0" prefHeight="52.0" prefWidth="143.0" text="¿Que estas esperando? &#10;     Registrate ahora!! " />
    </children>
 </AnchorPane>
