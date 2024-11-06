@@ -2,11 +2,12 @@ package Controladores.Principal;
 
 import Modelos.Producto;
 import Modelos.Tienda;
-import Servicios.Datos.BusquedaProductos;
-import Servicios.Datos.MostrarCarrito;
-import Servicios.Datos.UsuarioActivo;
-import Servicios.Vistas.CambiosVistas;
-import Servicios.Vistas.FormatoUtil;
+import Repositorios.Productos.BusquedaProductos;
+import Repositorios.Carrito.MostrarCarrito;
+import Repositorios.Datos.UsuarioActivo;
+import Controladores.Vistas.CambiosVistas;
+import Servicios.Carrito.CarritoService;
+import Servicios.Util.FormatoUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -16,7 +17,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import Servicios.Datos.MostrarTiendas;
+import Repositorios.Tienda.MostrarTiendas;
 
 
 import java.io.ByteArrayInputStream;
@@ -69,6 +70,7 @@ public class ViewBusquedaProductosController {
     private CambiosVistas cambiosVistas = new CambiosVistas();
     private BusquedaProductos busquedaProductos = new BusquedaProductos();
     private MostrarTiendas mostrarTiendas = new MostrarTiendas();
+    private CarritoService carritoService = new CarritoService(new MostrarCarrito()); // Crear instancia del servicio
 
 
     @FXML
@@ -237,7 +239,7 @@ public class ViewBusquedaProductosController {
 
         MostrarCarrito mostrarCarrito = new MostrarCarrito();
         producto.setCantidad(1); // Cantidad inicial
-        mostrarCarrito.agregarProductoAlCarrito(idCarrito, producto);
+        carritoService.agregarProductoAlCarrito(idCarrito, producto);
     }
 
     private void cambiarVista(Node nodo, String rutaFXML) {

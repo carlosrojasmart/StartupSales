@@ -1,8 +1,8 @@
 package Controladores.Cuenta.Tienda;
 
-import Servicios.Vistas.CambiosVistas;
-import Servicios.Datos.UsuarioActivo;
-import Servicios.Datos.CrearTienda;
+import Controladores.Vistas.CambiosVistas;
+import Repositorios.Datos.UsuarioActivo;
+import Repositorios.Tienda.CrearTienda;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;

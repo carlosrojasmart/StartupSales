@@ -1,7 +1,7 @@
 package Controladores.Sesion;
 
-import Servicios.Vistas.CambiosVistas;
-import Servicios.Datos.LoginRegister;
+import Controladores.Vistas.CambiosVistas;
+import Repositorios.Datos.LoginRegister;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;

@@ -1,9 +1,9 @@
 package Controladores.Cuenta.Tienda;
 
 import Modelos.Producto;
-import Servicios.Datos.CrearProducto;
-import Servicios.Datos.UsuarioActivo;
-import Servicios.Vistas.CambiosVistas;
+import Repositorios.Productos.CrearProducto;
+import Repositorios.Datos.UsuarioActivo;
+import Controladores.Vistas.CambiosVistas;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;

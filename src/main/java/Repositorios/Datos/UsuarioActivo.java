@@ -1,4 +1,4 @@
-package Servicios.Datos;
+package Repositorios.Datos;
 
 import java.math.BigDecimal;
 

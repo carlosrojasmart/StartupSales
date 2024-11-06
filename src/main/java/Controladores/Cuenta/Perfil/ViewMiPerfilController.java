@@ -1,8 +1,8 @@
 package Controladores.Cuenta.Perfil;
 
-import Servicios.Vistas.CambiosVistas;
-import Servicios.Datos.UsuarioActivo;
-import Servicios.Perfil.ModificarPerfil;
+import Controladores.Vistas.CambiosVistas;
+import Repositorios.Datos.UsuarioActivo;
+import Repositorios.Perfil.ModificarPerfil;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
