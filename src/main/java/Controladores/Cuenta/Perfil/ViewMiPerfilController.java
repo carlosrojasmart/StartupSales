@@ -1,7 +1,7 @@
 package Controladores.Cuenta.Perfil;
 
 import Controladores.Vistas.CambiosVistas;
-import Repositorios.Datos.UsuarioActivo;
+import Modelos.UsuarioActivo;
 import Repositorios.Perfil.ModificarPerfil;
 import javafx.fxml.FXML;
 import javafx.scene.Node;

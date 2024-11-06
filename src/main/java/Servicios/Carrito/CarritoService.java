@@ -16,7 +16,15 @@ public class CarritoService {
         this.mostrarCarrito = mostrarCarrito;
     }
 
-
+    public int obtenerIdCarrito(int idUsuario) {
+        try {
+            return mostrarCarrito.obtenerIdCarritoDesdeBD(idUsuario);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            System.out.println("Error al obtener el ID del carrito: " + e.getMessage());
+            return -1;
+        }
+    }
 
     public void agregarProductoAlCarrito(int idCarrito, Producto producto) {
         try {
@@ -31,17 +39,15 @@ public class CarritoService {
         }
     }
 
-    public List<Producto> obtenerProductosDelCarrito(int idCarrito) {
+    public List<Producto> obtenerProductosDeCarrito(int idCarrito) {
         try {
             return mostrarCarrito.obtenerProductosDeCarrito(idCarrito);
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("Error al obtener productos del carrito: " + e.getMessage());
-            return null;
+            System.out.println("Error al obtener los productos del carrito: " + e.getMessage());
+            return Collections.emptyList();
         }
     }
-
-
 
     public void actualizarCantidadProducto(int idProducto, int idCarrito, int nuevaCantidad) {
         try {
@@ -49,16 +55,6 @@ public class CarritoService {
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Error al actualizar la cantidad del producto en el carrito: " + e.getMessage());
-        }
-    }
-
-    public List<Producto> obtenerProductosDeCarrito(int idCarrito) {
-        try {
-            return mostrarCarrito.obtenerProductosDeCarrito(idCarrito);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("Error al obtener los productos del carrito: " + e.getMessage());
-            return Collections.emptyList(); // Devuelve una lista vacía en caso de error
         }
     }
 
@@ -80,23 +76,15 @@ public class CarritoService {
         }
     }
 
-
     public void procesarCompra(int idUsuario, int idCarrito, BigDecimal totalCompra) {
         try {
-            // Registrar la compra
             int idCompra = mostrarCarrito.registrarCompra(idUsuario, totalCompra);
-
-            // Registrar los productos de la compra
             mostrarCarrito.registrarProductosDeCompra(idCompra, idCarrito);
-
-            // Vaciar el carrito
             mostrarCarrito.vaciarCarrito(idCarrito);
-
             System.out.println("Compra procesada exitosamente con ID de compra: " + idCompra);
         } catch (SQLException e) {
             e.printStackTrace();
             System.out.println("Error al procesar la compra: " + e.getMessage());
         }
     }
-
 }

@@ -5,7 +5,7 @@ import Modelos.Tienda;
 import Repositorios.Tienda.CrearTienda;
 import Repositorios.Productos.MostrarProductos;
 import Repositorios.Tienda.MostrarTiendas;
-import Repositorios.Datos.UsuarioActivo;
+import Modelos.UsuarioActivo;
 import Controladores.Vistas.CambiosVistas;
 import Servicios.Util.FormatoUtil;
 import javafx.event.ActionEvent;

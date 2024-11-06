@@ -1,6 +1,6 @@
 package Controladores.Cuenta.Compras;
 
-import Repositorios.Datos.UsuarioActivo;
+import Modelos.UsuarioActivo;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import Controladores.Vistas.CambiosVistas;

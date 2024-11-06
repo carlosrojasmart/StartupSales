@@ -1,7 +1,7 @@
 package Repositorios.Perfil;
 
 import DB.JDBC;
-import Repositorios.Datos.UsuarioActivo;
+import Modelos.UsuarioActivo;
 
 import java.io.File;
 import java.io.FileInputStream;

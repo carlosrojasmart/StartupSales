@@ -2,7 +2,7 @@ package Controladores.Cuenta.Tienda;
 
 import Modelos.Producto;
 import Repositorios.Productos.CrearProducto;
-import Repositorios.Datos.UsuarioActivo;
+import Modelos.UsuarioActivo;
 import Controladores.Vistas.CambiosVistas;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

@@ -13,7 +13,22 @@ import java.util.List;
 
 public class MostrarCarrito {
 
-    // Método para verificar si el producto ya existe en el carrito
+    // Método para obtener el ID del carrito de un usuario
+    public int obtenerIdCarritoDesdeBD(int idUsuario) throws SQLException {
+        String sql = "SELECT idCarrito FROM carrito WHERE idUsuario = ?";
+        try (Connection conexion = JDBC.ConectarBD();
+             PreparedStatement pstmt = conexion.prepareStatement(sql)) {
+            pstmt.setInt(1, idUsuario);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("idCarrito");
+            } else {
+                System.out.println("No se encontró carrito para el usuario con id: " + idUsuario);
+                return -1;
+            }
+        }
+    }
+
     public boolean productoYaExisteEnCarrito(int idCarrito, int idProducto) throws SQLException {
         String verificarSql = "SELECT cantidad FROM carrito_producto WHERE idCarrito = ? AND idProducto = ?";
         try (Connection conexion = JDBC.ConectarBD();
@@ -89,7 +104,6 @@ public class MostrarCarrito {
         }
     }
 
-    // Método para registrar una compra y devolver el ID de la compra generada
     public int registrarCompra(int idUsuario, BigDecimal totalCompra) throws SQLException {
         String sql = "INSERT INTO Compra (idUsuario, total_compra, fecha, hora) VALUES (?, ?, CURDATE(), CURTIME())";
         try (Connection conexion = JDBC.ConectarBD();
@@ -107,7 +121,6 @@ public class MostrarCarrito {
         }
     }
 
-    // Método para registrar los productos de la compra en la tabla compra_producto
     public void registrarProductosDeCompra(int idCompra, int idCarrito) throws SQLException {
         String sql = "INSERT INTO compra_producto (idCompra, idProducto, cantidad) " +
                 "SELECT ?, idProducto, cantidad FROM carrito_producto WHERE idCarrito = ?";

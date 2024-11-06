@@ -2,7 +2,7 @@ package Controladores.Principal;
 
 import Modelos.Producto;
 import Repositorios.Carrito.MostrarCarrito;
-import Repositorios.Datos.UsuarioActivo;
+import Modelos.UsuarioActivo;
 import Controladores.Vistas.CambiosVistas;
 import Servicios.Carrito.CarritoService;
 import Servicios.Util.FormatoUtil;

@@ -11,42 +11,38 @@ import java.sql.SQLException;
 
 public class CrearTienda {
 
-    private File archivoImagen;
-
-    public void setArchivoImagen(File archivoImagen) {
-        this.archivoImagen = archivoImagen;
-    }
-
-    public File getArchivoImagen() {
-        return archivoImagen;
-    }
-
     public void crearTienda(String nombre, String descripcion, int idUsuario, String categoria, File archivoImagen) throws SQLException, IOException {
-        try (Connection conexion = JDBC.ConectarBD()) {
-            String sqlTienda = "INSERT INTO Tienda (nombre, descripcion, idUsuario, categoria, imagenTienda) VALUES (?, ?, ?, ?, ?)";
+        String sqlTienda = "INSERT INTO Tienda (nombre, descripcion, idUsuario, categoria, imagenTienda) VALUES (?, ?, ?, ?, ?)";
+        String sqlUsuario = "UPDATE Usuario SET esVendedor = TRUE WHERE idUsuario = ?";
 
-            try (PreparedStatement pstmtTienda = conexion.prepareStatement(sqlTienda)) {
-                pstmtTienda.setString(1, nombre);
-                pstmtTienda.setString(2, descripcion);
-                pstmtTienda.setInt(3, idUsuario);
-                pstmtTienda.setString(4, categoria);
+        try (Connection conexion = JDBC.ConectarBD();
+             PreparedStatement pstmtTienda = conexion.prepareStatement(sqlTienda);
+             PreparedStatement pstmtUsuario = conexion.prepareStatement(sqlUsuario)) {
 
-                if (archivoImagen != null && archivoImagen.exists()) {
-                    try (InputStream fis = new FileInputStream(archivoImagen)) {
-                        pstmtTienda.setBinaryStream(5, fis, (int) archivoImagen.length());
-                        pstmtTienda.executeUpdate();
-                    }
-                } else {
-                    pstmtTienda.setNull(5, java.sql.Types.BLOB);
+            // Configurar los parámetros de la tienda
+            pstmtTienda.setString(1, nombre);
+            pstmtTienda.setString(2, descripcion);
+            pstmtTienda.setInt(3, idUsuario);
+            pstmtTienda.setString(4, categoria);
+
+            // Verificar si hay un archivo de imagen y cargarlo
+            if (archivoImagen != null && archivoImagen.exists()) {
+                try (InputStream fis = new FileInputStream(archivoImagen)) {
+                    pstmtTienda.setBinaryStream(5, fis, (int) archivoImagen.length());
                     pstmtTienda.executeUpdate();
                 }
+            } else {
+                pstmtTienda.setNull(5, java.sql.Types.BLOB);
+                pstmtTienda.executeUpdate();
             }
 
-            String sqlUsuario = "UPDATE Usuario SET esVendedor = TRUE WHERE idUsuario = ?";
-            try (PreparedStatement pstmtUsuario = conexion.prepareStatement(sqlUsuario)) {
-                pstmtUsuario.setInt(1, idUsuario);
-                pstmtUsuario.executeUpdate();
-            }
+            // Actualizar el estado de `esVendedor` del usuario
+            pstmtUsuario.setInt(1, idUsuario);
+            pstmtUsuario.executeUpdate();
+
+        } catch (SQLException e) {
+            System.err.println("Error al crear la tienda en la base de datos: " + e.getMessage());
+            throw e; // Lanzar nuevamente para que el controlador lo maneje
         }
     }
 

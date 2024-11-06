@@ -1,6 +1,6 @@
 package Controladores.Cuenta.Tienda;
 
-import Repositorios.Datos.UsuarioActivo;
+import Modelos.UsuarioActivo;
 import Controladores.Vistas.CambiosVistas;
 import javafx.fxml.FXML;
 import javafx.scene.Node;

@@ -1,6 +1,6 @@
 package Controladores.Cuenta.Facturacion;
 
-import Repositorios.Datos.UsuarioActivo;
+import Modelos.UsuarioActivo;
 import Controladores.Vistas.CambiosVistas;
 import Servicios.Util.FormatoUtil;
 import javafx.event.ActionEvent;

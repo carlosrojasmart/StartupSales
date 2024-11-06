@@ -1,4 +1,4 @@
-package Repositorios.Datos;
+package Modelos;
 
 import java.math.BigDecimal;
 

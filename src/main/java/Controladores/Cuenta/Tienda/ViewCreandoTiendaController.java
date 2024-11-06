@@ -1,8 +1,10 @@
 package Controladores.Cuenta.Tienda;
 
 import Controladores.Vistas.CambiosVistas;
-import Repositorios.Datos.UsuarioActivo;
+import Modelos.UsuarioActivo;
 import Repositorios.Tienda.CrearTienda;
+import Repositorios.Tienda.MostrarTiendas;
+import Servicios.Tienda.TiendaService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -15,7 +17,6 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.SQLException;
 
 public class ViewCreandoTiendaController {
 
@@ -56,7 +57,8 @@ public class ViewCreandoTiendaController {
     private Button BtnCrearTienda;
 
     private CambiosVistas cambiosVistas = new CambiosVistas();
-    private CrearTienda crearTienda = new CrearTienda();
+    private TiendaService tiendaService = new TiendaService(new MostrarTiendas(), new CrearTienda());  // Crear instancias de ambos repositorios
+    private File archivoImagenSeleccionado; // Almacenará la imagen seleccionada para la tienda
 
     @FXML
     private void initialize() {
@@ -110,14 +112,12 @@ public class ViewCreandoTiendaController {
         );
 
         // Selecciona el archivo de imagen
-        File archivoSeleccionado = fileChooser.showOpenDialog(null);
+        archivoImagenSeleccionado = fileChooser.showOpenDialog(null);
 
-        if (archivoSeleccionado != null) {
-            crearTienda.setArchivoImagen(archivoSeleccionado); // Asigna la imagen al servicio
-
+        if (archivoImagenSeleccionado != null) {
             try {
                 // Convierte el archivo de imagen a Image para mostrar en el ImageView
-                Image image = new Image(new FileInputStream(archivoSeleccionado));
+                Image image = new Image(new FileInputStream(archivoImagenSeleccionado));
                 imagenTienda.setImage(image);
             } catch (IOException e) {
                 e.printStackTrace();
@@ -126,27 +126,25 @@ public class ViewCreandoTiendaController {
         }
     }
 
-
     @FXML
     private void crearTienda(ActionEvent event) {
-        try {
-            String nombre = nombreTienda.getText();
-            String descripcion = descTienda.getText();
-            String categoria = boxCategoria.getValue();
-            int idUsuario = UsuarioActivo.getIdUsuario();
+        String nombre = nombreTienda.getText();
+        String descripcion = descTienda.getText();
+        String categoria = boxCategoria.getValue();
+        int idUsuario = UsuarioActivo.getIdUsuario();
 
-            if (nombre.isEmpty() || descripcion.isEmpty() || categoria == null || crearTienda.getArchivoImagen() == null) {
-                System.out.println("Por favor, complete todos los campos.");
-                return;
-            }
+        if (nombre.isEmpty() || descripcion.isEmpty() || categoria == null || archivoImagenSeleccionado == null) {
+            System.out.println("Por favor, complete todos los campos.");
+            return;
+        }
 
-            crearTienda.crearTienda(nombre, descripcion, idUsuario, categoria, crearTienda.getArchivoImagen());
+        boolean exito = tiendaService.crearTienda(nombre, descripcion, idUsuario, categoria, archivoImagenSeleccionado);
 
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            cambiosVistas.cambiarVista(stage, "/Vistas/PantallaCuenta/Tienda/View-TiendaCreada.fxml");
-
-        } catch (SQLException | IOException e) {
-            e.printStackTrace();
+        if (exito) {
+            cambiarVista((Node) event.getSource(), "/Vistas/PantallaCuenta/Tienda/View-TiendaCreada.fxml");
+            System.out.println("Tienda creada exitosamente.");
+        } else {
+            System.out.println("Error al crear la tienda.");
         }
     }
 

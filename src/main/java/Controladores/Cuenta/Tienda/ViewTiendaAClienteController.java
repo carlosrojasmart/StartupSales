@@ -5,7 +5,7 @@ import Modelos.Tienda;
 import Servicios.Carrito.CarritoService;
 import Repositorios.Carrito.MostrarCarrito;
 import Repositorios.Productos.MostrarProductos;
-import Repositorios.Datos.UsuarioActivo;
+import Modelos.UsuarioActivo;
 import Controladores.Vistas.CambiosVistas;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;

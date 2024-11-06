@@ -2,7 +2,7 @@ package Controladores.Cuenta.Compras;
 
 import DB.JDBC;
 import Modelos.Compra;
-import Repositorios.Datos.UsuarioActivo;
+import Modelos.UsuarioActivo;
 import Controladores.Vistas.CambiosVistas;
 import Servicios.Util.FormatoUtil;
 import javafx.event.ActionEvent;
