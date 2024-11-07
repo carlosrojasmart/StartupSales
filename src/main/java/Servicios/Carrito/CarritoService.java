@@ -2,6 +2,7 @@ package Servicios.Carrito;
 
 import Modelos.Producto;
 import Repositorios.Carrito.MostrarCarrito;
+import Servicios.Productos.ProductoService;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -11,10 +12,14 @@ import java.util.List;
 public class CarritoService {
 
     private final MostrarCarrito mostrarCarrito;
+    private final ProductoService productoService;
 
-    public CarritoService(MostrarCarrito mostrarCarrito) {
+    // Constructor que acepta MostrarCarrito y ProductoService
+    public CarritoService(MostrarCarrito mostrarCarrito, ProductoService productoService) {
         this.mostrarCarrito = mostrarCarrito;
+        this.productoService = productoService;
     }
+
 
     public int obtenerIdCarrito(int idUsuario) {
         try {

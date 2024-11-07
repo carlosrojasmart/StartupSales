@@ -3,11 +3,14 @@ package Controladores.Principal;
 import Modelos.Producto;
 import Modelos.Tienda;
 import Repositorios.Productos.BusquedaProductos;
+import Repositorios.Productos.CrearProducto;
+import Repositorios.Productos.MostrarProductos;
 import Servicios.Productos.BusquedaProductosService;
 import Repositorios.Carrito.MostrarCarrito;
 import Modelos.UsuarioActivo;
 import Controladores.Vistas.CambiosVistas;
 import Servicios.Carrito.CarritoService;
+import Servicios.Productos.ProductoService;
 import Servicios.Util.FormatoUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -70,7 +73,9 @@ public class ViewBusquedaProductosController {
     private CambiosVistas cambiosVistas = new CambiosVistas();
     private BusquedaProductosService busquedaProductosService = new BusquedaProductosService(new BusquedaProductos());
     private MostrarTiendas mostrarTiendas = new MostrarTiendas();
-    private CarritoService carritoService = new CarritoService(new MostrarCarrito());
+    private final ProductoService productoService = new ProductoService(new CrearProducto(), new MostrarProductos());
+    private final CarritoService carritoService = new CarritoService(new MostrarCarrito(), productoService);
+
 
     @FXML
     private void initialize() {

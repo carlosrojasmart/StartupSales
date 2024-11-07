@@ -1,8 +1,10 @@
-package Controladores.Cuenta.Tienda;
+package Controladores.Cuenta.Producto;
 
+import Controladores.Cuenta.Tienda.ViewMirarTiendaController;
 import Modelos.Producto;
 import Modelos.UsuarioActivo;
 import Controladores.Vistas.CambiosVistas;
+import Repositorios.Productos.MostrarProductos;
 import Servicios.Productos.ProductoService;
 import Repositorios.Productos.CrearProducto;
 import javafx.event.ActionEvent;
@@ -66,7 +68,7 @@ public class ViewProductoController {
     @FXML
     private Button btnVolverTienda;
 
-    private final ProductoService productoService = new ProductoService(new CrearProducto());
+    private final ProductoService productoService = new ProductoService(new CrearProducto(), new MostrarProductos());
     private CambiosVistas cambiosVistas = new CambiosVistas();
     private File archivoImagen;
 

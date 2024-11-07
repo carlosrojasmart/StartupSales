@@ -4,7 +4,10 @@ import Modelos.Producto;
 import Repositorios.Carrito.MostrarCarrito;
 import Modelos.UsuarioActivo;
 import Controladores.Vistas.CambiosVistas;
+import Repositorios.Productos.CrearProducto;
+import Repositorios.Productos.MostrarProductos;
 import Servicios.Carrito.CarritoService;
+import Servicios.Productos.ProductoService;
 import Servicios.Util.FormatoUtil;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -51,7 +54,9 @@ public class ViewCarritoComprasController {
     @FXML
     private Label lblAvisoSaldo;
 
-    private final CarritoService carritoService = new CarritoService(new MostrarCarrito());
+
+    private final ProductoService productoService = new ProductoService(new CrearProducto(), new MostrarProductos());
+    private final CarritoService carritoService = new CarritoService(new MostrarCarrito(), productoService);
     private final CambiosVistas cambiosVistas = new CambiosVistas();
 
     @FXML

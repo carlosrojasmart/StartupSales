@@ -71,14 +71,14 @@
             </children></HBox>
       <ScrollPane layoutY="66.0" prefHeight="415.0" prefWidth="862.0" style="-fx-background-color: #000000;">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="409.0" prefWidth="860.0" style="-fx-background-color: #ffffff;">
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="800.0" prefWidth="847.0" style="-fx-background-color: #ffffff;">
                <children>
                     <Label layoutX="14.0" layoutY="166.0" prefHeight="18.0" prefWidth="157.0" text="Productos Destacados">
                         <font>
                             <Font name="MS Reference Sans Serif" size="14.0" />
                         </font>
                     </Label>
-                  <AnchorPane layoutY="-6.0" prefHeight="165.0" prefWidth="862.0" style="-fx-background-color: #000000;">
+                  <AnchorPane layoutY="-6.0" prefHeight="160.0" prefWidth="862.0" style="-fx-background-color: #000000;">
                      <children>
                           <Label layoutX="175.0" layoutY="27.0" text="Iniciar ahora con StartupSales" textFill="WHITE">
                               <font>
@@ -92,11 +92,13 @@
                           </Label>
                      </children>
                   </AnchorPane>
-                  <ImageView fitHeight="227.0" fitWidth="757.0" layoutX="53.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../Imagenes/Principal/ImagenGafasTemporal.png" />
-                     </image>
-                  </ImageView>
+                  <HBox fx:id="TopProductos" alignment="CENTER" layoutX="7.0" layoutY="191.0" prefHeight="218.0" prefWidth="833.0" />
+                  <Label layoutX="14.0" layoutY="417.0" prefHeight="18.0" prefWidth="157.0" text="Tiendas Destacadas">
+                     <font>
+                        <Font name="MS Reference Sans Serif" size="14.0" />
+                     </font>
+                  </Label>
+                  <HBox fx:id="TopTiendas" layoutX="7.0" layoutY="449.0" prefHeight="218.0" prefWidth="833.0" />
                </children>
             </AnchorPane>
         </content>

@@ -22,6 +22,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.geometry.Insets;
+import Repositorios.Productos.CrearProducto;
+import Servicios.Productos.ProductoService;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -63,7 +65,8 @@ public class ViewTiendaAClienteController {
     private VBox vboxProductos;
 
     private MostrarProductos mostrarProductos = new MostrarProductos();
-    private CarritoService carritoService = new CarritoService(new MostrarCarrito()); // Crear instancia del servicio
+    private final ProductoService productoService = new ProductoService(new CrearProducto(), new MostrarProductos());
+    private final CarritoService carritoService = new CarritoService(new MostrarCarrito(), productoService);
 
     @FXML
     private void initialize() {
