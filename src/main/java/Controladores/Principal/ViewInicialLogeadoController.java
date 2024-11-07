@@ -1,13 +1,17 @@
 package Controladores.Principal;
 
 import Modelos.Producto;
+import Modelos.Tienda;
 import Modelos.UsuarioActivo;
 import Controladores.Vistas.CambiosVistas;
 import Repositorios.Carrito.MostrarCarrito;
 import Repositorios.Productos.CrearProducto;
 import Repositorios.Productos.MostrarProductos;
+import Repositorios.Tienda.CrearTienda;
+import Repositorios.Tienda.MostrarTiendas;
 import Servicios.Carrito.CarritoService;
 import Servicios.Productos.ProductoService;
+import Servicios.Tienda.TiendaService;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -41,11 +45,15 @@ public class ViewInicialLogeadoController {
     private HBox TopProductos;
 
     @FXML
+    private HBox TopTiendas;
+
+    @FXML
     private Button BtnMisTiendas;
 
     private CambiosVistas cambiosVistas = new CambiosVistas();
     private final ProductoService productoService = new ProductoService(new CrearProducto(), new MostrarProductos());
     private final CarritoService carritoService = new CarritoService(new MostrarCarrito(), productoService);
+    private final TiendaService tiendaService = new TiendaService(new MostrarTiendas(), new CrearTienda());
 
     @FXML
     private void initialize() {
@@ -54,7 +62,48 @@ public class ViewInicialLogeadoController {
         carritoCompra.setOnMouseClicked(event -> mostrarCarrito());
 
         cargarTopProductosMasVendidos();
+        cargarTiendasDestacadas(); // Cargar tiendas destacadas
     }
+
+    private void cargarTiendasDestacadas() {
+        List<Tienda> tiendasDestacadas = tiendaService.obtenerTiendasDestacadas();
+        TopTiendas.getChildren().clear();
+
+        for (Tienda tienda : tiendasDestacadas) {
+            VBox vboxTienda = new VBox(10);
+            vboxTienda.setStyle("-fx-background-color: #ffffff; -fx-padding: 10; -fx-alignment: CENTER;");
+            vboxTienda.setPrefWidth(150);
+
+            ImageView imagenTienda = new ImageView();
+            imagenTienda.setFitHeight(80);
+            imagenTienda.setFitWidth(80);
+            if (tienda.getImagen() != null) {
+                imagenTienda.setImage(new Image(new ByteArrayInputStream(tienda.getImagen())));
+            }
+
+            Label nombreTienda = new Label(tienda.getNombre());
+            nombreTienda.setStyle("-fx-font-size: 12px; -fx-font-weight: bold;");
+
+            Button btnIrTienda = new Button("Ir a Tienda");
+            btnIrTienda.setStyle("-fx-background-color: #000000; -fx-text-fill: white;");
+            btnIrTienda.setOnAction(event -> irATienda(tienda.getIdTienda()));
+
+            vboxTienda.getChildren().addAll(imagenTienda, nombreTienda, btnIrTienda);
+            TopTiendas.getChildren().add(vboxTienda);
+        }
+    }
+
+    private void irATienda(int idTienda) {
+        Tienda tienda = tiendaService.obtenerTiendaPorId(idTienda);
+        if (tienda != null) {
+            CambiosVistas.setTiendaSeleccionada(tienda);
+            cambiarVista(TopTiendas, "/Vistas/PantallaCuenta/Tienda/View-TiendaACliente.fxml");
+        } else {
+            System.out.println("Tienda no encontrada con ID: " + idTienda);
+        }
+    }
+
+
 
     private void cargarTopProductosMasVendidos() {
 

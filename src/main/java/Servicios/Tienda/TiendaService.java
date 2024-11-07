@@ -31,6 +31,11 @@ public class TiendaService {
         }
     }
 
+    public List<Tienda> obtenerTiendasDestacadas() {
+        return mostrarTiendas.obtenerTiendasDestacadas();
+    }
+
+
     // Obtener tiendas por ID de usuario
     public List<Tienda> obtenerTiendas(int idUsuario) {
         return mostrarTiendas.obtenerTiendas(idUsuario);
