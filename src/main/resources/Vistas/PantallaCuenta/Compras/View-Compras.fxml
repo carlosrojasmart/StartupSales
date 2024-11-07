@@ -54,7 +54,7 @@
             </children>
         </HBox>
 
-        <HBox layoutY="480.0" prefHeight="30.0" style="-fx-background-color: #000000;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <HBox fx:id="hboxAbajo" prefHeight="30.0" style="-fx-background-color: #000000;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <children>
                 <Label text="© 2025 Main.StartupSales. Todos los derechos reservados." textFill="WHITE">
                     <font>
