@@ -1,11 +1,9 @@
 package Controladores.Principal;
 
-import Servicios.Vistas.CambiosVistas;
+import Controladores.Vistas.CambiosVistas;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
-import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 public class ViewPaginaPrincipal {

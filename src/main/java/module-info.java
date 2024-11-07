@@ -33,6 +33,8 @@ module my.app {
     exports Controladores.Cuenta.Facturacion;
     exports Controladores.Cuenta.Perfil;
     exports Controladores.Cuenta.Compras;
+    exports Controladores.Cuenta.Producto;
+    opens Controladores.Cuenta.Producto to javafx.fxml;
 }
 
 

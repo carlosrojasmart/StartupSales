@@ -1,9 +1,9 @@
 package Controladores.Cuenta.Compras;
 
-import Servicios.Datos.UsuarioActivo;
+import Modelos.UsuarioActivo;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import Servicios.Vistas.CambiosVistas;
+import Controladores.Vistas.CambiosVistas;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;

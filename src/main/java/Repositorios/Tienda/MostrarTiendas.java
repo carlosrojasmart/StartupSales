@@ -1,28 +1,14 @@
-package Servicios.Datos;
+package Repositorios.Tienda;
 
-import Controladores.Cuenta.Tienda.ViewMirarTiendaController;
 import DB.JDBC;
 import Modelos.Tienda;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javafx.stage.Stage;
-import javafx.event.ActionEvent;
 
 public class MostrarTiendas {
 
@@ -52,65 +38,7 @@ public class MostrarTiendas {
         return tiendas;
     }
 
-    public VBox crearVistaTiendas(List<Tienda> tiendas) {
-        VBox contenedorTiendas = new VBox();
-        contenedorTiendas.setSpacing(15); // Ajusta el espacio entre cada tienda
-        contenedorTiendas.setPadding(new Insets(10, 20, 10, 20)); // Agrega un margen para que no estén pegadas al borde
-
-        for (Tienda tienda : tiendas) {
-            HBox tiendaBox = new HBox();
-            tiendaBox.setSpacing(15);
-            tiendaBox.setPadding(new Insets(10, 10, 10, 10)); // Margen interno para cada tienda
-            tiendaBox.setStyle("-fx-background-color: #F0F0F0; -fx-border-color: #DDDDDD; -fx-border-radius: 5; -fx-background-radius: 5;");
-
-            ImageView imagenTienda = new ImageView();
-            imagenTienda.setFitHeight(100);
-            imagenTienda.setFitWidth(100);
-            if (tienda.getImagen() != null) {
-                Image image = new Image(new ByteArrayInputStream(tienda.getImagen()));
-                imagenTienda.setImage(image);
-            }
-
-            Label nombreTienda = new Label(tienda.getNombre());
-            nombreTienda.setStyle("-fx-font-family: 'MS Reference Sans Serif'; -fx-font-size: 14px;");
-
-            Button irATienda = new Button("Ir a tienda");
-            irATienda.setStyle("-fx-background-color: #000000; -fx-text-fill: #ffffff; -fx-font-family: 'MS Reference Sans Serif'; -fx-font-size: 14px;");
-
-            // Configurar la acción del botón para ir a la tienda
-            irATienda.setOnAction(event -> irATienda(tienda, event));
-
-            tiendaBox.getChildren().addAll(imagenTienda, nombreTienda, irATienda);
-            contenedorTiendas.getChildren().add(tiendaBox);
-        }
-
-        return contenedorTiendas;
-    }
-
-    private void irATienda(Tienda tienda, ActionEvent event) {
-        try {
-            // Establecer la tienda seleccionada antes de cargar la vista
-            ViewMirarTiendaController.setTiendaSeleccionada(tienda);
-
-            // Configurar el FXMLLoader y cargar la vista
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Vistas/PantallaCuenta/Tienda/View-MirarTienda.fxml"));
-            Parent root = loader.load();
-
-            // Obtener el controlador de la nueva vista
-            ViewMirarTiendaController controlador = loader.getController();
-
-            // Asegurarse de que los datos estén cargados antes de mostrar la vista
-            controlador.cargarDatosTienda();
-
-            // Cambiar la vista en el mismo Stage
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.getScene().setRoot(root);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // Método adicional para obtener una tienda por su ID si es necesario
+    // Método adicional para obtener una tienda por su ID
     public Tienda obtenerTiendaPorId(int idTienda) {
         Tienda tienda = null;
         String sql = "SELECT * FROM Tienda WHERE idTienda = ?";
@@ -136,6 +64,30 @@ public class MostrarTiendas {
 
         return tienda;
     }
+
+    public boolean eliminarTienda(int idTienda) {
+        String eliminarProductosSQL = "DELETE FROM Producto WHERE idTienda = ?";
+        String eliminarTiendaSQL = "DELETE FROM Tienda WHERE idTienda = ?";
+
+        try (Connection conexion = JDBC.ConectarBD()) {
+            // Primero, elimina todos los productos asociados a la tienda
+            try (PreparedStatement pstmtProductos = conexion.prepareStatement(eliminarProductosSQL)) {
+                pstmtProductos.setInt(1, idTienda);
+                pstmtProductos.executeUpdate();
+            }
+
+            // Luego, elimina la tienda
+            try (PreparedStatement pstmtTienda = conexion.prepareStatement(eliminarTiendaSQL)) {
+                pstmtTienda.setInt(1, idTienda);
+                return pstmtTienda.executeUpdate() > 0;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
     public List<Tienda> buscarTiendasPorNombre(String nombreTienda) {
         List<Tienda> tiendas = new ArrayList<>();
@@ -170,22 +122,6 @@ public class MostrarTiendas {
         return tiendas;
     }
 
-    public boolean eliminarTienda(int idTienda) {
-        String sql = "DELETE FROM Tienda WHERE idTienda = ?";
-
-        try (Connection conexion = JDBC.ConectarBD();
-             PreparedStatement pstmt = conexion.prepareStatement(sql)) {
-            pstmt.setInt(1, idTienda);
-
-            int filasEliminadas = pstmt.executeUpdate();
-            return filasEliminadas > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    // Método para actualizar la tienda en la base de datos
     public void actualizarTienda(Tienda tienda) {
         String sql = "UPDATE Tienda SET nombre = ?, descripcion = ?, categoria = ?, imagenTienda = ? WHERE idTienda = ?";
         try (Connection conexion = JDBC.ConectarBD();
@@ -201,7 +137,6 @@ public class MostrarTiendas {
         }
     }
 
-    // Método para obtener las categorías disponibles
     public List<String> obtenerCategorias() {
         List<String> categorias = new ArrayList<>();
         categorias.add("Electrónica");
@@ -216,5 +151,36 @@ public class MostrarTiendas {
         categorias.add("Mascotas");
         return categorias;
     }
+
+    public List<Tienda> obtenerTiendasDestacadas() {
+        List<Tienda> tiendasDestacadas = new ArrayList<>();
+        String sql = """
+        SELECT t.idTienda, t.nombre, t.descripcion, t.categoria, t.imagenTienda, SUM(cp.cantidad) as totalVentas
+        FROM Tienda t
+        JOIN Producto p ON t.idTienda = p.idTienda
+        JOIN compra_producto cp ON p.idProducto = cp.idProducto
+        GROUP BY t.idTienda
+        ORDER BY totalVentas DESC
+        LIMIT 5
+    """;
+
+        try (Connection conexion = JDBC.ConectarBD();
+             PreparedStatement pstmt = conexion.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+            while (rs.next()) {
+                Tienda tienda = new Tienda();
+                tienda.setIdTienda(rs.getInt("idTienda"));
+                tienda.setNombre(rs.getString("nombre"));
+                tienda.setDescripcion(rs.getString("descripcion"));
+                tienda.setCategoria(rs.getString("categoria"));
+                tienda.setImagen(rs.getBytes("imagenTienda"));
+                tiendasDestacadas.add(tienda);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tiendasDestacadas;
+    }
+
 
 }

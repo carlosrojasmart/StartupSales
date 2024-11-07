@@ -1,9 +1,9 @@
 package Controladores.Cuenta.Tienda;
 
 import Modelos.Producto;
-import Servicios.Datos.CrearProducto;
-import Servicios.Datos.UsuarioActivo;
-import Servicios.Vistas.CambiosVistas;
+import Repositorios.Productos.CrearProducto;
+import Modelos.UsuarioActivo;
+import Controladores.Vistas.CambiosVistas;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -73,15 +73,12 @@ public class ViewEditarProductoController {
 
     public void setProductoSeleccionado(Producto producto) {
         this.productoSeleccionado = producto;
-
-        // Cargar los datos del producto en los campos de texto
         nombreProducto.setText(producto.getNombre());
-        precioProducto.setText(String.valueOf(productoSeleccionado.getPrecio())); // Para edición de precios (sin el símbolo $)
+        precioProducto.setText(String.valueOf(productoSeleccionado.getPrecio()));
         descProducto.setText(producto.getDescripcion());
         stockProducto.getValueFactory().setValue(producto.getStock());
         catProducto.setValue(producto.getCategoria());
 
-        // Mostrar la imagen del producto
         if (producto.getImagenProducto() != null) {
             Image image = new Image(new ByteArrayInputStream(producto.getImagenProducto()));
             imagenProducto.setImage(image);
@@ -94,36 +91,10 @@ public class ViewEditarProductoController {
         carritoCompra.setOnMouseClicked(event -> mostrarCarrito());
 
         stockProducto.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000, 0));
+        catProducto.getItems().addAll("Electrónica", "Ropa y Moda", "Hogar y Jardín", "Salud y Belleza", "Deportes", "Juguetes", "Alimentos", "Automóviles", "Libros", "Mascotas");
 
-        catProducto.getItems().addAll(
-                "Electrónica", "Ropa y Moda", "Hogar y Jardín", "Salud y Belleza",
-                "Deportes", "Juguetes", "Alimentos", "Automóviles", "Libros", "Mascotas"
-        );
-
-        // Enlazar el botón con la acción de editar
         btnEditarProducto.setOnAction(event -> editarProducto());
         btnEliminarProducto.setOnAction(event -> eliminarProducto());
-
-        buscarProductos.setOnMouseClicked(event -> {buscarProductos.clear();});
-        // Realizar búsqueda cuando el usuario presione "Enter"
-        buscarProductos.setOnAction(event -> realizarBusqueda());
-        // Configurar el evento del carrito
-        carritoCompra.setOnMouseClicked(event -> mostrarCarrito());
-    }
-
-    private void cargarDatosProducto() {
-        if (productoSeleccionado != null) {
-            nombreProducto.setText(productoSeleccionado.getNombre());
-            precioProducto.setText(String.valueOf(productoSeleccionado.getPrecio()));
-            descProducto.setText(productoSeleccionado.getDescripcion());
-            stockProducto.getValueFactory().setValue(productoSeleccionado.getStock());
-            catProducto.setValue(productoSeleccionado.getCategoria());
-
-            if (productoSeleccionado.getImagenProducto() != null) {
-                Image image = new Image(new ByteArrayInputStream(productoSeleccionado.getImagenProducto()));
-                imagenProducto.setImage(image);
-            }
-        }
     }
 
     @FXML
@@ -134,25 +105,20 @@ public class ViewEditarProductoController {
         }
 
         try {
-            // Actualizar los datos del producto desde los campos de texto
             productoSeleccionado.setNombre(nombreProducto.getText());
-            productoSeleccionado.setPrecio(new BigDecimal(precioProducto.getText())); // Cambio aquí
+            productoSeleccionado.setPrecio(new BigDecimal(precioProducto.getText()));
             productoSeleccionado.setDescripcion(descProducto.getText());
             productoSeleccionado.setStock(stockProducto.getValue());
             productoSeleccionado.setCategoria(catProducto.getValue());
 
-            // Verificar si hay una nueva imagen para actualizar
             if (archivoImagen != null) {
                 productoSeleccionado.setImagenProducto(new FileInputStream(archivoImagen).readAllBytes());
             }
 
-            // Actualizar el producto en la base de datos
             boolean exito = crearProducto.actualizarProducto(productoSeleccionado);
             if (exito) {
-                System.out.println("Producto actualizado correctamente: " + productoSeleccionado.getNombre());
-
-                // Aquí puedes cambiar de vista si lo deseas, después de la actualización exitosa
-                mostrarMirarTienda(null);  // Cambiar la vista de regreso a la tienda
+                System.out.println("Producto actualizado correctamente.");
+                mostrarMirarTienda(null);
             } else {
                 System.out.println("Error al actualizar el producto.");
             }
@@ -162,7 +128,6 @@ public class ViewEditarProductoController {
         }
     }
 
-
     @FXML
     private void eliminarProducto() {
         if (productoSeleccionado == null) {
@@ -170,15 +135,16 @@ public class ViewEditarProductoController {
             return;
         }
 
-        // Llamar al método para eliminar el producto y sus referencias
+        // Llamar al método para eliminar el producto
         boolean exito = crearProducto.eliminarProducto(productoSeleccionado.getIdProducto());
         if (exito) {
             System.out.println("Producto eliminado correctamente.");
-            mostrarMirarTienda(null); // Volver a la vista de la tienda
+            mostrarMirarTienda(null); // Cambiar a la vista de la tienda después de eliminar el producto
         } else {
             System.out.println("Error al eliminar el producto.");
         }
     }
+
 
     @FXML
     private void cargarImagen() {
@@ -235,15 +201,5 @@ public class ViewEditarProductoController {
     private void cambiarVista(Node nodo, String rutaFXML) {
         Stage stage = (Stage) nodo.getScene().getWindow();
         cambiosVistas.cambiarVista(stage, rutaFXML);
-    }
-
-    private void realizarBusqueda() {
-        String terminoBusqueda = buscarProductos.getText().trim();
-        if (!terminoBusqueda.isEmpty()) {
-            CambiosVistas.setTerminoBusqueda(terminoBusqueda);
-            cambiarVista(buscarProductos, "/Vistas/PantallaPrincipal/View-BusquedaProductos.fxml");
-        } else {
-            System.out.println("El término de búsqueda está vacío.");
-        }
     }
 }

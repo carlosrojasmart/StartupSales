@@ -1,9 +1,12 @@
-package Controladores.Cuenta.Tienda;
+package Controladores.Cuenta.Producto;
 
+import Controladores.Cuenta.Tienda.ViewMirarTiendaController;
 import Modelos.Producto;
-import Servicios.Datos.CrearProducto;
-import Servicios.Datos.UsuarioActivo;
-import Servicios.Vistas.CambiosVistas;
+import Modelos.UsuarioActivo;
+import Controladores.Vistas.CambiosVistas;
+import Repositorios.Productos.MostrarProductos;
+import Servicios.Productos.ProductoService;
+import Repositorios.Productos.CrearProducto;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -15,7 +18,6 @@ import javafx.stage.Stage;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigDecimal;
 
@@ -66,14 +68,13 @@ public class ViewProductoController {
     @FXML
     private Button btnVolverTienda;
 
-    private File archivoImagen;
-    private CrearProducto crearProducto = new CrearProducto();
+    private final ProductoService productoService = new ProductoService(new CrearProducto(), new MostrarProductos());
     private CambiosVistas cambiosVistas = new CambiosVistas();
+    private File archivoImagen;
 
     @FXML
     private void initialize() {
         buscarProductos.setOnMouseClicked(event -> buscarProductos.clear());
-        carritoCompra.setOnMouseClicked(event -> mostrarCarrito());
 
         stockProducto.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000, 0));
         catProducto.getItems().addAll(
@@ -85,11 +86,7 @@ public class ViewProductoController {
         btnCargarImagen.setOnAction(event -> cargarImagen());
         btnCrearProducto.setOnAction(event -> crearProducto());
 
-        buscarProductos.setOnMouseClicked(event -> {buscarProductos.clear();});
-        // Realizar búsqueda cuando el usuario presione "Enter"
         buscarProductos.setOnAction(event -> realizarBusqueda());
-        // Configurar el evento del carrito
-        carritoCompra.setOnMouseClicked(event -> mostrarCarrito());
     }
 
     private void cargarImagen() {
@@ -97,20 +94,20 @@ public class ViewProductoController {
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Imágenes", "*.png", "*.jpg", "*.jpeg")
         );
+
         archivoImagen = fileChooser.showOpenDialog(null);
 
         if (archivoImagen != null) {
             try {
-                Image nuevaImagen = new Image(new FileInputStream(archivoImagen));
-                imagenProducto.setImage(nuevaImagen);
-            } catch (FileNotFoundException e) {
+                Image image = new Image(new FileInputStream(archivoImagen));
+                imagenProducto.setImage(image);
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     }
 
     private void crearProducto() {
-        // Validar campos
         if (nombreProducto.getText().isEmpty() || precioProducto.getText().isEmpty() ||
                 descProducto.getText().isEmpty() || stockProducto.getValue() == null ||
                 catProducto.getValue() == null || archivoImagen == null) {
@@ -118,44 +115,28 @@ public class ViewProductoController {
             return;
         }
 
-        try {
-            // Crear un nuevo producto
-            Producto producto = new Producto();
-            producto.setNombre(nombreProducto.getText());
+        Producto producto = new Producto();
+        producto.setNombre(nombreProducto.getText());
+        producto.setPrecio(new BigDecimal(precioProducto.getText()));
+        producto.setDescripcion(descProducto.getText());
+        producto.setStock(stockProducto.getValue());
+        producto.setCategoria(catProducto.getValue());
 
-            // Cambiar el precio a BigDecimal
-            producto.setPrecio(new BigDecimal(precioProducto.getText())); // Cambio aquí
+        if (ViewMirarTiendaController.getTiendaSeleccionada() != null) {
+            producto.setIdTienda(ViewMirarTiendaController.getTiendaSeleccionada().getIdTienda());
+        } else {
+            System.out.println("No hay tienda seleccionada para asociar el producto.");
+            return;
+        }
 
-            producto.setDescripcion(descProducto.getText());
-            producto.setStock(stockProducto.getValue());
-            producto.setCategoria(catProducto.getValue());
-            producto.setImagenProducto(new FileInputStream(archivoImagen).readAllBytes());
-            producto.setIdProducto(crearProducto.generarIdProductoAleatorio());
-
-            // Asegurarse de usar el idTienda de la tienda seleccionada
-            if (ViewMirarTiendaController.getTiendaSeleccionada() != null) {
-                producto.setIdTienda(ViewMirarTiendaController.getTiendaSeleccionada().getIdTienda());
-            } else {
-                System.out.println("No hay tienda seleccionada para asociar el producto.");
-                return;
-            }
-
-            // Obtener el Stage actual
-            Stage stage = (Stage) nombreProducto.getScene().getWindow();
-
-            // Guardar el producto en la base de datos y cambiar la vista si es exitoso
-            boolean exito = crearProducto.crearProducto(producto, stage);
-            if (exito) {
-                System.out.println("Producto creado exitosamente.");
-            } else {
-                System.out.println("Error al crear el producto.");
-            }
-        } catch (IOException | NumberFormatException e) {
-            e.printStackTrace();
-            System.out.println("Error al procesar los datos del producto.");
+        boolean exito = productoService.crearProducto(producto, archivoImagen);
+        if (exito) {
+            System.out.println("Producto creado exitosamente.");
+            cambiarVista(btnCrearProducto, "/Vistas/PantallaCuenta/Tienda/View-TiendaCreada.fxml");
+        } else {
+            System.out.println("Error al crear el producto.");
         }
     }
-
 
     @FXML
     public void mostrarCarrito() {
