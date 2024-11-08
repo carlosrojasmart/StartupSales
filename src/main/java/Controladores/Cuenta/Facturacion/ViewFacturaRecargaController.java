@@ -1,8 +1,8 @@
 package Controladores.Cuenta.Facturacion;
 
+import Controladores.Vistas.CambiosVistas;
 import Modelos.UsuarioActivo;
 import Repositorios.Datos.SaldoUsuario;
-import Controladores.Vistas.CambiosVistas;
 import Servicios.Util.FormatoUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 
 import java.math.BigDecimal;
 
-public class ViewFacturacionController {
+public class ViewFacturaRecargaController {
 
     @FXML
     private TextField buscarProductos;
@@ -37,39 +37,58 @@ public class ViewFacturacionController {
     private Button BtnTienda;
 
     @FXML
-    private Button BtnRecargar;
+    private Button BtnRealizarRecarga;
 
     @FXML
-    private Label lblSaldoActual;
+    private TextField lblValorRecarga;
 
     @FXML
-    private Label lblSaldoPagar;
-
-    @FXML
-    private VBox vboxFacturas;
+    private Label lblInforme;
 
     private CambiosVistas cambiosVistas = new CambiosVistas();
     private final SaldoUsuario saldoUsuarioRepo = new SaldoUsuario();
 
-
     @FXML
     private void initialize() {
-        // Configurar el buscador de productos
         buscarProductos.setOnMouseClicked(event -> buscarProductos.clear());
-
-        // Realizar búsqueda cuando el usuario presione "Enter"
         buscarProductos.setOnAction(event -> realizarBusqueda());
-
-        // Configurar el evento del carrito
         carritoCompra.setOnMouseClicked(event -> mostrarCarrito());
 
-        // Cargar los saldos del usuario
-        cargarSaldosUsuario();
+        // Evento para el botón de recarga
+        BtnRealizarRecarga.setOnAction(event -> realizarRecarga());
     }
 
-    private void cargarSaldosUsuario() {
-        lblSaldoActual.setText(FormatoUtil.formatearPrecio(UsuarioActivo.getSaldoActual()));
-        lblSaldoPagar.setText(FormatoUtil.formatearPrecio(UsuarioActivo.getSaldoPagar()));
+    private void realizarRecarga() {
+        try {
+            // Obtener el valor ingresado en lblValorRecarga y convertirlo a BigDecimal
+            BigDecimal valorRecarga = new BigDecimal(lblValorRecarga.getText().trim());
+
+            // Validar si el valor de recarga es positivo
+            if (valorRecarga.compareTo(BigDecimal.ZERO) <= 0) {
+                lblInforme.setText("Valor de Recarga no puede ser negativo o cero.");
+                return;  // Salir del método sin hacer la recarga ni cambiar de vista
+            }
+
+            // Obtener el saldo actual de UsuarioActivo
+            BigDecimal saldoActual = UsuarioActivo.getSaldoActual();
+
+            // Sumar el valor de la recarga al saldo actual
+            BigDecimal nuevoSaldo = saldoActual.add(valorRecarga);
+            UsuarioActivo.setSaldoActual(nuevoSaldo);
+
+            // Actualizar el saldo en la base de datos
+            saldoUsuarioRepo.actualizarSaldo(UsuarioActivo.getIdUsuario(), nuevoSaldo);
+
+            // Limpiar el campo de recarga después de la operación
+            lblValorRecarga.clear();
+            lblInforme.setText("Recarga exitosa. Nuevo saldo: " + FormatoUtil.formatearPrecio(nuevoSaldo));
+
+            // Redirigir a la vista de facturación
+            cambiarVista(BtnRealizarRecarga, "/Vistas/PantallaCuenta/Facturacion/View-Facturacion.fxml");
+
+        } catch (NumberFormatException e) {
+            lblInforme.setText("Error: Ingresa un valor válido para la recarga.");
+        }
     }
 
 
@@ -77,10 +96,7 @@ public class ViewFacturacionController {
     private void realizarBusqueda() {
         String terminoBusqueda = buscarProductos.getText().trim();
         if (!terminoBusqueda.isEmpty()) {
-            // Almacenar el término de búsqueda para la vista de búsqueda de productos
             CambiosVistas.setTerminoBusqueda(terminoBusqueda);
-
-            // Cambiar a la vista de búsqueda de productos
             cambiarVista(buscarProductos, "/Vistas/PantallaPrincipal/View-BusquedaProductos.fxml");
         } else {
             System.out.println("El término de búsqueda está vacío.");
@@ -88,33 +104,8 @@ public class ViewFacturacionController {
     }
 
     @FXML
-    private void procesarCompra() {
-        // Lógica para procesar la compra, restando del saldo actual en la vista y en UsuarioActivo
-        BigDecimal nuevoSaldo = UsuarioActivo.getSaldoActual().subtract(UsuarioActivo.getSaldoPagar());
-
-        // Actualiza el saldo en UsuarioActivo
-        UsuarioActivo.setSaldoActual(nuevoSaldo);
-
-        // Actualiza el saldo en la base de datos
-        guardarSaldoEnBaseDeDatos();
-
-        // Actualizar la vista
-        cargarSaldosUsuario();
-    }
-
-    private void guardarSaldoEnBaseDeDatos() {
-        saldoUsuarioRepo.actualizarSaldo(UsuarioActivo.getIdUsuario(), UsuarioActivo.getSaldoActual());
-    }
-
-
-    @FXML
     public void mostrarCarrito() {
         cambiarVista(carritoCompra, "/Vistas/PantallaPrincipal/View-CarritoCompras.fxml");
-    }
-
-    @FXML
-    public void mostrarRecarga() {
-        cambiarVista(BtnRecargar, "/Vistas/PantallaCuenta/Facturacion/View-FacturaRecarga.fxml");
     }
 
     @FXML

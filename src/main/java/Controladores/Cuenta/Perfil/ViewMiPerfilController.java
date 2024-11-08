@@ -75,9 +75,9 @@ public class ViewMiPerfilController {
 
     @FXML
     private void initialize() {
-        buscarProductos.setOnMouseClicked(event -> buscarProductos.clear());
         carritoCompra.setOnMouseClicked(event -> mostrarCarrito());
 
+        buscarProductos.setOnMouseClicked(event -> buscarProductos.clear());
         // Configuración de la acción de búsqueda
         buscarProductos.setOnAction(event -> realizarBusqueda());
 
