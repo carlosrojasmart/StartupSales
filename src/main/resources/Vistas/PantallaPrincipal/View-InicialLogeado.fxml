@@ -6,9 +6,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="503.0" prefWidth="854.0" style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.Principal.ViewInicialLogeadoController">
+<AnchorPane style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.Principal.ViewInicialLogeadoController">
     <children>
-        <HBox layoutX="-1.0" prefHeight="66.0" prefWidth="863.0" style="-fx-background-color: #000000;">
+        <HBox AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" prefHeight="66.0" style="-fx-background-color: #000000;">
             <children>
                 <ImageView fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
                     <image>
@@ -58,7 +58,7 @@
                 </ImageView>
             </children>
         </HBox>
-        <HBox layoutX="-1.0" layoutY="480.0" prefHeight="30.0" prefWidth="863.0" style="-fx-background-color: #000000;">
+        <HBox prefHeight="30.0" style="-fx-background-color: #000000;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <children>
                 <Label text="© 2025 Main.StartupSales. Todos los derechos reservados." textFill="WHITE">
                     <font>
@@ -68,7 +68,8 @@
                         <Insets left="10.0" top="8.0" />
                     </HBox.margin>
                 </Label>
-            </children></HBox>
+            </children>
+        </HBox>
       <ScrollPane layoutY="66.0" prefHeight="415.0" prefWidth="862.0" style="-fx-background-color: #000000;">
         <content>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="409.0" prefWidth="860.0" style="-fx-background-color: #ffffff;">
