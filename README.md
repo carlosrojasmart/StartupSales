@@ -1,3 +1,3 @@
-# Main.StartupSales
+# StartupSales
 Proyecto Fundamentos Software
 
