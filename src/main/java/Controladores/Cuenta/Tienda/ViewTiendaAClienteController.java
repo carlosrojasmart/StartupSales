@@ -82,8 +82,13 @@ public class ViewTiendaAClienteController {
         categoriaTienda.setEditable(false);
         DescTienda.setEditable(false);
 
-        buscarProductos.setOnMouseClicked(event -> buscarProductos.clear());
+        buscarProductos.setOnMouseClicked(event -> {
+            buscarProductos.clear();
+        });
+        buscarProductos.setOnMouseClicked(event -> {buscarProductos.clear();});
+        // Realizar búsqueda cuando el usuario presione "Enter"
         buscarProductos.setOnAction(event -> realizarBusqueda());
+        // Configurar el evento del carrito
         carritoCompra.setOnMouseClicked(event -> mostrarCarrito());
     }
 

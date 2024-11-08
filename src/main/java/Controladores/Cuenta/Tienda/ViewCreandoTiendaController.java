@@ -62,12 +62,17 @@ public class ViewCreandoTiendaController {
 
     @FXML
     private void initialize() {
-        buscarProductos.setOnMouseClicked(event -> buscarProductos.clear());
         carritoCompra.setOnMouseClicked(event -> mostrarCarrito());
 
         boxCategoria.getItems().addAll("Electrónica", "Ropa y Moda", "Hogar y Jardín", "Salud y Belleza", "Deportes", "Juguetes", "Alimentos", "Automóviles", "Libros", "Mascotas");
 
+        buscarProductos.setOnMouseClicked(event -> {
+            buscarProductos.clear();
+        });
+        buscarProductos.setOnMouseClicked(event -> {buscarProductos.clear();});
+        // Realizar búsqueda cuando el usuario presione "Enter"
         buscarProductos.setOnAction(event -> realizarBusqueda());
+        // Configurar el evento del carrito
     }
 
     @FXML

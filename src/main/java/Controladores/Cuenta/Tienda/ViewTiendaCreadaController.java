@@ -50,7 +50,13 @@ public class ViewTiendaCreadaController {
 
     @FXML
     private void initialize() {
-        buscarProductos.setOnMouseClicked(event -> buscarProductos.clear());
+        buscarProductos.setOnMouseClicked(event -> {
+            buscarProductos.clear();
+        });
+        buscarProductos.setOnMouseClicked(event -> {buscarProductos.clear();});
+        // Realizar búsqueda cuando el usuario presione "Enter"
+        buscarProductos.setOnAction(event -> realizarBusqueda());
+        // Configurar el evento del carrito
         carritoCompra.setOnMouseClicked(event -> mostrarCarrito());
 
         int idUsuario = obtenerIdUsuario();
@@ -60,7 +66,6 @@ public class ViewTiendaCreadaController {
         VBox vistaTiendas = crearVistaTiendas(tiendas);
         scrollPaneTiendas.setContent(vistaTiendas);
 
-        buscarProductos.setOnAction(event -> realizarBusqueda());
         carritoCompra.setOnMouseClicked(event -> mostrarCarrito());
     }
 

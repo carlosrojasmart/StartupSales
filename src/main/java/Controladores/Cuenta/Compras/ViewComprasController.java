@@ -30,6 +30,9 @@ public class ViewComprasController {
     @FXML
     private Button BtnFacturacion;
 
+    @FXML
+    private Button CompraAhora;
+
     private CambiosVistas cambiosVistas = new CambiosVistas();
 
     @FXML
@@ -81,6 +84,11 @@ public class ViewComprasController {
             // Si no es vendedor, ir a la vista para crear la tienda
             cambiarVista(BtnTienda, "/Vistas/PantallaCuenta/Tienda/View-CrearTienda.fxml");
         }
+    }
+
+    @FXML
+    public void CompraAhora(ActionEvent event) {
+        cambiarVista(BtnVolverInicio, "/Vistas/PantallaPrincipal/View-InicialLogeado.fxml");
     }
 
     @FXML
