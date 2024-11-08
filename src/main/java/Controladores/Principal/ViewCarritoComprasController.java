@@ -4,6 +4,7 @@ import Modelos.Producto;
 import Repositorios.Carrito.MostrarCarrito;
 import Modelos.UsuarioActivo;
 import Controladores.Vistas.CambiosVistas;
+import Repositorios.Datos.SaldoUsuario;
 import Repositorios.Productos.CrearProducto;
 import Repositorios.Productos.MostrarProductos;
 import Servicios.Carrito.CarritoService;
@@ -167,14 +168,20 @@ public class ViewCarritoComprasController {
         if (saldoActual.compareTo(totalCarrito) < 0) {
             lblAvisoSaldo.setText("Saldo Insuficiente");
         } else {
+            // Actualiza el saldo en UsuarioActivo
             BigDecimal nuevoSaldo = saldoActual.subtract(totalCarrito);
             UsuarioActivo.setSaldoActual(nuevoSaldo);
 
+            // Procesa la compra en la base de datos
             carritoService.procesarCompra(UsuarioActivo.getIdUsuario(), UsuarioActivo.getIdCarrito(), totalCarrito);
 
+            // Guarda el saldo actualizado en la base de datos
+            SaldoUsuario saldoUsuarioRepo = new SaldoUsuario(); // Crea una instancia
+            saldoUsuarioRepo.actualizarSaldo(UsuarioActivo.getIdUsuario(), nuevoSaldo); // Actualiza en la base de datos
+
+            // Actualiza la vista y muestra el éxito de la compra
             lblAvisoSaldo.setText("Compra realizada con éxito");
             lblTotal.setText("Total: 0.00 COP");
-
             carritoService.vaciarCarrito(UsuarioActivo.getIdCarrito());
             cargarProductosCarrito();
         }

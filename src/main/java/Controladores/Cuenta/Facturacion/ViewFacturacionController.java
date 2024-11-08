@@ -1,6 +1,7 @@
 package Controladores.Cuenta.Facturacion;
 
 import Modelos.UsuarioActivo;
+import Repositorios.Datos.SaldoUsuario;
 import Controladores.Vistas.CambiosVistas;
 import Servicios.Util.FormatoUtil;
 import javafx.event.ActionEvent;
@@ -45,6 +46,8 @@ public class ViewFacturacionController {
     private VBox vboxFacturas;
 
     private CambiosVistas cambiosVistas = new CambiosVistas();
+    private final SaldoUsuario saldoUsuarioRepo = new SaldoUsuario();
+
 
     @FXML
     private void initialize() {
@@ -62,14 +65,10 @@ public class ViewFacturacionController {
     }
 
     private void cargarSaldosUsuario() {
-        // Obtener los saldos directamente como BigDecimal
-        BigDecimal saldoActual = UsuarioActivo.getSaldoActual();
-        BigDecimal saldoPagar = UsuarioActivo.getSaldoPagar();
-
-        // Formatear los valores para que se vean como moneda
-        lblSaldoActual.setText(FormatoUtil.formatearPrecio(saldoActual));
-        lblSaldoPagar.setText(FormatoUtil.formatearPrecio(saldoPagar));
+        lblSaldoActual.setText(FormatoUtil.formatearPrecio(UsuarioActivo.getSaldoActual()));
+        lblSaldoPagar.setText(FormatoUtil.formatearPrecio(UsuarioActivo.getSaldoPagar()));
     }
+
 
     @FXML
     private void realizarBusqueda() {
@@ -84,6 +83,26 @@ public class ViewFacturacionController {
             System.out.println("El término de búsqueda está vacío.");
         }
     }
+
+    @FXML
+    private void procesarCompra() {
+        // Lógica para procesar la compra, restando del saldo actual en la vista y en UsuarioActivo
+        BigDecimal nuevoSaldo = UsuarioActivo.getSaldoActual().subtract(UsuarioActivo.getSaldoPagar());
+
+        // Actualiza el saldo en UsuarioActivo
+        UsuarioActivo.setSaldoActual(nuevoSaldo);
+
+        // Actualiza el saldo en la base de datos
+        guardarSaldoEnBaseDeDatos();
+
+        // Actualizar la vista
+        cargarSaldosUsuario();
+    }
+
+    private void guardarSaldoEnBaseDeDatos() {
+        saldoUsuarioRepo.actualizarSaldo(UsuarioActivo.getIdUsuario(), UsuarioActivo.getSaldoActual());
+    }
+
 
     @FXML
     public void mostrarCarrito() {
