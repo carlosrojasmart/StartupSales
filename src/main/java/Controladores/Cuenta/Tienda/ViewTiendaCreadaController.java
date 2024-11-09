@@ -1,9 +1,9 @@
 package Controladores.Cuenta.Tienda;
 
 import Modelos.Tienda;
-import Servicios.Datos.MostrarTiendas;
-import Servicios.Datos.UsuarioActivo;
-import Servicios.Vistas.CambiosVistas;
+import Repositorios.Tienda.MostrarTiendas;
+import Modelos.UsuarioActivo;
+import Controladores.Vistas.CambiosVistas;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -50,7 +50,13 @@ public class ViewTiendaCreadaController {
 
     @FXML
     private void initialize() {
-        buscarProductos.setOnMouseClicked(event -> buscarProductos.clear());
+        buscarProductos.setOnMouseClicked(event -> {
+            buscarProductos.clear();
+        });
+        buscarProductos.setOnMouseClicked(event -> {buscarProductos.clear();});
+        // Realizar búsqueda cuando el usuario presione "Enter"
+        buscarProductos.setOnAction(event -> realizarBusqueda());
+        // Configurar el evento del carrito
         carritoCompra.setOnMouseClicked(event -> mostrarCarrito());
 
         int idUsuario = obtenerIdUsuario();
@@ -60,7 +66,6 @@ public class ViewTiendaCreadaController {
         VBox vistaTiendas = crearVistaTiendas(tiendas);
         scrollPaneTiendas.setContent(vistaTiendas);
 
-        buscarProductos.setOnAction(event -> realizarBusqueda());
         carritoCompra.setOnMouseClicked(event -> mostrarCarrito());
     }
 

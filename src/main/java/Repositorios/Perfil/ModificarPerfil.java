@@ -1,7 +1,7 @@
-package Servicios.Perfil;
+package Repositorios.Perfil;
 
 import DB.JDBC;
-import Servicios.Datos.UsuarioActivo;
+import Modelos.UsuarioActivo;
 
 import java.io.File;
 import java.io.FileInputStream;

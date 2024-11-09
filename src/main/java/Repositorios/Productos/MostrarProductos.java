@@ -1,4 +1,4 @@
-package Servicios.Datos;
+package Repositorios.Productos;
 
 import DB.JDBC;
 import Modelos.Producto;
@@ -44,4 +44,35 @@ public class MostrarProductos {
 
         return productos;
     }
+
+    public List<Producto> obtenerTopProductosMasVendidos() {
+        List<Producto> topProductos = new ArrayList<>();
+        String sql = """
+        SELECT p.idProducto, p.nombre, p.precio, p.imagenProducto, SUM(cp.cantidad) AS totalVendida
+        FROM Producto p
+        JOIN compra_producto cp ON p.idProducto = cp.idProducto
+        GROUP BY p.idProducto
+        ORDER BY totalVendida DESC
+        LIMIT 5
+    """;
+
+        try (Connection conexion = JDBC.ConectarBD();
+             PreparedStatement pstmt = conexion.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                Producto producto = new Producto();
+                producto.setIdProducto(rs.getInt("idProducto"));
+                producto.setNombre(rs.getString("nombre"));
+                producto.setPrecio(rs.getBigDecimal("precio"));
+                producto.setImagenProducto(rs.getBytes("imagenProducto"));
+                topProductos.add(producto);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return topProductos;
+    }
+
 }

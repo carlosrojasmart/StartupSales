@@ -2,12 +2,12 @@ package Controladores.Cuenta.Tienda;
 
 import Modelos.Producto;
 import Modelos.Tienda;
-import Servicios.Datos.CrearTienda;
-import Servicios.Datos.MostrarProductos;
-import Servicios.Datos.MostrarTiendas;
-import Servicios.Datos.UsuarioActivo;
-import Servicios.Vistas.CambiosVistas;
-import Servicios.Vistas.FormatoUtil;
+import Repositorios.Tienda.CrearTienda;
+import Repositorios.Productos.MostrarProductos;
+import Repositorios.Tienda.MostrarTiendas;
+import Modelos.UsuarioActivo;
+import Controladores.Vistas.CambiosVistas;
+import Servicios.Util.FormatoUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -99,7 +99,16 @@ public class ViewMirarTiendaController {
     @FXML
     private void initialize() {
         int idTienda = CambiosVistas.getIdTiendaSeleccionada();
-        buscarProductos.setOnMouseClicked(event -> buscarProductos.clear());
+
+        buscarProductos.setOnMouseClicked(event -> {
+            buscarProductos.clear();
+        });
+        buscarProductos.setOnMouseClicked(event -> {buscarProductos.clear();});
+        // Realizar búsqueda cuando el usuario presione "Enter"
+        buscarProductos.setOnAction(event -> realizarBusqueda());
+
+        // Configurar el evento del carrito
+        carritoCompra.setOnMouseClicked(event -> mostrarCarrito());
         carritoCompra.setOnMouseClicked(event -> mostrarCarrito());
         cargarDatosTienda();
         configurarEventos();
@@ -194,7 +203,7 @@ public class ViewMirarTiendaController {
     private void editarProducto(Producto producto) {
         try {
             // Cargar la vista de edición del producto
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Vistas/PantallaCuenta/Tienda/View-EditarProducto.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/Vistas/PantallaCuenta/Producto/View-EditarProducto.fxml"));
             Parent root = loader.load();
 
             // Obtener el controlador de la vista de edición
@@ -314,6 +323,16 @@ public class ViewMirarTiendaController {
         }
     }
 
+    private void realizarBusqueda() {
+        String terminoBusqueda = buscarProductos.getText().trim();
+        if (!terminoBusqueda.isEmpty()) {
+            CambiosVistas.setTerminoBusqueda(terminoBusqueda);
+            cambiarVista(buscarProductos, "/Vistas/PantallaPrincipal/View-BusquedaProductos.fxml");
+        } else {
+            System.out.println("El término de búsqueda está vacío.");
+        }
+    }
+
     public static Tienda getTiendaSeleccionada() {
         return tiendaSeleccionada;
     }
@@ -350,6 +369,6 @@ public class ViewMirarTiendaController {
 
     @FXML
     public void mostrarCrearProducto(ActionEvent event) {
-        cambiarVista(btnAgregarProducto, "/Vistas/PantallaCuenta/Tienda/View-Producto.fxml");
+        cambiarVista(btnAgregarProducto, "/Vistas/PantallaCuenta/Producto/View-Producto.fxml");
     }
 }
