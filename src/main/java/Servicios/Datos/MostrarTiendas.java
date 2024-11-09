@@ -1,4 +1,4 @@
-package Repositorios.Tienda;
+package Servicios.Datos;
 
 import DB.JDBC;
 import Modelos.Tienda;
@@ -151,36 +151,5 @@ public class MostrarTiendas {
         categorias.add("Mascotas");
         return categorias;
     }
-
-    public List<Tienda> obtenerTiendasDestacadas() {
-        List<Tienda> tiendasDestacadas = new ArrayList<>();
-        String sql = """
-        SELECT t.idTienda, t.nombre, t.descripcion, t.categoria, t.imagenTienda, SUM(cp.cantidad) as totalVentas
-        FROM Tienda t
-        JOIN Producto p ON t.idTienda = p.idTienda
-        JOIN compra_producto cp ON p.idProducto = cp.idProducto
-        GROUP BY t.idTienda
-        ORDER BY totalVentas DESC
-        LIMIT 5
-    """;
-
-        try (Connection conexion = JDBC.ConectarBD();
-             PreparedStatement pstmt = conexion.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
-            while (rs.next()) {
-                Tienda tienda = new Tienda();
-                tienda.setIdTienda(rs.getInt("idTienda"));
-                tienda.setNombre(rs.getString("nombre"));
-                tienda.setDescripcion(rs.getString("descripcion"));
-                tienda.setCategoria(rs.getString("categoria"));
-                tienda.setImagen(rs.getBytes("imagenTienda"));
-                tiendasDestacadas.add(tienda);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return tiendasDestacadas;
-    }
-
 
 }

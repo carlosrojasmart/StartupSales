@@ -1,9 +1,8 @@
 package Controladores.Cuenta.Facturacion;
 
-import Modelos.UsuarioActivo;
-import Repositorios.Datos.SaldoUsuario;
-import Controladores.Vistas.CambiosVistas;
-import Servicios.Util.FormatoUtil;
+import Servicios.Datos.UsuarioActivo;
+import Servicios.Vistas.CambiosVistas;
+import Servicios.Vistas.FormatoUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -37,9 +36,6 @@ public class ViewFacturacionController {
     private Button BtnTienda;
 
     @FXML
-    private Button BtnRecargar;
-
-    @FXML
     private Label lblSaldoActual;
 
     @FXML
@@ -49,8 +45,6 @@ public class ViewFacturacionController {
     private VBox vboxFacturas;
 
     private CambiosVistas cambiosVistas = new CambiosVistas();
-    private final SaldoUsuario saldoUsuarioRepo = new SaldoUsuario();
-
 
     @FXML
     private void initialize() {
@@ -68,10 +62,14 @@ public class ViewFacturacionController {
     }
 
     private void cargarSaldosUsuario() {
-        lblSaldoActual.setText(FormatoUtil.formatearPrecio(UsuarioActivo.getSaldoActual()));
-        lblSaldoPagar.setText(FormatoUtil.formatearPrecio(UsuarioActivo.getSaldoPagar()));
-    }
+        // Obtener los saldos directamente como BigDecimal
+        BigDecimal saldoActual = UsuarioActivo.getSaldoActual();
+        BigDecimal saldoPagar = UsuarioActivo.getSaldoPagar();
 
+        // Formatear los valores para que se vean como moneda
+        lblSaldoActual.setText(FormatoUtil.formatearPrecio(saldoActual));
+        lblSaldoPagar.setText(FormatoUtil.formatearPrecio(saldoPagar));
+    }
 
     @FXML
     private void realizarBusqueda() {
@@ -88,33 +86,8 @@ public class ViewFacturacionController {
     }
 
     @FXML
-    private void procesarCompra() {
-        // Lógica para procesar la compra, restando del saldo actual en la vista y en UsuarioActivo
-        BigDecimal nuevoSaldo = UsuarioActivo.getSaldoActual().subtract(UsuarioActivo.getSaldoPagar());
-
-        // Actualiza el saldo en UsuarioActivo
-        UsuarioActivo.setSaldoActual(nuevoSaldo);
-
-        // Actualiza el saldo en la base de datos
-        guardarSaldoEnBaseDeDatos();
-
-        // Actualizar la vista
-        cargarSaldosUsuario();
-    }
-
-    private void guardarSaldoEnBaseDeDatos() {
-        saldoUsuarioRepo.actualizarSaldo(UsuarioActivo.getIdUsuario(), UsuarioActivo.getSaldoActual());
-    }
-
-
-    @FXML
     public void mostrarCarrito() {
         cambiarVista(carritoCompra, "/Vistas/PantallaPrincipal/View-CarritoCompras.fxml");
-    }
-
-    @FXML
-    public void mostrarRecarga() {
-        cambiarVista(BtnRecargar, "/Vistas/PantallaCuenta/Facturacion/View-FacturaRecarga.fxml");
     }
 
     @FXML

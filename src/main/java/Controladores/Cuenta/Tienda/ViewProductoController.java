@@ -1,12 +1,9 @@
-package Controladores.Cuenta.Producto;
+package Controladores.Cuenta.Tienda;
 
-import Controladores.Cuenta.Tienda.ViewMirarTiendaController;
 import Modelos.Producto;
-import Modelos.UsuarioActivo;
-import Controladores.Vistas.CambiosVistas;
-import Repositorios.Productos.MostrarProductos;
-import Servicios.Productos.ProductoService;
-import Repositorios.Productos.CrearProducto;
+import Servicios.Datos.CrearProducto;
+import Servicios.Datos.UsuarioActivo;
+import Servicios.Vistas.CambiosVistas;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -68,13 +65,13 @@ public class ViewProductoController {
     @FXML
     private Button btnVolverTienda;
 
-    private final ProductoService productoService = new ProductoService(new CrearProducto(), new MostrarProductos());
+    private CrearProducto crearProducto = new CrearProducto();
     private CambiosVistas cambiosVistas = new CambiosVistas();
-    private File archivoImagen;
 
     @FXML
     private void initialize() {
         buscarProductos.setOnMouseClicked(event -> buscarProductos.clear());
+        carritoCompra.setOnMouseClicked(event -> mostrarCarrito());
 
         stockProducto.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000, 0));
         catProducto.getItems().addAll(
@@ -95,46 +92,57 @@ public class ViewProductoController {
                 new FileChooser.ExtensionFilter("Imágenes", "*.png", "*.jpg", "*.jpeg")
         );
 
-        archivoImagen = fileChooser.showOpenDialog(null);
+        // Selecciona el archivo de imagen
+        File archivoSeleccionado = fileChooser.showOpenDialog(null);
 
-        if (archivoImagen != null) {
+        if (archivoSeleccionado != null) {
+            crearProducto.setArchivoImagen(archivoSeleccionado); // Asigna la imagen al servicio
             try {
-                Image image = new Image(new FileInputStream(archivoImagen));
+                // Convierte el archivo de imagen a Image para mostrar en el ImageView
+                Image image = new Image(new FileInputStream(archivoSeleccionado));
                 imagenProducto.setImage(image);
             } catch (IOException e) {
                 e.printStackTrace();
+                System.out.println("Error al cargar la imagen en el controlador.");
             }
         }
     }
 
+
     private void crearProducto() {
         if (nombreProducto.getText().isEmpty() || precioProducto.getText().isEmpty() ||
                 descProducto.getText().isEmpty() || stockProducto.getValue() == null ||
-                catProducto.getValue() == null || archivoImagen == null) {
+                catProducto.getValue() == null || crearProducto.getArchivoImagen() == null) {
             System.out.println("Todos los campos son obligatorios.");
             return;
         }
 
-        Producto producto = new Producto();
-        producto.setNombre(nombreProducto.getText());
-        producto.setPrecio(new BigDecimal(precioProducto.getText()));
-        producto.setDescripcion(descProducto.getText());
-        producto.setStock(stockProducto.getValue());
-        producto.setCategoria(catProducto.getValue());
+        try {
+            Producto producto = new Producto();
+            producto.setNombre(nombreProducto.getText());
+            producto.setPrecio(new BigDecimal(precioProducto.getText()));
+            producto.setDescripcion(descProducto.getText());
+            producto.setStock(stockProducto.getValue());
+            producto.setCategoria(catProducto.getValue());
+            producto.setImagenProducto(new FileInputStream(crearProducto.getArchivoImagen()).readAllBytes());
 
-        if (ViewMirarTiendaController.getTiendaSeleccionada() != null) {
-            producto.setIdTienda(ViewMirarTiendaController.getTiendaSeleccionada().getIdTienda());
-        } else {
-            System.out.println("No hay tienda seleccionada para asociar el producto.");
-            return;
-        }
+            if (ViewMirarTiendaController.getTiendaSeleccionada() != null) {
+                producto.setIdTienda(ViewMirarTiendaController.getTiendaSeleccionada().getIdTienda());
+            } else {
+                System.out.println("No hay tienda seleccionada para asociar el producto.");
+                return;
+            }
 
-        boolean exito = productoService.crearProducto(producto, archivoImagen);
-        if (exito) {
-            System.out.println("Producto creado exitosamente.");
-            cambiarVista(btnCrearProducto, "/Vistas/PantallaCuenta/Tienda/View-TiendaCreada.fxml");
-        } else {
-            System.out.println("Error al crear el producto.");
+            boolean exito = crearProducto.crearProducto(producto);
+            if (exito) {
+                System.out.println("Producto creado exitosamente.");
+                cambiarVista(btnCrearProducto, "/Vistas/PantallaCuenta/Tienda/View-TiendaCreada.fxml");
+            } else {
+                System.out.println("Error al crear el producto.");
+            }
+        } catch (IOException | NumberFormatException e) {
+            e.printStackTrace();
+            System.out.println("Error al procesar los datos del producto.");
         }
     }
 

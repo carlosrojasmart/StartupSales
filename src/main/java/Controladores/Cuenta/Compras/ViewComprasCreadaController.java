@@ -2,9 +2,9 @@ package Controladores.Cuenta.Compras;
 
 import DB.JDBC;
 import Modelos.Compra;
-import Modelos.UsuarioActivo;
-import Controladores.Vistas.CambiosVistas;
-import Servicios.Util.FormatoUtil;
+import Servicios.Datos.UsuarioActivo;
+import Servicios.Vistas.CambiosVistas;
+import Servicios.Vistas.FormatoUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -16,6 +16,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

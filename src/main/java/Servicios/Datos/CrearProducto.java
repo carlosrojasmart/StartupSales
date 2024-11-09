@@ -1,4 +1,4 @@
-package Repositorios.Productos;
+package Servicios.Datos;
 
 import DB.JDBC;
 import Modelos.Producto;

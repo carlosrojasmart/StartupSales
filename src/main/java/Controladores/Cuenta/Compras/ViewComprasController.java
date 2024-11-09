@@ -1,9 +1,9 @@
 package Controladores.Cuenta.Compras;
 
-import Modelos.UsuarioActivo;
+import Servicios.Datos.UsuarioActivo;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import Controladores.Vistas.CambiosVistas;
+import Servicios.Vistas.CambiosVistas;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -29,9 +29,6 @@ public class ViewComprasController {
 
     @FXML
     private Button BtnFacturacion;
-
-    @FXML
-    private Button CompraAhora;
 
     private CambiosVistas cambiosVistas = new CambiosVistas();
 
@@ -84,11 +81,6 @@ public class ViewComprasController {
             // Si no es vendedor, ir a la vista para crear la tienda
             cambiarVista(BtnTienda, "/Vistas/PantallaCuenta/Tienda/View-CrearTienda.fxml");
         }
-    }
-
-    @FXML
-    public void CompraAhora(ActionEvent event) {
-        cambiarVista(BtnVolverInicio, "/Vistas/PantallaPrincipal/View-InicialLogeado.fxml");
     }
 
     @FXML

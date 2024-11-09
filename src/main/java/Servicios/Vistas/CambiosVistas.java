@@ -1,4 +1,4 @@
-package Controladores.Vistas;
+package Servicios.Vistas;
 
 import Modelos.Tienda;
 import javafx.fxml.FXMLLoader;

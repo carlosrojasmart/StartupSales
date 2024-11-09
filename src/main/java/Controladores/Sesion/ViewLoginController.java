@@ -1,8 +1,7 @@
 package Controladores.Sesion;
 
-import Controladores.Vistas.CambiosVistas;
-import Servicios.Datos.LoginRegisterService;
-import Repositorios.Datos.LoginRegister;
+import Servicios.Vistas.CambiosVistas;
+import Servicios.Datos.LoginRegister;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -32,8 +31,7 @@ public class ViewLoginController {
 
     private CambiosVistas cambiosVistas = new CambiosVistas();
 
-    // Cambiar a LoginRegisterService
-    private LoginRegisterService loginRegisterService = new LoginRegisterService(new LoginRegister());
+    private LoginRegister loginRegister = new LoginRegister();
 
     private void cambiarVista(Node nodo, String rutaFXML) {
         Stage stage = (Stage) nodo.getScene().getWindow();
@@ -50,8 +48,7 @@ public class ViewLoginController {
         String username = txtUser.getText().trim();
         String password = txtPassword.getText().trim();
 
-        // Usar loginRegisterService en lugar de loginRegister
-        boolean loginExitoso = loginRegisterService.handleLogin(username, password);
+        boolean loginExitoso = loginRegister.handleLogin(username, password);
         if (loginExitoso) {
             mostrarMensaje("Login exitoso.");
             volverVistaInicialLogeado();
@@ -59,6 +56,7 @@ public class ViewLoginController {
             mostrarMensaje("Error en el inicio de sesión.");
         }
     }
+
 
     private void mostrarMensaje(String mensaje) {
         lblMensaje.setText(mensaje); // Mostrar el mensaje en el Label
@@ -75,6 +73,7 @@ public class ViewLoginController {
     }
 
     @FXML
+
     private void volverVistaInicialLogeado() {
         cambiarVista(btnLogin, "/Vistas/PantallaPrincipal/View-InicialLogeado.fxml");
     }

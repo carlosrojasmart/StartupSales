@@ -1,5 +1,6 @@
-package Controladores.Vistas;
+package Servicios.Vistas;
 
+import Servicios.Vistas.CambiosVistas;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;

@@ -1,8 +1,7 @@
 package Controladores.Sesion;
 
-import Controladores.Vistas.CambiosVistas;
-import Servicios.Datos.LoginRegisterService;
-import Repositorios.Datos.LoginRegister;
+import Servicios.Vistas.CambiosVistas;
+import Servicios.Datos.LoginRegister;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.PasswordField;
@@ -36,13 +35,13 @@ public class ViewRegisterController {
     @FXML
     private Button btnSeguirSinCuenta;
 
+
     @FXML
-    private Label lblMensaje;
+    private Label lblMensaje; // Para mostrar mensajes de éxito o error
 
     private CambiosVistas cambiosVistas = new CambiosVistas();
 
-    // Cambiar a LoginRegisterService
-    private LoginRegisterService loginRegisterService = new LoginRegisterService(new LoginRegister());
+    private LoginRegister loginRegister = new LoginRegister();
 
     private void cambiarVista(Node nodo, String rutaFXML) {
         Stage stage = (Stage) nodo.getScene().getWindow();
@@ -51,6 +50,7 @@ public class ViewRegisterController {
 
     @FXML
     public void initialize() {
+        // Configurar el botón para que ejecute la acción de registro
         btnLogin.setOnAction(event -> registrarUsuario());
     }
 
@@ -62,8 +62,7 @@ public class ViewRegisterController {
         String telefono = txtTelefono.getText();
         String direccion = txtDireccion.getText();
 
-        // Usar loginRegisterService en lugar de loginRegister
-        boolean exito = loginRegisterService.registrarUsuario(usuario, correo, contraseña, telefono, direccion);
+        boolean exito = loginRegister.registrarUsuario(usuario, correo, contraseña, telefono, direccion);
         if (exito) {
             mostrarMensaje("Usuario registrado exitosamente.");
             limpiarCampos();
@@ -84,6 +83,7 @@ public class ViewRegisterController {
     private void mostrarMensaje(String mensaje) {
         lblMensaje.setText(mensaje); // Muestra el mensaje en el Label
     }
+
 
     @FXML
     private void mostrarLogin() {

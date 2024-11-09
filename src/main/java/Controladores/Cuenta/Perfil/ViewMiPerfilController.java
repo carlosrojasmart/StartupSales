@@ -1,8 +1,8 @@
 package Controladores.Cuenta.Perfil;
 
-import Controladores.Vistas.CambiosVistas;
-import Modelos.UsuarioActivo;
-import Repositorios.Perfil.ModificarPerfil;
+import Servicios.Vistas.CambiosVistas;
+import Servicios.Datos.UsuarioActivo;
+import Servicios.Perfil.ModificarPerfil;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -75,9 +75,9 @@ public class ViewMiPerfilController {
 
     @FXML
     private void initialize() {
+        buscarProductos.setOnMouseClicked(event -> buscarProductos.clear());
         carritoCompra.setOnMouseClicked(event -> mostrarCarrito());
 
-        buscarProductos.setOnMouseClicked(event -> buscarProductos.clear());
         // Configuración de la acción de búsqueda
         buscarProductos.setOnAction(event -> realizarBusqueda());
 

@@ -2,7 +2,7 @@ package Main;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import Controladores.Vistas.CambiosVistas;
+import Servicios.Vistas.CambiosVistas;
 import DB.JDBC;
 
 public class StartupSales extends Application {
