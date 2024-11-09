@@ -6,41 +6,28 @@ import java.sql.SQLException;
 
 public class JDBC {
 
-    // Método para conectar a la base de datos
-    public static Connection ConectarBD(String bd) {
+    public static Connection ConectarBD(){
 
-        Connection conexion = null;
-        String host = "localhost";  // Cambiar según la configuración del host
-        String user = "root";       // Cambiar según el usuario configurado
-        String pass = "password";   // Cambiar por la contraseña correcta
+        Connection conexion;
+        String host = "jdbc:mysql://localhost/";
+        String user = "root";
+        String pass = "password";
+        String bd = "FundamentosDatabase";
 
-        System.out.println("Conectando a la base de datos...");
+        //System.out.println("Conectando a Base...");
 
         try {
-            // Intentamos cargar el driver (opcional para versiones modernas de JDBC)
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
-            // Intentamos conectar a la base de datos con el nombre proporcionado
-            conexion = DriverManager.getConnection("jdbc:mysql://" + host + "/" + bd, user, pass);
-            System.out.println("Conexión exitosa a la base de datos: " + bd);
-
+            conexion = DriverManager.getConnection(host+bd,user,pass);
+            //System.out.println("Conexion Exitosa!!!");
         } catch (SQLException e) {
-            System.err.println("Error en la conexión: " + e.getMessage());
-            e.printStackTrace(); // Muestra el rastreo completo del error
-        } catch (ClassNotFoundException e) {
-            System.err.println("Driver de MySQL no encontrado: " + e.getMessage());
+            System.out.println(e.getMessage());
+            throw new RuntimeException(e);
         }
 
-        return conexion; // Puede ser null si falló la conexión
+        return conexion;
+
+        // hash CONTRASEÑA
+
     }
 
-    // Método de prueba para conectar a la base principal
-    public static Connection ConectarBD() {
-        return ConectarBD("FundamentosDatabase");
-    }
-
-    // Método de prueba para conectar a la base de pruebas
-    public static Connection ConectarBDPruebas() {
-        return ConectarBD("modelopruebastartupsales");
-    }
 }
