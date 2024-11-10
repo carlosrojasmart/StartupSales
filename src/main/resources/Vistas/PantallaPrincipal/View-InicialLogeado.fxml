@@ -119,7 +119,7 @@
 
 <AnchorPane style="-fx-background-color: #FFFFFF;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.Principal.ViewInicialLogeadoController">
     <children>
-        <HBox prefHeight="66.0" style="-fx-background-color: #000000;" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0">
+        <HBox fx:id="dxx" prefHeight="66.0" style="-fx-background-color: #000000;" AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <children>
                 <ImageView fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
                     <image>
@@ -129,14 +129,14 @@
                         <Insets left="15.0" top="10.0" />
                     </HBox.margin>
                 </ImageView>
-                <TextField fx:id="buscarProductos" onAction="#realizarBusqueda" prefHeight="30.0" prefWidth="308.0" promptText="Buscar productos, vendedores y más...">
+                <TextField fx:id="buscarProductos" onAction="#realizarBusqueda" prefHeight="30.0" prefWidth="1050.0" promptText="Buscar productos, vendedores y más...">
                     <HBox.margin>
                         <Insets left="20.0" top="18.0" />
                     </HBox.margin>
                 </TextField>
                 <Button fx:id="BtnMisTiendas" onAction="#mostrarMisTiendas" prefHeight="30.0" prefWidth="86.0" style="-fx-background-color: #000000;" text="Mis Tiendas" textFill="WHITE">
                     <HBox.margin>
-                        <Insets left="115.0" top="18.0" />
+                        <Insets left="20.0" top="18.0" />
                     </HBox.margin>
                     <font>
                         <Font name="MS Reference Sans Serif" size="12.0" />
@@ -169,7 +169,7 @@
                 </ImageView>
             </children>
         </HBox>
-        <HBox prefHeight="30.0" style="-fx-background-color: #000000;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <HBox prefHeight="30.0" style="-fx-background-color: #000000;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" fx:id="xdxdxdxd">
             <children>
                 <Label text="© 2025 Main.StartupSales. Todos los derechos reservados." textFill="WHITE">
                     <font>
@@ -181,35 +181,36 @@
                 </Label>
             </children>
         </HBox>
-      <ScrollPane layoutY="66.0" prefHeight="415.0" prefWidth="862.0" style="-fx-background-color: #000000;">
+      <ScrollPane style="-fx-background-color: #000000;" AnchorPane.topAnchor="66.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
         <content>
-          <AnchorPane fx:id="anchorProductoss" minHeight="0.0" minWidth="0.0" prefHeight="409.0" prefWidth="860.0" style="-fx-background-color: #ffffff;">
-               <children>
+            <AnchorPane fx:id="anchorProductoss" style="-fx-background-color: #000000;" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+                <children>
                     <Label layoutX="14.0" layoutY="166.0" prefHeight="18.0" prefWidth="157.0" text="Productos Destacados">
                         <font>
                             <Font name="MS Reference Sans Serif" size="14.0" />
                         </font>
                     </Label>
-                  <AnchorPane fx:id="anchorAdentro" layoutY="-6.0" prefHeight="165.0" prefWidth="862.0" style="-fx-background-color: #000000;">
-                     <children>
-                          <Label layoutX="175.0" layoutY="27.0" text="Iniciar ahora con Main.StartupSales" textFill="WHITE">
-                              <font>
-                                  <Font name="Franklin Gothic Book" size="27.0" />
-                              </font>
-                          </Label>
-                          <Label layoutX="282.0" layoutY="70.0" text="Tu tienda, tu éxito." textFill="WHITE">
-                              <font>
-                                  <Font name="Century Gothic" size="45.0" />
-                              </font>
-                          </Label>
-                     </children>
-                  </AnchorPane>
-                  <ImageView fitHeight="227.0" fitWidth="757.0" layoutX="53.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../../Imagenes/Principal/ImagenGafasTemporal.png" />
-                     </image>
-                  </ImageView>
-               </children>
+                    <AnchorPane fx:id="anchorAdentro" prefHeight="165.0" style="-fx-background-color: #000000;"
+                                AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0.0">
+                        <children>
+                            <Label layoutX="175.0" layoutY="27.0" text="Iniciar ahora con Main.StartupSales" textFill="WHITE">
+                                <font>
+                                    <Font name="Franklin Gothic Book" size="27.0" />
+                                </font>
+                            </Label>
+                            <Label layoutX="282.0" layoutY="70.0" text="Tu tienda, tu éxito." textFill="WHITE">
+                                <font>
+                                    <Font name="Century Gothic" size="45.0" />
+                                </font>
+                            </Label>
+                        </children>
+                    </AnchorPane>
+                    <ImageView fitHeight="227.0" fitWidth="757.0" layoutX="53.0" layoutY="184.0" pickOnBounds="true" preserveRatio="true">
+                        <image>
+                            <Image url="@../../Imagenes/Principal/ImagenGafasTemporal.png" />
+                        </image>
+                    </ImageView>
+                </children>
             </AnchorPane>
         </content>
       </ScrollPane>
