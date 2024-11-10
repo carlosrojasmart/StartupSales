@@ -11,6 +11,15 @@ import DB.JDBC;
 import Modelos.UsuarioActivo;
 
 public class LoginRegister {
+    private Connection connection;
+
+    public LoginRegister(Connection connection) {
+        this.connection = connection;
+    }
+
+    public LoginRegister() {
+
+    }
 
     public String hashPassword(String password) {
         try {
