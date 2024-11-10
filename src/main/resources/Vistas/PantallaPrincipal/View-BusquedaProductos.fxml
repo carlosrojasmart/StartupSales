@@ -6,9 +6,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="503.0" prefWidth="854.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.Principal.ViewBusquedaProductosController">
+<AnchorPane prefHeight="503.0" prefWidth="854.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.Principal.ViewBusquedaProductosController">
     <children>
-        <HBox layoutX="-1.0" prefHeight="66.0" prefWidth="863.0" style="-fx-background-color: #000000;">
+        <HBox prefHeight="66.0" style="-fx-background-color: #000000;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <ImageView fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
                     <image>
@@ -57,7 +57,7 @@
                 </ImageView>
             </children>
         </HBox>
-        <HBox layoutX="-1.0" layoutY="480.0" prefHeight="30.0" prefWidth="863.0" style="-fx-background-color: #000000;">
+        <HBox prefHeight="30.0" style="-fx-background-color: #000000;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
             <children>
                 <Label text="© 2025 Main.StartupSales. Todos los derechos reservados." textFill="WHITE">
                     <font>
@@ -69,7 +69,7 @@
                 </Label>
             </children>
         </HBox>
-        <VBox layoutY="66.0" prefHeight="415.0" prefWidth="166.0" style="-fx-background-color: #ffffff;" />
+        <VBox fx:id="VBoxVerificar" layoutY="66.0" prefHeight="415.0" prefWidth="166.0" style="-fx-background-color: #ffffff;" /> -->prefWidth="114.0" style="-fx-background-color: #F5F5F5;" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="66.0"
         <ScrollPane fitToWidth="true" layoutX="166.0" layoutY="66.0" prefHeight="415.0" prefWidth="696.0" style="-fx-background-color: #ffffff;">
             <content>
                 <VBox fx:id="vboxProductos" spacing="10">
