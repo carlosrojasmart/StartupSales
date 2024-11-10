@@ -1,6 +1,8 @@
 package Servicios.Datos;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
+
 import Modelos.UsuarioActivo;
 import Repositorios.Datos.LoginRegister;
 
@@ -19,6 +21,17 @@ public class LoginRegisterService {
             return true;
         }
         System.out.println("Error en login: usuario o contraseña incorrectos.");
+        return false;
+    }
+
+    // Método para pruebas unitarias usando la base de datos H2
+    public boolean handleLoginH2(String username, String password, Connection conexionH2) {
+        boolean loginExitoso = loginRegister.buscarUsuarioPorCorreoH2(username, password, conexionH2);
+        if (loginExitoso) {
+            System.out.println("Login exitoso en H2.");
+            return true;
+        }
+        System.out.println("Error en login H2: usuario o contraseña incorrectos.");
         return false;
     }
 

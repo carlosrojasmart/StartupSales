@@ -66,6 +66,34 @@ public class LoginRegister {
         return false;
     }
 
+    // Método que se usará para pruebas con la base de datos H2
+    public boolean buscarUsuarioPorCorreoH2(String correo, String password, Connection conexionH2) {
+        String sql = "SELECT idUsuario, nombre, correo_electronico, contrasena, esVendedor, saldo_actual, saldo_pagar FROM Usuario WHERE correo_electronico = ?";
+        try (PreparedStatement pstmt = conexionH2.prepareStatement(sql)) {
+            pstmt.setString(1, correo);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                String storedPassword = rs.getString("contrasena");
+                if (storedPassword.equals(hashPassword(password))) {
+                    int idUsuario = rs.getInt("idUsuario");
+                    String nombre = rs.getString("nombre");
+                    boolean esVendedor = rs.getBoolean("esVendedor");
+                    BigDecimal saldoActual = rs.getBigDecimal("saldo_actual");
+                    BigDecimal saldoPagar = rs.getBigDecimal("saldo_pagar");
+
+                    int idCarrito = obtenerIdCarritoDesdeBD(idUsuario);
+
+                    // Establecer valores en UsuarioActivo sin crear un nuevo objeto
+                    UsuarioActivo.setUsuarioActivo(idUsuario, nombre, correo, esVendedor, idCarrito, saldoActual, saldoPagar);
+                    return true;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public int insertarUsuario(String usuario, String direccion, String correo, String telefono, String hashedPassword) {
         String sql = "INSERT INTO Usuario (nombre, direccion, correo_electronico, telefono, contraseña, saldo_actual, saldo_pagar) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection conexion = JDBC.ConectarBD();

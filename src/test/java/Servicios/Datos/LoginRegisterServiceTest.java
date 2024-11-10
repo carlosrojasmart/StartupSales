@@ -67,7 +67,7 @@ class LoginRegisterServiceTest {
 
         //Se inserta un usuario de prueba y se verifica que el login sea exitoso
         insertarUsuario("m.perez@gmail.com", "12345", 1, 1001);
-        assertTrue("Login exitoso", loginRegisterService.handleLogin("m.perez@gmail.com", "12345"));
+        assertTrue("Login exitoso", loginRegisterService.handleLoginH2("m.perez@gmail.com", "12345", connection));
     }
 
     @Test
