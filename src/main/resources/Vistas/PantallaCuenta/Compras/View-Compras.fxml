@@ -112,8 +112,9 @@
             </children>
         </VBox>
 
-        <VBox fx:id="VBoxBotones" layoutX="50.0" layoutY="66.0" prefWidth="114.0" style="-fx-background-color: #F5F5F5;" AnchorPane.bottomAnchor="418.0" AnchorPane.leftAnchor="50.0">
+        <VBox fx:id="VBoxBotones" prefWidth="114.0" style="-fx-background-color: #F5F5F5;" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="66.0">
             <children>
+
                 <Button fx:id="btnMiCuenta" mnemonicParsing="false" style="-fx-background-color: #F5F5F5;" text="Mi Cuenta">
                     <VBox.margin>
                         <Insets top="33.0" />
@@ -130,7 +131,7 @@
                         <Font name="MS Reference Sans Serif" size="12.0" />
                     </font>
                 </Button>
-                <Button fx:id="BtnCompras" mnemonicParsing="false" style="-fx-background-color: #F5F5F5;" text="Compras" textFill="#4c91f9">
+                <Button fx:id="BtnCompras" mnemonicParsing="false" style="-fx-background-color: #F5F5F5;" text="Compras">
                     <VBox.margin>
                         <Insets left="5.0" top="30.0" />
                     </VBox.margin>
@@ -146,7 +147,7 @@
                         <Font name="MS Reference Sans Serif" size="12.0" />
                     </font>
                 </Button>
-                <Button fx:id="BtnFacturacion" mnemonicParsing="false" onAction="#mostrarFacturacion" style="-fx-background-color: #F5F5F5;" text="Facturacion">
+                <Button fx:id="BtnFacturacion" mnemonicParsing="false" style="-fx-background-color: #F5F5F5;" text="Facturacion" textFill="#4c91f9">
                     <VBox.margin>
                         <Insets left="5.0" top="25.0" />
                     </VBox.margin>
