@@ -40,15 +40,17 @@ class LoginRegisterServiceTest {
     }
 
     private static void clearDatabase() throws SQLException {
-        //Se limpia la base de datos
-        try (PreparedStatement ps = connection.prepareStatement("DELETE FROM Usuario")) {
-            ps.executeUpdate();
-        }
-
+        // Primero eliminar los registros de Carrito
         try (PreparedStatement ps = connection.prepareStatement("DELETE FROM Carrito")) {
             ps.executeUpdate();
         }
+
+        // Luego eliminar los registros de Usuario
+        try (PreparedStatement ps = connection.prepareStatement("DELETE FROM Usuario")) {
+            ps.executeUpdate();
+        }
     }
+
 
     @AfterAll
     public static void tearDown() throws SQLException {
@@ -78,7 +80,7 @@ class LoginRegisterServiceTest {
 
     //Funcion que inserta un usuario en la base de datos
     private static void insertarUsuario(String correo, String password, int idUsuario, int idCarrito) throws SQLException {
-        try (PreparedStatement ps = connection.prepareStatement("INSERT INTO Usuario (idUsuario, nombre, correo_electronico, contraseña, esVendedor, saldo_actual, saldo_pagar) VALUES (?,?,?,?,?,?,?)")) {
+        try (PreparedStatement ps = connection.prepareStatement("INSERT INTO Usuario (idUsuario, nombre, correo_electronico, contrasena, esVendedor, saldo_actual, saldo_pagar) VALUES (?,?,?,?,?,?,?)")) {
             ps.setInt(1, idUsuario);
             ps.setString(2, "Maria Perez");
             ps.setString(3, correo);
