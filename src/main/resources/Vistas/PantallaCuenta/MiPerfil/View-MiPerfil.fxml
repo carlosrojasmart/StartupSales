@@ -19,14 +19,14 @@
                         <Insets left="15.0" top="10.0" />
                     </HBox.margin>
                 </ImageView>
-                <TextField fx:id="buscarProductos" prefHeight="30.0" prefWidth="308.0" promptText="Buscar productos, vendedores y mas...">
+                <TextField fx:id="buscarProductos" prefHeight="30.0" prefWidth="1050.0" promptText="Buscar productos, vendedores y mas...">
                     <HBox.margin>
                         <Insets left="20.0" top="18.0" />
                     </HBox.margin>
                 </TextField>
                 <Button fx:id="BtnVolverInicio" onAction="#mostrarInicio" prefHeight="30.0" prefWidth="50.0" style="-fx-background-color: #000000;" text="Inicio" textFill="WHITE">
                     <HBox.margin>
-                        <Insets left="218.0" right="4.0" top="18.0" />
+                        <Insets left="100.0" right="4.0" top="18.0" />
                     </HBox.margin>
                     <font>
                         <Font name="MS Reference Sans Serif" size="12.0" />
@@ -61,7 +61,8 @@
                         <Insets left="10.0" top="8.0" />
                     </HBox.margin>
                 </Label>
-            </children></HBox>
+            </children>
+        </HBox>
       <VBox prefWidth="50.0" style="-fx-background-color: #F5F5F5" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="66.0">
          <children>
             <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
@@ -150,7 +151,7 @@
              </Button>
          </children>
       </VBox>
-      <ScrollPane fx:id="scrollCuadrito" fitToHeight="true" fitToWidth="true" layoutX="164.0" layoutY="66.0" prefHeight="414.0" prefWidth="698.0">
+      <ScrollPane fx:id="scrollCuadrito" fitToHeight="true" fitToWidth="true" AnchorPane.topAnchor="66.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="164.0" AnchorPane.rightAnchor="0.0">
          <content>
             <AnchorPane fx:id="anchorScroll" prefHeight="620.0" prefWidth="683.0" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <children>
