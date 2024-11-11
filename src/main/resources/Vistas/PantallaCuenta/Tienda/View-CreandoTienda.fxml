@@ -9,7 +9,7 @@
 
 <AnchorPane prefHeight="503.0" prefWidth="854.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.Cuenta.Tienda.ViewCreandoTiendaController">
     <children>
-        <HBox prefHeight="66.0" style="-fx-background-color: #000000;" AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <HBox prefHeight="66.0" style="-fx-background-color: #000000;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <ImageView fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
                     <image>
@@ -19,14 +19,14 @@
                         <Insets left="15.0" top="10.0" />
                     </HBox.margin>
                 </ImageView>
-                <TextField fx:id="buscarProductos" prefHeight="30.0" prefWidth="308.0" promptText="Buscar productos, vendedores y mas...">
+                <TextField fx:id="buscarProductos" prefHeight="30.0" prefWidth="1050.0" promptText="Buscar productos, vendedores y mas...">
                     <HBox.margin>
                         <Insets left="20.0" top="18.0" />
                     </HBox.margin>
                 </TextField>
                 <Button fx:id="BtnVolverInicio" onAction="#mostrarInicio" prefHeight="30.0" prefWidth="50.0" style="-fx-background-color: #000000;" text="Inicio" textFill="WHITE">
                     <HBox.margin>
-                        <Insets left="218.0" right="4.0" top="18.0" />
+                        <Insets left="100.0" right="4.0" top="18.0" />
                     </HBox.margin>
                     <font>
                         <Font name="MS Reference Sans Serif" size="12.0" />
@@ -151,9 +151,9 @@
                 </Button>
             </children>
         </VBox>
-        <ScrollPane layoutX="164.0" layoutY="66.0" prefHeight="414.0" prefWidth="698.0">
+        <ScrollPane fitToHeight="true" fitToWidth="true" AnchorPane.topAnchor="66.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="164.0" AnchorPane.rightAnchor="0.0">
             <content>
-                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="412.0" prefWidth="683.0">
+                <AnchorPane prefHeight="620.0" prefWidth="683.0" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <children>
                   <VBox layoutX="83.0" layoutY="32.0" prefHeight="166.0" prefWidth="534.0" style="-fx-background-color: #ffffff;">
                      <children>
