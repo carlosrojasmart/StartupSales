@@ -18,7 +18,6 @@ public class LoginRegister {
     }
 
     public LoginRegister() {
-
     }
 
     public String hashPassword(String password) {
@@ -39,9 +38,17 @@ public class LoginRegister {
     }
 
     public boolean buscarUsuarioPorCorreo(String correo, String password) {
+        return buscarUsuario(correo, password, JDBC.ConectarBD());
+    }
+
+    public boolean buscarUsuarioPorCorreoH2(String correo, String password, Connection conexionH2) {
+        return buscarUsuario(correo, password, conexionH2);
+    }
+
+    // Método de búsqueda común para la autenticación
+    private boolean buscarUsuario(String correo, String password, Connection conexion) {
         String sql = "SELECT idUsuario, nombre, correo_electronico, contraseña, esVendedor, saldo_actual, saldo_pagar FROM Usuario WHERE correo_electronico = ?";
-        try (Connection conexion = JDBC.ConectarBD();
-             PreparedStatement pstmt = conexion.prepareStatement(sql)) {
+        try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
             pstmt.setString(1, correo);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
@@ -52,38 +59,8 @@ public class LoginRegister {
                     boolean esVendedor = rs.getBoolean("esVendedor");
                     BigDecimal saldoActual = rs.getBigDecimal("saldo_actual");
                     BigDecimal saldoPagar = rs.getBigDecimal("saldo_pagar");
-
                     int idCarrito = obtenerIdCarritoDesdeBD(idUsuario);
 
-                    // Establecer valores en UsuarioActivo sin crear un nuevo objeto
-                    UsuarioActivo.setUsuarioActivo(idUsuario, nombre, correo, esVendedor, idCarrito, saldoActual, saldoPagar);
-                    return true;
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    // Método que se usará para pruebas con la base de datos H2
-    public boolean buscarUsuarioPorCorreoH2(String correo, String password, Connection conexionH2) {
-        String sql = "SELECT idUsuario, nombre, correo_electronico, contrasena, esVendedor, saldo_actual, saldo_pagar FROM Usuario WHERE correo_electronico = ?";
-        try (PreparedStatement pstmt = conexionH2.prepareStatement(sql)) {
-            pstmt.setString(1, correo);
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                String storedPassword = rs.getString("contrasena");
-                if (storedPassword.equals(hashPassword(password))) {
-                    int idUsuario = rs.getInt("idUsuario");
-                    String nombre = rs.getString("nombre");
-                    boolean esVendedor = rs.getBoolean("esVendedor");
-                    BigDecimal saldoActual = rs.getBigDecimal("saldo_actual");
-                    BigDecimal saldoPagar = rs.getBigDecimal("saldo_pagar");
-
-                    int idCarrito = obtenerIdCarritoDesdeBD(idUsuario);
-
-                    // Establecer valores en UsuarioActivo sin crear un nuevo objeto
                     UsuarioActivo.setUsuarioActivo(idUsuario, nombre, correo, esVendedor, idCarrito, saldoActual, saldoPagar);
                     return true;
                 }

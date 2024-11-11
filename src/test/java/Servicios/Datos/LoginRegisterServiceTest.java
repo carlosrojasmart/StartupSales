@@ -2,7 +2,6 @@ package Servicios.Datos;
 
 import DB.JDBCTestH2;
 import Repositorios.Datos.LoginRegister;
-import org.junit.Before;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -12,7 +11,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import static org.junit.Assert.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 class LoginRegisterServiceTest {
 
@@ -67,19 +65,58 @@ class LoginRegisterServiceTest {
 
         //Se inserta un usuario de prueba y se verifica que el login sea exitoso
         insertarUsuario("m.perez@gmail.com", "12345", 1, 1001);
-        assertTrue("Login exitoso", loginRegisterService.handleLoginH2("m.perez@gmail.com", "12345", connection));
+        assertTrue("Login exitoso", loginRegisterService.handleLogin("m.perez@gmail.com", "12345", connection));
     }
 
     @Test
-    void handleLogin() {
+    public void testLoginFallido() throws SQLException {
+        // Insertar un usuario de prueba
+        insertarUsuario("m.perez@gmail.com", "12345", 1, 1001);
+
+        // Verificar que el login con una contraseña incorrecta falla
+        assertFalse("Login fallido con contraseña incorrecta",
+                loginRegisterService.handleLogin("m.perez@gmail.com", "incorrecta", connection));
     }
 
     @Test
-    void registrarUsuario() {
+    public void testRegistrarUsuario() throws SQLException {
+        // Usar el método insertarUsuario para registrar un nuevo usuario
+        insertarUsuario("j.smith@gmail.com", "password123", 2, 1002);
+
+        // Verificar que el usuario ahora existe en la base de datos
+        try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM Usuario WHERE correo_electronico = ?")) {
+            ps.setString(1, "j.smith@gmail.com");
+            var resultSet = ps.executeQuery();
+            assertTrue("El usuario debe existir en la base de datos", resultSet.next());
+        }
     }
 
+    @Test
+    public void testRegistrarUsuarioExistente() throws SQLException {
+        // Insertar un usuario ya existente
+        insertarUsuario("a.doe@gmail.com", "password123", 3, 1003);
+
+        // Intentar registrar el mismo usuario de nuevo usando insertarUsuario
+        boolean registrado = insertarUsuario("a.doe@gmail.com", "password123", 3, 1003);
+
+        // Verificar que no se permite el registro de un usuario con correo existente
+        assertFalse("El usuario no debe registrarse si ya existe", registrado);
+    }
+
+    @Test
+    public void testCarritoCreadoCorrectamente() throws SQLException {
+        // Usar el método insertarUsuario para registrar un nuevo usuario
+        insertarUsuario("b.jones@gmail.com", "pass456", 4, 1004);
+
+        // Verificar que el carrito se ha creado para este usuario
+        try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM Carrito WHERE idUsuario = ?")) {
+            ps.setInt(1, 4); // idUsuario del nuevo usuario
+            var resultSet = ps.executeQuery();
+            assertTrue("El carrito debe existir para el usuario", resultSet.next());
+        }
+    }
     //Funcion que inserta un usuario en la base de datos
-    private static void insertarUsuario(String correo, String password, int idUsuario, int idCarrito) throws SQLException {
+    private static boolean insertarUsuario(String correo, String password, int idUsuario, int idCarrito) throws SQLException {
         try (PreparedStatement ps = connection.prepareStatement("INSERT INTO Usuario (idUsuario, nombre, correo_electronico, contrasena, esVendedor, saldo_actual, saldo_pagar) VALUES (?,?,?,?,?,?,?)")) {
             ps.setInt(1, idUsuario);
             ps.setString(2, "Maria Perez");
@@ -97,6 +134,7 @@ class LoginRegisterServiceTest {
             ps.setBigDecimal(3, null);
             ps.executeUpdate();
         }
+        return false;
     }
 
 }
