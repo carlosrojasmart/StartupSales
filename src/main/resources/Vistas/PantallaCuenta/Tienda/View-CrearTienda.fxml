@@ -62,7 +62,7 @@
                 </Label>
             </children>
         </HBox>
-        <VBox prefWidth="50.0" style="-fx-background-color: #F5F5F5;" AnchorPane.topAnchor="66.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0">
+        <VBox prefWidth="50.0" style="-fx-background-color: #F5F5F5;" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="66.0">
             <children>
                 <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                     <VBox.margin>
@@ -106,7 +106,7 @@
                 </ImageView>
             </children>
         </VBox>
-        <VBox fx:id="VBoxRevisar" prefWidth="114.0" style="-fx-background-color: #F5F5F5;" AnchorPane.topAnchor="66.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="50.0">
+        <VBox fx:id="VBoxRevisar" prefWidth="114.0" style="-fx-background-color: #F5F5F5;" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="50.0" AnchorPane.topAnchor="66.0">
             <children>
                 <Button fx:id="btnMiCuenta" mnemonicParsing="false" style="-fx-background-color: #F5F5F5;" text="Mi Cuenta">
                     <VBox.margin>
@@ -150,9 +150,9 @@
                 </Button>
             </children>
         </VBox>
-      <ScrollPane layoutX="164.0" layoutY="66.0" prefHeight="414.0" prefWidth="698.0">
+      <ScrollPane fitToHeight="true" fitToWidth="true" AnchorPane.topAnchor="66.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="164.0" AnchorPane.rightAnchor="0.0">
         <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="412.0" prefWidth="683.0">
+          <AnchorPane fx:id="anchorVerificar" prefHeight="620.0" prefWidth="683.0" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
                <children>
                   <VBox layoutX="76.0" layoutY="54.0" prefHeight="303.0" prefWidth="546.0" style="-fx-background-color: #ffffffff;">
                      <children>
