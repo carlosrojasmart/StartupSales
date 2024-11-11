@@ -81,10 +81,12 @@ public class CarritoService {
         }
     }
 
+    // En CarritoService, en el método procesarCompra
     public void procesarCompra(int idUsuario, int idCarrito, BigDecimal totalCompra) {
         try {
             int idCompra = mostrarCarrito.registrarCompra(idUsuario, totalCompra);
             mostrarCarrito.registrarProductosDeCompra(idCompra, idCarrito);
+            mostrarCarrito.reducirStockProductos(idCarrito); // Reducción del stock
             mostrarCarrito.vaciarCarrito(idCarrito);
             System.out.println("Compra procesada exitosamente con ID de compra: " + idCompra);
         } catch (SQLException e) {
@@ -92,4 +94,5 @@ public class CarritoService {
             System.out.println("Error al procesar la compra: " + e.getMessage());
         }
     }
+
 }
