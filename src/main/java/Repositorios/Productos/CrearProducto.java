@@ -30,11 +30,13 @@ public class CrearProducto {
             pstmt.setString(3, producto.getDescripcion());
             pstmt.setInt(4, producto.getStock());
             pstmt.setString(5, producto.getCategoria());
+
             if (fis != null) {
                 pstmt.setBinaryStream(6, fis, (int) archivoImagen.length());
             } else {
                 pstmt.setNull(6, java.sql.Types.BLOB);
             }
+
             pstmt.setInt(7, producto.getIdTienda());
             return pstmt.executeUpdate() > 0;
         } catch (SQLException | IOException e) {
@@ -44,24 +46,30 @@ public class CrearProducto {
     }
 
     public boolean actualizarProducto(Producto producto, File archivoImagen) {
-        String sql = "UPDATE Producto SET nombre = ?, precio = ?, descripcion = ?, stock = ?, categoria = ?, imagenProducto = ? WHERE idProducto = ?";
+        String sql = archivoImagen != null ?
+                "UPDATE Producto SET nombre = ?, precio = ?, descripcion = ?, stock = ?, categoria = ?, imagenProducto = ? WHERE idProducto = ?" :
+                "UPDATE Producto SET nombre = ?, precio = ?, descripcion = ?, stock = ?, categoria = ? WHERE idProducto = ?";
 
         try (Connection conexion = JDBC.ConectarBD();
-             PreparedStatement pstmt = conexion.prepareStatement(sql);
-             FileInputStream fis = archivoImagen != null ? new FileInputStream(archivoImagen) : null) {
+             PreparedStatement pstmt = conexion.prepareStatement(sql)) {
 
             pstmt.setString(1, producto.getNombre());
             pstmt.setBigDecimal(2, producto.getPrecio());
             pstmt.setString(3, producto.getDescripcion());
             pstmt.setInt(4, producto.getStock());
             pstmt.setString(5, producto.getCategoria());
-            if (fis != null) {
-                pstmt.setBinaryStream(6, fis, (int) archivoImagen.length());
+
+            if (archivoImagen != null) {
+                try (FileInputStream fis = new FileInputStream(archivoImagen)) {
+                    pstmt.setBinaryStream(6, fis, (int) archivoImagen.length());
+                    pstmt.setInt(7, producto.getIdProducto());
+                }
             } else {
-                pstmt.setNull(6, java.sql.Types.BLOB);
+                pstmt.setInt(6, producto.getIdProducto());
             }
-            pstmt.setInt(7, producto.getIdProducto());
+
             return pstmt.executeUpdate() > 0;
+
         } catch (SQLException | IOException e) {
             e.printStackTrace();
             return false;
