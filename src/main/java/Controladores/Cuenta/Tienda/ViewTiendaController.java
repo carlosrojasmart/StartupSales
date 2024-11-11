@@ -1,7 +1,7 @@
 package Controladores.Cuenta.Tienda;
 
-import Servicios.Datos.UsuarioActivo;
-import Servicios.Vistas.CambiosVistas;
+import Modelos.UsuarioActivo;
+import Controladores.Vistas.CambiosVistas;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -38,15 +38,13 @@ public class ViewTiendaController {
 
     @FXML
     private void initialize() {
-        buscarProductos.setOnMouseClicked(event -> {
-            // Limpiar el campo de búsqueda al hacer clic
-            buscarProductos.clear();
-        });
-
         carritoCompra.setOnMouseClicked(event -> {
             mostrarCarrito();
         });
 
+        buscarProductos.setOnMouseClicked(event -> {
+            buscarProductos.clear();
+        });
         buscarProductos.setOnMouseClicked(event -> {buscarProductos.clear();});
         // Realizar búsqueda cuando el usuario presione "Enter"
         buscarProductos.setOnAction(event -> realizarBusqueda());

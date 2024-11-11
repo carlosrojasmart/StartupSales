@@ -2,26 +2,29 @@ package Controladores.Principal;
 
 import Modelos.Producto;
 import Modelos.Tienda;
-import Servicios.Datos.BusquedaProductos;
-import Servicios.Datos.MostrarCarrito;
-import Servicios.Datos.UsuarioActivo;
-import Servicios.Vistas.CambiosVistas;
-import Servicios.Vistas.FormatoUtil;
+import Repositorios.Productos.BusquedaProductos;
+import Repositorios.Productos.CrearProducto;
+import Repositorios.Productos.MostrarProductos;
+import Servicios.Productos.BusquedaProductosService;
+import Repositorios.Carrito.MostrarCarrito;
+import Modelos.UsuarioActivo;
+import Controladores.Vistas.CambiosVistas;
+import Servicios.Carrito.CarritoService;
+import Servicios.Productos.ProductoService;
+import Servicios.Util.FormatoUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import Servicios.Datos.MostrarTiendas;
-
+import Repositorios.Tienda.MostrarTiendas;
 
 import java.io.ByteArrayInputStream;
+import java.math.BigDecimal;
 import java.util.List;
 
 public class ViewBusquedaProductosController {
@@ -48,19 +51,38 @@ public class ViewBusquedaProductosController {
     private Label lblProductos;
 
     @FXML
+    private TextField FMin;
+
+    @FXML
+    private TextField FMax;
+
+    @FXML
+    private ChoiceBox<String> CbCategorias;
+
+    @FXML
+    private CheckBox CkTiendas;
+
+    @FXML
+    private CheckBox CkProductos;
+
+    @FXML
+    private VBox vboxTiendas;
+    @FXML
     private VBox vboxProductos;
 
     private CambiosVistas cambiosVistas = new CambiosVistas();
-    private BusquedaProductos busquedaProductos = new BusquedaProductos();
+    private BusquedaProductosService busquedaProductosService = new BusquedaProductosService(new BusquedaProductos());
     private MostrarTiendas mostrarTiendas = new MostrarTiendas();
+    private final ProductoService productoService = new ProductoService(new CrearProducto(), new MostrarProductos());
+    private final CarritoService carritoService = new CarritoService(new MostrarCarrito(), productoService);
 
 
     @FXML
     private void initialize() {
-        // Obtener el término de búsqueda de la clase CambiosVistas
-        String terminoBusqueda = CambiosVistas.getTerminoBusqueda();
+        vboxTiendas.setStyle("-fx-padding: 100 0 0 0;");
+        vboxProductos.setStyle("-fx-padding: 20 0 0 0;");
 
-        // Realizar la búsqueda automáticamente si hay un término
+        String terminoBusqueda = CambiosVistas.getTerminoBusqueda();
         if (terminoBusqueda != null && !terminoBusqueda.isEmpty()) {
             buscarProductos.setText(terminoBusqueda);
             realizarBusqueda();
@@ -68,29 +90,61 @@ public class ViewBusquedaProductosController {
 
         usuarioIcono.setOnMouseClicked(event -> mostrarMiPerfil());
         carritoCompra.setOnMouseClicked(event -> mostrarCarrito());
+
+        cargarCategorias();
+    }
+
+    private void cargarCategorias() {
+        List<String> categorias = mostrarTiendas.obtenerCategorias();
+        CbCategorias.getItems().clear();
+        CbCategorias.getItems().addAll(categorias);
     }
 
     @FXML
     private void realizarBusqueda() {
         String terminoBusqueda = buscarProductos.getText().trim();
+        String categoriaSeleccionada = CbCategorias.getSelectionModel().getSelectedItem();
+        boolean tiendasSeleccionadas = CkTiendas.isSelected();
+        boolean productosSeleccionados = CkProductos.isSelected();
+        BigDecimal precioMin = FMin.getText().isEmpty() ? null : new BigDecimal(FMin.getText());
+        BigDecimal precioMax = FMax.getText().isEmpty() ? null : new BigDecimal(FMax.getText());
 
-        // Actualizar el texto de la etiqueta dependiendo del término de búsqueda
-        if (terminoBusqueda.isEmpty()) {
-            lblProductos.setText("Productos");
-            vboxProductos.getChildren().clear();
-            System.out.println("El término de búsqueda está vacío.");
-            return;
-        } else {
-            lblProductos.setText(terminoBusqueda);
+        vboxTiendas.getChildren().clear();
+        vboxProductos.getChildren().clear();
+
+        if (tiendasSeleccionadas) {
+            List<Tienda> tiendas = mostrarTiendas.buscarTiendasPorNombre(terminoBusqueda);
+            if (categoriaSeleccionada != null && !categoriaSeleccionada.isEmpty()) {
+                tiendas = tiendas.stream()
+                        .filter(tienda -> tienda.getCategoria().equals(categoriaSeleccionada))
+                        .toList();
+            }
+            if (!tiendas.isEmpty()) {
+                Label labelTiendas = new Label("Tiendas:");
+                labelTiendas.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
+                vboxTiendas.getChildren().add(labelTiendas);
+                mostrarResultadosTiendas(tiendas);
+            }
         }
 
-        // Realizar la búsqueda y mostrar los resultados
-        List<Producto> productos = busquedaProductos.buscarProductosPorNombre(terminoBusqueda);
-        mostrarResultadosBusqueda(productos);
+        if (productosSeleccionados) {
+            List<Producto> productos = busquedaProductosService.buscarConFiltros(terminoBusqueda, categoriaSeleccionada, precioMin, precioMax);
+            if (!productos.isEmpty()) {
+                Label labelProductos = new Label("Productos:");
+                labelProductos.setStyle("-fx-font-size: 16px; -fx-font-weight: bold;");
+                vboxProductos.getChildren().add(labelProductos);
+                mostrarResultadosBusqueda(productos);
+            }
+        }
+    }
+
+    private void mostrarResultadosTiendas(List<Tienda> tiendas) {
+        for (Tienda tienda : tiendas) {
+            agregarTiendaAVista(tienda);
+        }
     }
 
     private void mostrarResultadosBusqueda(List<Producto> productos) {
-        vboxProductos.getChildren().clear();
         for (Producto producto : productos) {
             agregarProductoAVista(producto);
         }
@@ -98,10 +152,9 @@ public class ViewBusquedaProductosController {
 
     private void agregarProductoAVista(Producto producto) {
         HBox hboxProducto = new HBox(10);
-        hboxProducto.setStyle("-fx-background-color: #ffffff; -fx-padding: 10; -fx-alignment: CENTER_LEFT; -fx-border-color: #dddddd;");
+        hboxProducto.setStyle("-fx-background-color: #ffffff; -fx-padding: 10; -fx-border-color: #dddddd;");
         hboxProducto.setPrefWidth(600);
 
-        // Imagen del producto
         ImageView imagenProducto = new ImageView();
         imagenProducto.setFitHeight(80);
         imagenProducto.setFitWidth(80);
@@ -110,41 +163,48 @@ public class ViewBusquedaProductosController {
             imagenProducto.setImage(image);
         }
 
-        // Nombre del producto
         Label nombreProducto = new Label(producto.getNombre());
-        nombreProducto.setStyle("-fx-font-size: 14px; -fx-padding: 0 10 0 10;");
+        nombreProducto.setStyle("-fx-font-size: 14px;");
 
-        // Formatear el precio del producto usando FormatoUtil
         Label precioProducto = new Label(FormatoUtil.formatearPrecio(producto.getPrecio()));
         precioProducto.setStyle("-fx-font-size: 14px;");
 
-        // Botón para agregar al carrito
         Button btnAgregarCarrito = new Button("Agregar al Carrito");
-        btnAgregarCarrito.setStyle("-fx-background-color: #000000; -fx-text-fill: white;");
         btnAgregarCarrito.setOnAction(event -> agregarAlCarrito(producto));
 
-        // Botón para ir a la tienda
-        Button btnIrATienda = new Button("Ir a Tienda");
-        btnIrATienda.setStyle("-fx-background-color: #000000; -fx-text-fill: white;");
-        btnIrATienda.setOnAction(event -> irATienda(producto.getIdTienda()));
-
-        // Agregar los elementos al HBox
-        hboxProducto.getChildren().addAll(imagenProducto, nombreProducto, precioProducto, btnAgregarCarrito, btnIrATienda);
-
-        // Agregar el HBox al VBox de productos
+        hboxProducto.getChildren().addAll(imagenProducto, nombreProducto, precioProducto, btnAgregarCarrito);
         vboxProductos.getChildren().add(hboxProducto);
     }
 
+    private void agregarTiendaAVista(Tienda tienda) {
+        HBox hboxTienda = new HBox(10);
+        hboxTienda.setStyle("-fx-background-color: #ffffff; -fx-padding: 10; -fx-border-color: #dddddd;");
+        hboxTienda.setPrefWidth(600);
+
+        ImageView imagenTienda = new ImageView();
+        imagenTienda.setFitHeight(80);
+        imagenTienda.setFitWidth(80);
+
+        if (tienda.getImagen() != null) {
+            Image image = new Image(new ByteArrayInputStream(tienda.getImagen()));
+            imagenTienda.setImage(image);
+        }
+
+        Label nombreTienda = new Label(tienda.getNombre());
+        nombreTienda.setStyle("-fx-font-size: 14px;");
+
+        Button btnVerTienda = new Button("Ver Tienda");
+        btnVerTienda.setOnAction(event -> irATienda(tienda.getIdTienda()));
+
+        hboxTienda.getChildren().addAll(imagenTienda, nombreTienda, btnVerTienda);
+        vboxProductos.getChildren().add(hboxTienda);
+    }
+
     private void irATienda(int idTienda) {
-        // Obtener la tienda por el ID
         Tienda tienda = mostrarTiendas.obtenerTiendaPorId(idTienda);
 
-        // Verificar si la tienda fue encontrada
         if (tienda != null) {
-            // Guardar la tienda seleccionada en CambiosVistas
             CambiosVistas.setTiendaSeleccionada(tienda);
-
-            // Cambiar a la vista de la tienda para el cliente (View-TiendaACliente.fxml)
             cambiarVista(vboxProductos, "/Vistas/PantallaCuenta/Tienda/View-TiendaACliente.fxml");
         } else {
             System.out.println("Tienda no encontrada con el ID: " + idTienda);
@@ -159,8 +219,8 @@ public class ViewBusquedaProductosController {
         }
 
         MostrarCarrito mostrarCarrito = new MostrarCarrito();
-        producto.setCantidad(1); // Cantidad inicial
-        mostrarCarrito.agregarProductoAlCarrito(idCarrito, producto);
+        producto.setCantidad(1);
+        carritoService.agregarProductoAlCarrito(idCarrito, producto);
     }
 
     private void cambiarVista(Node nodo, String rutaFXML) {
@@ -175,7 +235,7 @@ public class ViewBusquedaProductosController {
 
     @FXML
     public void mostrarCarrito() {
-        CambiosVistas.setTerminoBusqueda(""); // Limpiar el término de búsqueda antes de cambiar a la vista del carrito
+        CambiosVistas.setTerminoBusqueda("");
         cambiarVista(carritoCompra, "/Vistas/PantallaPrincipal/View-CarritoCompras.fxml");
     }
 

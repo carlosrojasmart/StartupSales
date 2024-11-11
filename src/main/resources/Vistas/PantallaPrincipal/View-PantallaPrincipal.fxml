@@ -1,19 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.text.Font?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane style="-fx-background-color: #FFFFFFFF;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.Principal.ViewPaginaPrincipal">
+<AnchorPane prefHeight="503.0" prefWidth="854.0" style="-fx-background-color: #FFFFFFFF;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.Principal.ViewPaginaPrincipal">
    <children>
-      <!-- Encabezado -->
-      <HBox AnchorPane.topAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" prefHeight="66.0" style="-fx-background-color: #000000;">
+      <HBox layoutX="-1.0" prefHeight="66.0" prefWidth="863.0" style="-fx-background-color: #000000;">
          <children>
             <ImageView fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -41,18 +36,14 @@
             </Button>
          </children>
       </HBox>
-
-      <!-- Sección de Conocimiento -->
-      <Label AnchorPane.topAnchor="250.0" AnchorPane.leftAnchor="30.0" prefHeight="23.0" text="Conocenos" textAlignment="CENTER">
+      <Label layoutX="274.0" layoutY="257.0" prefHeight="23.0" prefWidth="83.0" text="Conocenos" textAlignment="CENTER">
          <font>
             <Font name="MS Reference Sans Serif" size="15.0" />
          </font>
       </Label>
-
-      <!-- Pie de página -->
-      <HBox AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" prefHeight="30.0" style="-fx-background-color: #000000;">
+      <HBox layoutX="-1.0" layoutY="480.0" prefHeight="30.0" prefWidth="863.0" style="-fx-background-color: #000000;">
          <children>
-            <Label text="© 2025 Main.StartupSales. Todos los derechos reservados." textFill="WHITE">
+            <Label text="© 2025 StartupSales. Todos los derechos reservados." textFill="WHITE">
                <font>
                   <Font name="MS Reference Sans Serif" size="10.0" />
                </font>
@@ -60,20 +51,15 @@
                   <Insets left="10.0" top="8.0" />
                </HBox.margin>
             </Label>
-         </children>
-      </HBox>
-
-      <!-- Logo Central -->
-      <ImageView fitHeight="189.0" fitWidth="191.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="250.0" pickOnBounds="true" preserveRatio="true">
+         </children></HBox>
+      <ImageView fitHeight="189.0" fitWidth="191.0" layoutX="641.0" layoutY="268.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../../Imagenes/Principal/Startuplogo.jpeg" />
          </image>
       </ImageView>
-
-      <!-- Sección de Introducción -->
-      <AnchorPane AnchorPane.topAnchor="66.0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" prefHeight="175.0" style="-fx-background-color: #000000;">
+      <AnchorPane layoutX="-1.0" layoutY="65.0" prefHeight="175.0" prefWidth="863.0" style="-fx-background-color: #000000;">
          <children>
-            <Label layoutX="172.0" layoutY="-2.0" text="Iniciar ahora con Main.StartupSales" textFill="WHITE">
+            <Label layoutX="172.0" layoutY="-2.0" text="Iniciar ahora con StartupSales" textFill="WHITE">
                <font>
                   <Font name="Franklin Gothic Book" size="27.0" />
                </font>
@@ -85,10 +71,8 @@
             </Label>
          </children>
       </AnchorPane>
-
-      <!-- Textos Informativos -->
-      <TextArea AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="296.0" prefHeight="89.0" prefWidth="239.0" text="Con Startup Sales puedes dar a conocer&#10;  tu propio negocio y empezar a vender &#10;     tus productos de manera sencilla,&#10;puedes crear hasta mas de una tienda " />
-      <TextArea AnchorPane.leftAnchor="300.0" AnchorPane.topAnchor="296.0" prefHeight="96.0" prefWidth="239.0" text="               ¿No tienes un negocio?&#10; No hay problema aca tambien puedes &#10;explorar todos los productos disponibles &#10;               en nuestras startups " />
-      <TextArea AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="405.0" prefHeight="52.0" prefWidth="143.0" text="¿Que estas esperando? &#10;     Registrate ahora!! " />
+      <TextArea layoutX="54.0" layoutY="296.0" prefHeight="89.0" prefWidth="239.0" text="Con Startup Sales puedes dar a conocer&#10;  tu propio negocio y empezar a vender &#10;     tus productos de manera sencilla,&#10;puedes crear hasta mas de una tienda " />
+      <TextArea layoutX="343.0" layoutY="296.0" prefHeight="96.0" prefWidth="239.0" text="               ¿No tienes un negocio?&#10; No hay problema aca tambien puedes &#10;explorar todos los productos disponibles &#10;               en nuestras startups " />
+      <TextArea layoutX="244.0" layoutY="405.0" prefHeight="52.0" prefWidth="143.0" text="¿Que estas esperando? &#10;     Registrate ahora!! " />
    </children>
 </AnchorPane>

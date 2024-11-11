@@ -2,7 +2,7 @@ package Main;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import Servicios.Vistas.CambiosVistas;
+import Controladores.Vistas.CambiosVistas;
 import DB.JDBC;
 
 public class StartupSales extends Application {
@@ -10,10 +10,7 @@ public class StartupSales extends Application {
 
     @Override
     public void start(Stage stage) {
-        cambiosVistas.cargarVista(stage, "/Vistas/PantallaPrincipal/View-PantallaPrincipal.fxml", "Bienvenido a Main.StartupSales!", 854, 803);
-        //854 503
-        stage.setMaximized(true);
-
+        cambiosVistas.cargarVista(stage, "/Vistas/PantallaPrincipal/View-PantallaPrincipal.fxml", "Bienvenido a StartupSales!", 854, 503);
     }
 
     public static void main(String[] args) {

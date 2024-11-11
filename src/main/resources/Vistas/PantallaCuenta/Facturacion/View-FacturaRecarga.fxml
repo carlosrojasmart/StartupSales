@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="503.0" prefWidth="854.0" style="-fx-background-color: #EDEDED;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.Cuenta.Tienda.ViewTiendaController">
+<AnchorPane prefHeight="503.0" prefWidth="854.0" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.Cuenta.Facturacion.ViewFacturaRecargaController">
     <children>
         <HBox layoutX="-1.0" prefHeight="66.0" prefWidth="863.0" style="-fx-background-color: #000000;">
             <children>
@@ -89,7 +89,7 @@
                 </ImageView>
                 <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../../../Imagenes/Cuenta/tiendaAzul.png" />
+                        <Image url="@../../../Imagenes/Cuenta/tienda.png" />
                     </image>
                     <VBox.margin>
                         <Insets left="20.0" top="20.0" />
@@ -97,7 +97,7 @@
                 </ImageView>
                 <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../../../Imagenes/Cuenta/factura.png" />
+                        <Image url="@../../../Imagenes/Cuenta/archivar-facturaAzul.png" />
                     </image>
                     <VBox.margin>
                         <Insets left="20.0" top="20.0" />
@@ -131,7 +131,7 @@
                         <Font name="MS Reference Sans Serif" size="12.0" />
                     </font>
                 </Button>
-                <Button fx:id="BtnTienda" mnemonicParsing="false" style="-fx-background-color: #F5F5F5;" text="Tiendas" textFill="#4c91f9">
+                <Button fx:id="BtnTienda" mnemonicParsing="false" onAction="#mostrarMisTiendas" style="-fx-background-color: #F5F5F5;" text="Tiendas">
                     <VBox.margin>
                         <Insets left="5.0" top="25.0" />
                     </VBox.margin>
@@ -139,7 +139,7 @@
                         <Font name="MS Reference Sans Serif" size="12.0" />
                     </font>
                 </Button>
-                <Button fx:id="BtnFacturacion" mnemonicParsing="false" onAction="#mostrarFacturacion" style="-fx-background-color: #F5F5F5;" text="Facturacion">
+                <Button fx:id="BtnFacturacion" mnemonicParsing="false" style="-fx-background-color: #F5F5F5;" text="Facturacion" textFill="#4c91f9">
                     <VBox.margin>
                         <Insets left="5.0" top="25.0" />
                     </VBox.margin>
@@ -149,54 +149,116 @@
                 </Button>
             </children>
         </VBox>
-      <ScrollPane layoutX="164.0" layoutY="66.0" prefHeight="414.0" prefWidth="698.0">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="412.0" prefWidth="683.0">
+        <Label layoutX="175.0" layoutY="75.0" prefHeight="23.0" prefWidth="106.0" text="Recarga">
+            <font>
+                <Font name="MS Reference Sans Serif" size="18.0" />
+            </font>
+        </Label>
+      <HBox layoutX="208.0" layoutY="105.0" prefHeight="364.0" prefWidth="610.0" style="-fx-background-color: #ffffff;">
+         <children>
+            <VBox prefHeight="268.0" prefWidth="242.0" style="-fx-background-color: #ffffff;">
                <children>
-                  <VBox layoutX="76.0" layoutY="54.0" prefHeight="303.0" prefWidth="546.0" style="-fx-background-color: #ffffffff;">
-                     <children>
-                        <ImageView fitHeight="118.0" fitWidth="125.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../../../Imagenes/Cuenta/Tutienda.png" />
-                           </image>
-                           <VBox.margin>
-                              <Insets left="211.0" top="30.0" />
-                           </VBox.margin>
-                        </ImageView>
-                        <Label text="Inicia ahora tu tienda con StartupSales" textAlignment="CENTER">
-                           <VBox.margin>
-                              <Insets left="60.0" top="15.0" />
-                           </VBox.margin>
-                           <font>
-                              <Font name="MS Reference Sans Serif" size="22.0" />
-                           </font>
-                        </Label>
-                        <Label prefHeight="34.0" prefWidth="396.0" text="Creando una tienda podras vender tus productos, cambiar sus precios y tener un seguimientos de tus ventas." textAlignment="CENTER" wrapText="true">
-                           <VBox.margin>
-                              <Insets left="78.0" top="5.0" />
-                           </VBox.margin>
-                           <font>
-                              <Font name="MS Reference Sans Serif" size="13.0" />
-                           </font>
-                        </Label>
-                        <Button fx:id="BtnCrearTienda" mnemonicParsing="false" onAction="#crearTienda" style="-fx-background-color: #000000;" text="Crear Tienda" textFill="WHITE">
-                           <VBox.margin>
-                              <Insets left="217.0" top="20.0" />
-                           </VBox.margin>
-                           <font>
-                              <Font name="MS Reference Sans Serif" size="14.0" />
-                           </font>
-                        </Button>
-                     </children>
-                  </VBox>
-                  <Label layoutX="14.0" layoutY="14.0" text="Crea tu Tienda">
+                  <Label text="Nombre de titular">
                      <font>
-                        <Font name="MS Reference Sans Serif" size="18.0" />
+                        <Font name="MS Reference Sans Serif" size="12.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="10.0" top="20.0" />
+                     </VBox.margin>
+                  </Label>
+                  <TextField promptText="Juan Romero">
+                     <VBox.margin>
+                        <Insets left="10.0" right="10.0" top="5.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Label layoutX="20.0" layoutY="40.0" text="Valor Recarga">
+                     <font>
+                        <Font name="MS Reference Sans Serif" size="12.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="10.0" top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <TextField fx:id="lblValorRecarga" layoutX="20.0" layoutY="132.0" promptText="100000">
+                     <VBox.margin>
+                        <Insets left="10.0" right="10.0" top="5.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Label layoutX="20.0" layoutY="15.0" text="Numero de la Tarjeta">
+                     <font>
+                        <Font name="MS Reference Sans Serif" size="12.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="10.0" top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <TextField layoutX="20.0" layoutY="35.0" promptText="XXXX XXXX XXXX XXXX">
+                     <VBox.margin>
+                        <Insets left="10.0" right="10.0" top="5.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Label layoutX="20.0" layoutY="76.0" text="Fecha de caducidad">
+                     <font>
+                        <Font name="MS Reference Sans Serif" size="12.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="10.0" top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <TextField layoutX="20.0" layoutY="96.0" promptText="XX/XX">
+                     <VBox.margin>
+                        <Insets left="10.0" right="120.0" top="5.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Label layoutX="20.0" layoutY="132.0" text="Codigo de verificacion">
+                     <font>
+                        <Font name="MS Reference Sans Serif" size="12.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets left="10.0" top="10.0" />
+                     </VBox.margin>
+                  </Label>
+                  <TextField layoutX="20.0" layoutY="152.0" promptText="XXX">
+                     <VBox.margin>
+                        <Insets left="10.0" right="120.0" top="5.0" />
+                     </VBox.margin>
+                  </TextField>
+                  <Button fx:id="BtnRealizarRecarga" mnemonicParsing="false" style="-fx-background-color: #000000;" text="Realizar Recarga" textFill="WHITE">
+                     <VBox.margin>
+                        <Insets left="71.0" top="18.0" />
+                     </VBox.margin>
+                  </Button>
+                  <Label fx:id="lblInforme" textAlignment="CENTER" textFill="RED">
+                     <VBox.margin>
+                        <Insets left="10.0" top="5.0" />
+                     </VBox.margin>
+                     <font>
+                        <Font name="MS Reference Sans Serif" size="9.0" />
                      </font>
                   </Label>
                </children>
-            </AnchorPane>
-        </content>
-      </ScrollPane>
+               <HBox.margin>
+                  <Insets left="30.0" />
+               </HBox.margin>
+            </VBox>
+            <VBox prefHeight="346.0" prefWidth="294.0">
+               <children>
+                  <ImageView fitHeight="177.0" fitWidth="253.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../Imagenes/Cuenta/TarjetaDatoFrente.png" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitHeight="171.0" fitWidth="294.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../Imagenes/Cuenta/TarjetaDatoAtras.png" />
+                     </image>
+                     <VBox.margin>
+                        <Insets left="53.0" />
+                     </VBox.margin>
+                  </ImageView>
+               </children>
+            </VBox>
+         </children></HBox>
     </children>
+
 </AnchorPane>
