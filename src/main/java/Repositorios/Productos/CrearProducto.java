@@ -11,15 +11,10 @@ import java.sql.SQLException;
 
 public class CrearProducto {
 
-    // Atributo para almacenar el archivo de imagen seleccionado
     private File archivoImagen;
 
     public void setArchivoImagen(File archivoImagen) {
         this.archivoImagen = archivoImagen;
-    }
-
-    public File getArchivoImagen() {
-        return archivoImagen;
     }
 
     public boolean crearProducto(Producto producto) {
@@ -28,53 +23,46 @@ public class CrearProducto {
 
         try (Connection conexion = JDBC.ConectarBD();
              PreparedStatement pstmt = conexion.prepareStatement(sql);
-             FileInputStream fis = new FileInputStream(archivoImagen)) {  // Usar archivoImagen directamente
+             FileInputStream fis = archivoImagen != null ? new FileInputStream(archivoImagen) : null) {
 
             pstmt.setString(1, producto.getNombre());
             pstmt.setBigDecimal(2, producto.getPrecio());
             pstmt.setString(3, producto.getDescripcion());
             pstmt.setInt(4, producto.getStock());
             pstmt.setString(5, producto.getCategoria());
-
-            // Cargar la imagen desde archivoImagen
-            pstmt.setBinaryStream(6, fis, (int) archivoImagen.length());
-
+            if (fis != null) {
+                pstmt.setBinaryStream(6, fis, (int) archivoImagen.length());
+            } else {
+                pstmt.setNull(6, java.sql.Types.BLOB);
+            }
             pstmt.setInt(7, producto.getIdTienda());
-
             return pstmt.executeUpdate() > 0;
-
         } catch (SQLException | IOException e) {
             e.printStackTrace();
             return false;
         }
     }
 
-    public boolean actualizarProducto(Producto producto) {
+    public boolean actualizarProducto(Producto producto, File archivoImagen) {
         String sql = "UPDATE Producto SET nombre = ?, precio = ?, descripcion = ?, stock = ?, categoria = ?, imagenProducto = ? WHERE idProducto = ?";
+
         try (Connection conexion = JDBC.ConectarBD();
-             PreparedStatement pstmt = conexion.prepareStatement(sql)) {
+             PreparedStatement pstmt = conexion.prepareStatement(sql);
+             FileInputStream fis = archivoImagen != null ? new FileInputStream(archivoImagen) : null) {
 
             pstmt.setString(1, producto.getNombre());
             pstmt.setBigDecimal(2, producto.getPrecio());
             pstmt.setString(3, producto.getDescripcion());
             pstmt.setInt(4, producto.getStock());
             pstmt.setString(5, producto.getCategoria());
-
-            // Verificar si hay una imagen para actualizar
-            if (archivoImagen != null) {
-                try (FileInputStream fis = new FileInputStream(archivoImagen)) {
-                    pstmt.setBinaryStream(6, fis, (int) archivoImagen.length());
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+            if (fis != null) {
+                pstmt.setBinaryStream(6, fis, (int) archivoImagen.length());
             } else {
                 pstmt.setNull(6, java.sql.Types.BLOB);
             }
-
             pstmt.setInt(7, producto.getIdProducto());
             return pstmt.executeUpdate() > 0;
-
-        } catch (SQLException e) {
+        } catch (SQLException | IOException e) {
             e.printStackTrace();
             return false;
         }
@@ -83,6 +71,7 @@ public class CrearProducto {
     public boolean eliminarProducto(int idProducto) {
         String sqlEliminarDeCarrito = "DELETE FROM carrito_producto WHERE idProducto = ?";
         String sqlEliminarProducto = "DELETE FROM Producto WHERE idProducto = ?";
+
         try (Connection conexion = JDBC.ConectarBD()) {
             try (PreparedStatement pstmtCarrito = conexion.prepareStatement(sqlEliminarDeCarrito)) {
                 pstmtCarrito.setInt(1, idProducto);

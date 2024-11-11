@@ -131,4 +131,21 @@ public class MostrarCarrito {
             pstmt.executeUpdate();
         }
     }
+
+    // Método en el repositorio MostrarCarrito para reducir stock
+    public void reducirStockProductos(int idCarrito) throws SQLException {
+        String sql = "UPDATE producto SET stock = stock - ? WHERE idProducto = ?";
+        List<Producto> productos = obtenerProductosDeCarrito(idCarrito);
+
+        try (Connection conexion = JDBC.ConectarBD();
+             PreparedStatement pstmt = conexion.prepareStatement(sql)) {
+
+            for (Producto producto : productos) {
+                pstmt.setInt(1, producto.getCantidad()); // Cantidad del producto en el carrito
+                pstmt.setInt(2, producto.getIdProducto()); // ID del producto
+                pstmt.executeUpdate();
+            }
+        }
+    }
+
 }

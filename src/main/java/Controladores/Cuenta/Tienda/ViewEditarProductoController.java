@@ -2,6 +2,8 @@ package Controladores.Cuenta.Tienda;
 
 import Modelos.Producto;
 import Repositorios.Productos.CrearProducto;
+import Repositorios.Productos.MostrarProductos;
+import Servicios.Productos.ProductoService;
 import Modelos.UsuarioActivo;
 import Controladores.Vistas.CambiosVistas;
 import javafx.event.ActionEvent;
@@ -72,6 +74,8 @@ public class ViewEditarProductoController {
     private File archivoImagen;
     private CambiosVistas cambiosVistas = new CambiosVistas();
     private CrearProducto crearProducto = new CrearProducto();
+    private ProductoService productoService;
+
 
     public void setProductoSeleccionado(Producto producto) {
         this.productoSeleccionado = producto;
@@ -89,15 +93,15 @@ public class ViewEditarProductoController {
 
     @FXML
     private void initialize() {
+        // Inicializar `productoService` y sus repositorios
+        CrearProducto crearProducto = new CrearProducto();
+        MostrarProductos mostrarProductos = new MostrarProductos();
+        productoService = new ProductoService(crearProducto, mostrarProductos);
+
         carritoCompra.setOnMouseClicked(event -> mostrarCarrito());
 
-        buscarProductos.setOnMouseClicked(event -> {
-            buscarProductos.clear();
-        });
-        buscarProductos.setOnMouseClicked(event -> {buscarProductos.clear();});
-        // Realizar búsqueda cuando el usuario presione "Enter"
+        buscarProductos.setOnMouseClicked(event -> buscarProductos.clear());
         buscarProductos.setOnAction(event -> realizarBusqueda());
-        // Configurar el evento del carrito
 
         stockProducto.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 1000, 0));
         catProducto.getItems().addAll("Electrónica", "Ropa y Moda", "Hogar y Jardín", "Salud y Belleza", "Deportes", "Juguetes", "Alimentos", "Automóviles", "Libros", "Mascotas");
@@ -105,6 +109,7 @@ public class ViewEditarProductoController {
         btnEditarProducto.setOnAction(event -> editarProducto());
         btnEliminarProducto.setOnAction(event -> eliminarProducto());
     }
+
 
     @FXML
     private void editarProducto() {
@@ -114,28 +119,28 @@ public class ViewEditarProductoController {
         }
 
         try {
+            // Configurar los valores actualizados del producto
             productoSeleccionado.setNombre(nombreProducto.getText());
             productoSeleccionado.setPrecio(new BigDecimal(precioProducto.getText()));
             productoSeleccionado.setDescripcion(descProducto.getText());
             productoSeleccionado.setStock(stockProducto.getValue());
             productoSeleccionado.setCategoria(catProducto.getValue());
 
-            if (archivoImagen != null) {
-                productoSeleccionado.setImagenProducto(new FileInputStream(archivoImagen).readAllBytes());
-            }
-
-            boolean exito = crearProducto.actualizarProducto(productoSeleccionado);
+            // Intentar actualizar el producto a través del servicio
+            boolean exito = productoService.actualizarProducto(productoSeleccionado, archivoImagen);
             if (exito) {
                 System.out.println("Producto actualizado correctamente.");
                 mostrarMirarTienda(null);
             } else {
                 System.out.println("Error al actualizar el producto.");
             }
-        } catch (IOException | NumberFormatException e) {
+        } catch (NumberFormatException e) {
             e.printStackTrace();
             System.out.println("Error al procesar los datos del producto.");
         }
     }
+
+
 
     @FXML
     private void eliminarProducto() {
