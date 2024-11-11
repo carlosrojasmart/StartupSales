@@ -6,9 +6,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="503.0" prefWidth="854.0" style="-fx-background-color: #EDEDED;" xmlns="http://javafx.com/javafx/11.0.14-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.Cuenta.Tienda.ViewTiendaController">
+<AnchorPane prefHeight="503.0" prefWidth="854.0" style="-fx-background-color: #EDEDED;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controladores.Cuenta.Tienda.ViewTiendaController">
     <children>
-        <HBox prefHeight="66.0" style="-fx-background-color: #000000;" AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0">
+        <HBox prefHeight="66.0" style="-fx-background-color: #000000;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
             <children>
                 <ImageView fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
                     <image>
@@ -62,7 +62,7 @@
                 </Label>
             </children>
         </HBox>
-        <VBox layoutY="66.0" prefHeight="414.0" prefWidth="50.0" style="-fx-background-color: #F5F5F5;">
+        <VBox prefWidth="50.0" style="-fx-background-color: #F5F5F5;" AnchorPane.topAnchor="66.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="0.0">
             <children>
                 <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                     <VBox.margin>
@@ -90,7 +90,7 @@
                 </ImageView>
                 <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../../../Imagenes/Cuenta/tiendaAzul.png" />
+                        <Image url="@../../../Imagenes/Cuenta/tienda.png" />
                     </image>
                     <VBox.margin>
                         <Insets left="20.0" top="20.0" />
@@ -98,7 +98,7 @@
                 </ImageView>
                 <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../../../Imagenes/Cuenta/factura.png" />
+                        <Image url="@../../../Imagenes/Cuenta/archivar-facturaAzul.png" />
                     </image>
                     <VBox.margin>
                         <Insets left="20.0" top="20.0" />
@@ -106,7 +106,7 @@
                 </ImageView>
             </children>
         </VBox>
-        <VBox layoutX="50.0" layoutY="66.0" prefHeight="414.0" prefWidth="114.0" style="-fx-background-color: #F5F5F5;">
+        <VBox fx:id="VBoxRevisar" prefWidth="114.0" style="-fx-background-color: #F5F5F5;" AnchorPane.topAnchor="66.0" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="50.0">
             <children>
                 <Button fx:id="btnMiCuenta" mnemonicParsing="false" style="-fx-background-color: #F5F5F5;" text="Mi Cuenta">
                     <VBox.margin>
