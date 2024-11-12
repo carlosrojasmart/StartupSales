@@ -47,12 +47,12 @@ public class LoginRegister {
 
     // Método de búsqueda común para la autenticación
     private boolean buscarUsuario(String correo, String password, Connection conexion) {
-        String sql = "SELECT idUsuario, nombre, correo_electronico, contraseña, esVendedor, saldo_actual, saldo_pagar FROM Usuario WHERE correo_electronico = ?";
+        String sql = "SELECT idUsuario, nombre, correo_electronico, contrasena, esVendedor, saldo_actual, saldo_pagar FROM Usuario WHERE correo_electronico = ?";
         try (PreparedStatement pstmt = conexion.prepareStatement(sql)) {
             pstmt.setString(1, correo);
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
-                String storedPassword = rs.getString("contraseña");
+                String storedPassword = rs.getString("contrasena");
                 if (storedPassword.equals(hashPassword(password))) {
                     int idUsuario = rs.getInt("idUsuario");
                     String nombre = rs.getString("nombre");
@@ -72,7 +72,7 @@ public class LoginRegister {
     }
 
     public int insertarUsuario(String usuario, String direccion, String correo, String telefono, String hashedPassword) {
-        String sql = "INSERT INTO Usuario (nombre, direccion, correo_electronico, telefono, contraseña, saldo_actual, saldo_pagar) VALUES (?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO Usuario (nombre, direccion, correo_electronico, telefono, contrasena, saldo_actual, saldo_pagar) VALUES (?, ?, ?, ?, ?, ?, ?)";
         try (Connection conexion = JDBC.ConectarBD();
              PreparedStatement pstmt = conexion.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
             pstmt.setString(1, usuario);
