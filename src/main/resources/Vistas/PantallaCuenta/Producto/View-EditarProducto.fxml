@@ -52,7 +52,7 @@
         </HBox>
         <HBox layoutX="-1.0" layoutY="480.0" prefHeight="30.0" prefWidth="863.0" style="-fx-background-color: #000000;">
             <children>
-                <Label text="© 2025 Main.StartupSales. Todos los derechos reservados." textFill="WHITE">
+                <Label text="© 2025 StartupSales. Todos los derechos reservados." textFill="WHITE">
                     <font>
                         <Font name="MS Reference Sans Serif" size="10.0" />
                     </font>
@@ -163,7 +163,7 @@
                                         <Insets left="19.0" top="17.0" />
                                     </VBox.margin>
                                 </ImageView>
-                                <Button fx:id="btnCargarImagen" mnemonicParsing="false" style="-fx-background-color: #000000;" text="Cargar Imagen" textFill="WHITE">
+                                <Button fx:id="btnCargarImagen" mnemonicParsing="false" onAction="#cargarImagen" style="-fx-background-color: #000000;" text="Cargar Imagen" textFill="WHITE">
                                     <VBox.margin>
                                         <Insets left="26.0" top="10.0" />
                                     </VBox.margin>
