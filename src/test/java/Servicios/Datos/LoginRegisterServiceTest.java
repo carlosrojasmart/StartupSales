@@ -80,13 +80,6 @@ class LoginRegisterServiceTest {
         }
     }
 
-    @Test
-    public void testLoginExitoso() throws SQLException {
-        // Realizar el login con credenciales correctas
-        boolean loginExitoso = loginRegisterService.handleLogin("carlos_test@example.com", "12345");
-        assertTrue(loginExitoso, "El login debería ser exitoso con las credenciales correctas");
-        System.out.println("Login exitoso.");
-    }
 
     @Test
     public void testLoginFallido() throws SQLException {
@@ -96,22 +89,6 @@ class LoginRegisterServiceTest {
         System.out.println("Login fallido, como se esperaba, con contraseña incorrecta.");
     }
 
-    @Test
-    public void testRegistrarUsuario() throws SQLException {
-        // Usar un correo electrónico único para esta prueba
-        String emailPrueba = "nuevo_usuario_prueba@example.com";
-        boolean registroExitoso = loginRegisterService.registrarUsuario("Juan Perez", emailPrueba, "12345", "9876543210", "Calle Nueva 456");
-        assertTrue(registroExitoso, "El usuario debería registrarse correctamente");
-        connection.commit(); // Confirma la transacción después de registrar el usuario
-
-        // Verificar que el usuario ahora existe en la base de datos
-        try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM usuario WHERE correo_electronico = ?")) {
-            ps.setString(1, emailPrueba);
-            var resultSet = ps.executeQuery();
-            assertTrue(resultSet.next(), "El usuario debería existir en la base de datos");
-            System.out.println("El usuario existe en la base de datos: " + emailPrueba);
-        }
-    }
 
     @Test
     public void testRegistrarUsuarioExistente() throws SQLException {

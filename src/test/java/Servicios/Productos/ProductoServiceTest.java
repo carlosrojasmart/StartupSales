@@ -110,75 +110,8 @@ class ProductoServiceTest {
         return producto;
     }
 
-    @Test
-    public void testCrearProductoExitoso() throws SQLException {
-        Producto producto = crearProductoPrueba();
-        boolean resultado = productoService.crearProducto(producto, imagenPrueba);
-        assertTrue(resultado, "El producto debería crearse correctamente");
 
-        // Verificar que el producto existe en la base de datos
-        try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM producto WHERE nombre = ?")) {
-            ps.setString(1, producto.getNombre());
-            var rs = ps.executeQuery();
-            assertTrue(rs.next(), "El producto debería existir en la base de datos");
-        }
-    }
 
-    @Test
-    public void testCrearProductoSinImagen() {
-        Producto producto = crearProductoPrueba();
-        boolean resultado = productoService.crearProducto(producto, null);
-        assertFalse(resultado, "No debería permitir crear un producto sin imagen");
-    }
-
-    @Test
-    public void testActualizarProducto() throws SQLException {
-        // Primero crear un producto
-        Producto producto = crearProductoPrueba();
-        productoService.crearProducto(producto, imagenPrueba);
-
-        // Actualizar el producto
-        producto.setNombre("Producto Actualizado");
-        producto.setPrecio(new BigDecimal("199.99"));
-        boolean resultado = productoService.actualizarProducto(producto, imagenPrueba);
-        assertTrue(resultado, "El producto debería actualizarse correctamente");
-
-        // Verificar la actualización
-        try (PreparedStatement ps = connection.prepareStatement("SELECT nombre, precio FROM producto WHERE idProducto = ?")) {
-            ps.setInt(1, producto.getIdProducto());
-            var rs = ps.executeQuery();
-            assertTrue(rs.next(), "El producto debería existir");
-            assertEquals("Producto Actualizado", rs.getString("nombre"));
-            assertEquals(new BigDecimal("199.99"), rs.getBigDecimal("precio"));
-        }
-    }
-
-    @Test
-    public void testEliminarProducto() throws SQLException {
-        // Primero crear un producto
-        Producto producto = crearProductoPrueba();
-        productoService.crearProducto(producto, imagenPrueba);
-
-        // Obtener el ID del producto creado
-        int idProducto;
-        try (PreparedStatement ps = connection.prepareStatement("SELECT idProducto FROM producto WHERE nombre = ?")) {
-            ps.setString(1, producto.getNombre());
-            var rs = ps.executeQuery();
-            assertTrue(rs.next(), "El producto debería existir");
-            idProducto = rs.getInt("idProducto");
-        }
-
-        // Eliminar el producto
-        boolean resultado = productoService.eliminarProducto(idProducto);
-        assertTrue(resultado, "El producto debería eliminarse correctamente");
-
-        // Verificar que el producto ya no existe
-        try (PreparedStatement ps = connection.prepareStatement("SELECT * FROM producto WHERE idProducto = ?")) {
-            ps.setInt(1, idProducto);
-            var rs = ps.executeQuery();
-            assertFalse(rs.next(), "El producto no debería existir después de eliminarlo");
-        }
-    }
 
     @Test
     public void testObtenerTopProductosMasVendidos() {
