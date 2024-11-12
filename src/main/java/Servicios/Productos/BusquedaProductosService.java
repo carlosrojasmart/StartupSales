@@ -4,6 +4,7 @@ import Modelos.Producto;
 import Repositorios.Productos.BusquedaProductos;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
@@ -16,7 +17,7 @@ public class BusquedaProductosService {
         this.busquedaProductos = busquedaProductos;
     }
 
-    public List<Producto> buscarProductosPorNombre(String nombreProducto) {
+    public List<Producto> buscarProductosPorNombre(String nombreProducto, Connection connection) {
         try {
             return busquedaProductos.buscarProductosPorNombre(nombreProducto);
         } catch (SQLException e) {
