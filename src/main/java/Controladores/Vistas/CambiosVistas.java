@@ -1,17 +1,16 @@
 package Controladores.Vistas;
 
 import Modelos.Tienda;
+import Servicios.Compras.ComprasService;
+import Repositorios.Compras.ComprasRepo;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import DB.JDBC;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class CambiosVistas {
+
+    private static final ComprasService comprasService = new ComprasService(new ComprasRepo());
 
     public void cambiarVista(Stage stage, String rutaFXML) {
         try {
@@ -22,7 +21,6 @@ public class CambiosVistas {
             e.printStackTrace();
         }
     }
-
 
     public void cargarVista(Stage stage, String rutaFXML, String titulo, double ancho, double alto) {
         try {
@@ -68,22 +66,7 @@ public class CambiosVistas {
     }
 
     public static boolean usuarioTieneCompras(int idUsuario) {
-        String sql = "SELECT COUNT(*) AS total FROM Compra WHERE idUsuario = ?";
-        try (Connection conexion = JDBC.ConectarBD();
-             PreparedStatement pstmt = conexion.prepareStatement(sql)) {
-            pstmt.setInt(1, idUsuario);
-            ResultSet rs = pstmt.executeQuery();
-
-            if (rs.next()) {
-                int totalCompras = rs.getInt("total");
-                return totalCompras > 0; // Retorna true si el usuario tiene al menos una compra
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.out.println("Error al verificar las compras del usuario: " + e.getMessage());
-        }
-
-        return false;
+        // Ahora usa ComprasService en lugar de ejecutar SQL directamente
+        return comprasService.usuarioTieneCompras(idUsuario);
     }
-
 }
