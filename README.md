@@ -37,6 +37,6 @@ StartupSales
 │   │   └── resources                  # Archivos de recursos
 │   │       │   ├── Imagenes           # Recusos de imagenes usadas en aplicaciones
 │   │       └── └── Vistas             # Vistas realizadas para aplicacion
-│   └── test
+│   └── test                           # Contiene diversos tests de pruebas realizados a la aplicacion 
 └── README.md                          # Descripción general del proyecto y estructura de carpetas
 
