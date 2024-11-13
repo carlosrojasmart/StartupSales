@@ -85,8 +85,8 @@ class LoginRegisterServiceTest {
     public void testLoginFallido() throws SQLException {
         // Intentar hacer login con credenciales incorrectas
         boolean loginFallido = loginRegisterService.handleLogin("carlos_test@example.com", "incorrecta");
-        assertFalse(loginFallido, "El login debería fallar con una contraseña incorrecta");
-        System.out.println("Login fallido, como se esperaba, con contraseña incorrecta.");
+        assertFalse(loginFallido, " ");
+        System.out.println("prueba exitosa.");
     }
 
 
@@ -94,8 +94,8 @@ class LoginRegisterServiceTest {
     public void testRegistrarUsuarioExistente() throws SQLException {
         // Asegúrate de que el usuario 'carlos_test@example.com' esté registrado antes de probar el registro duplicado
         boolean registroDuplicado = loginRegisterService.registrarUsuario("Carlos Perez", "carlos_test@example.com", "12345", "1234567890", "Calle Falsa 123");
-        assertFalse(registroDuplicado, "No debería permitirse registrar un usuario con el mismo correo electrónico");
-        System.out.println("Registro duplicado bloqueado como se esperaba.");
+        assertFalse(registroDuplicado, "prueba exitosa");
+        System.out.println("Error el usuario ya fue ingresado.");
     }
 
     @Test
@@ -110,7 +110,7 @@ class LoginRegisterServiceTest {
     public void testLoginConCorreoInvalido() throws SQLException {
         // Intentar hacer login con un correo electrónico inválido
         boolean loginInvalido = loginRegisterService.handleLogin("correo_invalido", "12345");
-        assertFalse(loginInvalido, "El login debería fallar cuando el correo es inválido");
+        assertFalse(loginInvalido, "prueba exitosa");
         System.out.println("Login fallido, como se esperaba, con correo inválido.");
     }
 
@@ -143,6 +143,6 @@ class LoginRegisterServiceTest {
         // Intentar registrar un usuario con una contraseña demasiado corta
         boolean registroInvalido = loginRegisterService.registrarUsuario("Juan Perez", "nuevo_usuario_prueba@example.com", "123", "9876543210", "Calle Nueva 456");
         assertFalse(registroInvalido, "El registro debería fallar cuando la contraseña es demasiado corta");
-        System.out.println("Registro fallido, como se esperaba, con contraseña corta.");
+        System.out.println("prueba exitosa con contraseña corta.");
     }
 }

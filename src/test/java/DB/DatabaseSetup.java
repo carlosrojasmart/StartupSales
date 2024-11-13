@@ -9,7 +9,7 @@ import java.sql.Statement;
 public class DatabaseSetup {
 
     // Define las constantes para la conexión a la base de datos
-    private static final String URL = "jdbc:h2:~/test;DB_CLOSE_DELAY=-1;MODE=MYSQL";
+    private static final String URL = "jdbc:h2:~/test";
     private static final String USER = "sa";
     private static final String PASSWORD = "";
 
