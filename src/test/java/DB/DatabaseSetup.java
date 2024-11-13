@@ -16,7 +16,7 @@ public class DatabaseSetup {
     @BeforeAll
     public static void setUpDatabase() throws Exception {
         // Conectar a la base de datos H2 en modo MySQL
-        String url = "jdbc:h2:~/test;DB_CLOSE_DELAY=-1;MODE=MYSQL";
+        String url = "jdbc:h2:~/test";
         String user = "sa";
         String password = "";
         Connection connection = DriverManager.getConnection(url, user, password);
