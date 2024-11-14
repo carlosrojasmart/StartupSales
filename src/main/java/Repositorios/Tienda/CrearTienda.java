@@ -50,7 +50,7 @@ public class CrearTienda {
             throw e;
         }
     }
-
+    /*
     // Metodo para eliminar una tienda
     public boolean eliminarTienda(int idTienda) {
         //consulta para eliminar una tienda en la base de datos
@@ -64,6 +64,6 @@ public class CrearTienda {
             e.printStackTrace();
             return false;
         }
-    }
+    }*/
 
 }
