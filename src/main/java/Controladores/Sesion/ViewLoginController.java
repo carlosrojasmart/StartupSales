@@ -32,26 +32,26 @@ public class ViewLoginController {
 
     private CambiosVistas cambiosVistas = new CambiosVistas();
 
-    // Cambiar a LoginRegisterService
     private LoginRegisterService loginRegisterService = new LoginRegisterService(new LoginRegister());
-
-    private void cambiarVista(Node nodo, String rutaFXML) {
-        Stage stage = (Stage) nodo.getScene().getWindow();
-        cambiosVistas.cambiarVista(stage, rutaFXML);
-    }
 
     @FXML
     public void initialize() {
+        //Inicializa el boton de login
         btnLogin.setOnAction(event -> handleLogin());
     }
 
+    //Realiza el login de usuario
     @FXML
     private void handleLogin() {
+        //Hace get del user del usuario
         String username = txtUser.getText().trim();
+        //Hace get del password del usuario
         String password = txtPassword.getText().trim();
 
-        // Usar loginRegisterService en lugar de loginRegister
+        //Usa el servicio para completar login del usuario
         boolean loginExitoso = loginRegisterService.handleLogin(username, password);
+
+        //Mensajes de exito o error a usuario
         if (loginExitoso) {
             mostrarMensaje("Login exitoso.");
             volverVistaInicialLogeado();
@@ -60,22 +60,28 @@ public class ViewLoginController {
         }
     }
 
+    //Muestra los mensajes a el usuario
     private void mostrarMensaje(String mensaje) {
         lblMensaje.setText(mensaje); // Mostrar el mensaje en el Label
     }
 
-    @FXML
-    private void mostrarCrearCuenta() {
-        cambiarVista(btnCrearUnaCuenta, "/Vistas/PantallaSesion/View-Register.fxml");
+    //Cambio de vista general
+    private void cambiarVista(Node nodo, String rutaFXML) {
+        //Inicializa el stage usando el nodo para cambio de vista
+        Stage stage = (Stage) nodo.getScene().getWindow();
+        //Usa CambiosVista para realizar el cambio usando el stage y la ruta del fxml
+        cambiosVistas.cambiarVista(stage, rutaFXML);
     }
 
+    //Cambio de vista a Crear Cuenta
     @FXML
-    private void volverVistaInicial() {
-        cambiarVista(btnSeguirSinCuenta, "/Vistas/PantallaPrincipal/View-PantallaPrincipal.fxml");
-    }
+    private void mostrarCrearCuenta() {cambiarVista(btnCrearUnaCuenta, "/Vistas/PantallaSesion/View-Register.fxml");}
 
+    //Cambio de vista a vovler a inicio
     @FXML
-    private void volverVistaInicialLogeado() {
-        cambiarVista(btnLogin, "/Vistas/PantallaPrincipal/View-InicialLogeado.fxml");
-    }
+    private void volverVistaInicial() {cambiarVista(btnSeguirSinCuenta, "/Vistas/PantallaPrincipal/View-PantallaPrincipal.fxml");}
+
+    //Cambio de vista inicial logeado
+    @FXML
+    private void volverVistaInicialLogeado() {cambiarVista(btnLogin, "/Vistas/PantallaPrincipal/View-InicialLogeado.fxml");}
 }

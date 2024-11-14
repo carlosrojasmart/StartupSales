@@ -1,6 +1,8 @@
 package Modelos;
 
 public class Tienda {
+
+    // Atributos de la clase Tienda
     private int idTienda;
     private String nombre;
     private String descripcion;

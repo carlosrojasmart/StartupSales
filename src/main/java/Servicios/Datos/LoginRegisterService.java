@@ -14,20 +14,12 @@ public class LoginRegisterService {
         this.loginRegister = loginRegister;
     }
 
-    // Sobrecarga del método handleLogin que permite el login sin una conexión explícita
+    // metodo que maneja el proceso de login de un usuario
     public boolean handleLogin(String username, String password) {
-        // Llama al método `handleLogin` con `null` para conexiónH2, indicando que se usará la base de datos principal
-        return handleLogin(username, password, null);
-    }
+        // Verifica si las credenciales son válidas llamando al repositorio
+        boolean loginExitoso = loginRegister.buscarUsuarioPorCorreo(username, password);
 
-    // Método de login que acepta una conexión específica para usar H2 o base de datos de producción
-    public boolean handleLogin(String username, String password, Connection conexionH2) {
-        // Verifica si usar la conexión H2 o la base de datos principal según el parámetro de conexión
-        boolean loginExitoso = (conexionH2 == null)
-                ? loginRegister.buscarUsuarioPorCorreo(username, password) // Usa base de datos de producción
-                : loginRegister.buscarUsuarioPorCorreoH2(username, password, conexionH2); // Usa base de datos H2
-
-        // Imprime un mensaje y retorna verdadero si el login es exitoso
+        // Si el login es exitoso, imprime un mensaje y retorna verdadero
         if (loginExitoso) {
             System.out.println("Login exitoso.");
             return true;
@@ -38,9 +30,9 @@ public class LoginRegisterService {
         return false;
     }
 
-    // Registra un nuevo usuario en el sistema
+    // metodo que registra un nuevo usuario en el sistema
     public boolean registrarUsuario(String usuario, String correo, String contraseña, String telefono, String direccion) {
-        // Hashea la contraseña proporcionada para almacenamiento seguro
+        // Hashea la contraseña proporcionada
         String hashedPassword = loginRegister.hashPassword(contraseña);
 
         // Inserta el nuevo usuario en la base de datos y obtiene su ID

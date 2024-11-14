@@ -41,28 +41,30 @@ public class ViewRegisterController {
 
     private CambiosVistas cambiosVistas = new CambiosVistas();
 
-    // Cambiar a LoginRegisterService
     private LoginRegisterService loginRegisterService = new LoginRegisterService(new LoginRegister());
-
-    private void cambiarVista(Node nodo, String rutaFXML) {
-        Stage stage = (Stage) nodo.getScene().getWindow();
-        cambiosVistas.cambiarVista(stage, rutaFXML);
-    }
 
     @FXML
     public void initialize() {
+        //Inicializa el boton de login
         btnLogin.setOnAction(event -> registrarUsuario());
     }
 
+
+    //Registro de usuario
     @FXML
     private void registrarUsuario() {
+        //Hace get de el User
         String usuario = txtUser.getText();
+        //Hace get del correo
         String correo = txtCorreoElectronico.getText();
+        //Hace get de la contraseña
         String contraseña = txtContraseña.getText();
+        //Hace get del telefono
         String telefono = txtTelefono.getText();
+        //Hace get de la direccion
         String direccion = txtDireccion.getText();
 
-        // Usar loginRegisterService en lugar de loginRegister
+        //Usa el servicio para registrar el usuario y mostrarle si su login fue exitoso o hubo un error
         boolean exito = loginRegisterService.registrarUsuario(usuario, correo, contraseña, telefono, direccion);
         if (exito) {
             mostrarMensaje("Usuario registrado exitosamente.");
@@ -73,6 +75,7 @@ public class ViewRegisterController {
         }
     }
 
+    //Limpia los campos de register para el usuario
     private void limpiarCampos() {
         txtUser.clear();
         txtCorreoElectronico.clear();
@@ -81,17 +84,25 @@ public class ViewRegisterController {
         txtDireccion.clear();
     }
 
+    //Muestra los mensajes a usuario
     private void mostrarMensaje(String mensaje) {
         lblMensaje.setText(mensaje); // Muestra el mensaje en el Label
     }
 
-    @FXML
-    private void mostrarLogin() {
-        cambiarVista(ingresarBoton, "/Vistas/PantallaSesion/View-Login.fxml");
+    //Cambio de vista general
+    private void cambiarVista(Node nodo, String rutaFXML) {
+        //Inicializa el stage usando el nodo para cambio de vista
+        Stage stage = (Stage) nodo.getScene().getWindow();
+        //Usa CambiosVista para realizar el cambio usando el stage y la ruta del fxml
+        cambiosVistas.cambiarVista(stage, rutaFXML);
     }
 
+    //Cambio de vista a login
     @FXML
-    private void volverVistaInicial() {
-        cambiarVista(btnSeguirSinCuenta, "/Vistas/PantallaPrincipal/View-PantallaPrincipal.fxml");
+    private void mostrarLogin() {cambiarVista(ingresarBoton, "/Vistas/PantallaSesion/View-Login.fxml");}
+
+    //Cambio de vista a volver a inicio
+    @FXML
+    private void volverVistaInicial() {cambiarVista(btnSeguirSinCuenta, "/Vistas/PantallaPrincipal/View-PantallaPrincipal.fxml");
     }
 }

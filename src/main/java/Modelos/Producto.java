@@ -3,6 +3,7 @@ package Modelos;
 import java.math.BigDecimal;
 
 public class Producto {
+    // Atributos de la clase Producto
     private int idProducto;
     private String nombre;
     private BigDecimal precio; // Cambiado a BigDecimal
