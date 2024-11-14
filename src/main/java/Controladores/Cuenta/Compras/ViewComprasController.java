@@ -89,7 +89,7 @@ public class ViewComprasController {
     @FXML
     public void mostrarCarrito() {cambiarVista(carritoCompra, "/Vistas/PantallaPrincipal/View-CarritoCompras.fxml");}
 
-    //Cambio de vista a carrito
+    //Cambio de vista a Perfil
     @FXML
     public void mostrarMiPerfil() {
         cambiarVista(BtnMiPerfil, "/Vistas/PantallaCuenta/MiPerfil/View-MiPerfil.fxml");
