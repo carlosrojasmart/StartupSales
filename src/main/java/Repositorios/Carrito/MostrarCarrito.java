@@ -18,10 +18,10 @@ public class MostrarCarrito {
         String sql = "SELECT idCarrito FROM carrito WHERE idUsuario = ?"; //consulta sql para obtener el carrito de un un usuario
         try (Connection conexion = JDBC.ConectarBD();// el '?' es para dinamizar el resulatado
              PreparedStatement pstmt = conexion.prepareStatement(sql)) { //PreparedStament asegura la consulta sql
-            pstmt.setInt(1, idUsuario); //obtiene la consulta en indice 1 para el usuario
+            pstmt.setInt(1, idUsuario); //asigna la consulta en indice 1 para el usuario
             ResultSet rs = pstmt.executeQuery();//ejecuta la query
             if (rs.next()) {
-                return rs.getInt("idCarrito"); // retorna la columna idCarrito del rs
+                return rs.getInt("idCarrito"); //retorna la columna idCarrito del rs
             } else {
                 System.out.println("No se encontró carrito para el usuario con id: " + idUsuario);
                 return -1;
@@ -33,8 +33,8 @@ public class MostrarCarrito {
         String verificarSql = "SELECT cantidad FROM carrito_producto WHERE idCarrito = ? AND idProducto = ?";//misma explicacion
         try (Connection conexion = JDBC.ConectarBD();
              PreparedStatement verificarStmt = conexion.prepareStatement(verificarSql)) { //misma explicacion
-            verificarStmt.setInt(1, idCarrito);//obtiene la consulta en indice 1 del idCarrito
-            verificarStmt.setInt(2, idProducto);//obtiene la consulta en indice 2 del idProducto
+            verificarStmt.setInt(1, idCarrito);//asigna la consulta en indice 1 del idCarrito
+            verificarStmt.setInt(2, idProducto);//asigna la consulta en indice 2 del idProducto
             ResultSet rs = verificarStmt.executeQuery();//misma ejecucion de query
             return rs.next();//aqui rs avanza a la siguiente fila verificando si hay mas filas
         }
@@ -44,7 +44,7 @@ public class MostrarCarrito {
         String actualizarSql = "UPDATE carrito_producto SET cantidad = cantidad + ? WHERE idCarrito = ? AND idProducto = ?"; //consuilta qque actualiza la cantidad de un producto
         try (Connection conexion = JDBC.ConectarBD();
             PreparedStatement actualizarStmt = conexion.prepareStatement(actualizarSql)) {
-            actualizarStmt.setInt(1, cantidad);//obtiene consulta en el indice 1 de cantidad
+            actualizarStmt.setInt(1, cantidad);//asigna consulta en el indice 1 de cantidad
             actualizarStmt.setInt(2, idCarrito);//misma funcion en indice 2 y en idCarrito
             actualizarStmt.setInt(3, idProducto);//misma funcion en indice 3 y en idProducto
             actualizarStmt.executeUpdate();//actualiza la bd
@@ -70,7 +70,7 @@ public class MostrarCarrito {
                 "WHERE cp.idCarrito = ?";//obtiene lso productos del carrito, utiizando el '?' para establecer el valor q se tiene que buscar
         try (Connection conexion = JDBC.ConectarBD();
              PreparedStatement pstmt = conexion.prepareStatement(sql)) {
-            pstmt.setInt(1, idCarrito);//obtiene consulta en indice 1 de idCarrto
+            pstmt.setInt(1, idCarrito);//asigna consulta en indice 1 de idCarrto
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
                 Producto producto = new Producto();//instancia el un producto
@@ -114,7 +114,7 @@ public class MostrarCarrito {
 
             ResultSet rs = pstmt.getGeneratedKeys();//retorna las claves generadas
             if (rs.next()) {
-                return rs.getInt(1); // ID de la compra generada
+                return rs.getInt(1); //ID de la compra generada
             } else {
                 throw new SQLException("No se pudo obtener el ID de la compra generada.");
             }
@@ -141,8 +141,8 @@ public class MostrarCarrito {
              PreparedStatement pstmt = conexion.prepareStatement(sql)) {
 
             for (Producto producto : productos) {
-                pstmt.setInt(1, producto.getCantidad()); // Cantidad del producto en el carrito
-                pstmt.setInt(2, producto.getIdProducto()); // ID del producto
+                pstmt.setInt(1, producto.getCantidad()); //cantidad del producto en el carrito
+                pstmt.setInt(2, producto.getIdProducto()); //iD del producto
                 pstmt.executeUpdate();
             }
         }
