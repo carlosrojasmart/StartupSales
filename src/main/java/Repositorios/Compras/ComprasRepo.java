@@ -49,7 +49,7 @@ public class ComprasRepo {
         String sql = "SELECT COUNT(*) AS total FROM Compra WHERE idUsuario = ?";//consulta para contar el número total de compras de un usuario
         try (Connection conexion = JDBC.ConectarBD();
              PreparedStatement pstmt = conexion.prepareStatement(sql)) {
-            pstmt.setInt(1, idUsuario);//obtiene la consulta de idUsuario en el indice 1
+            pstmt.setInt(1, idUsuario);//asigna la consulta de idUsuario en el indice 1
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {//si la consulta devuelve un resultado, obtiene el número total de compras
                 return rs.getInt("total");
