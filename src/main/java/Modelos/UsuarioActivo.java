@@ -3,6 +3,7 @@ package Modelos;
 import java.math.BigDecimal;
 
 public class UsuarioActivo {
+    // Atributos de la clase UsuarioActivo
     private static int idUsuario;
     private static String nombre;
     private static String correoElectronico;
@@ -11,6 +12,7 @@ public class UsuarioActivo {
     private static BigDecimal saldoActual = BigDecimal.ZERO;
     private static BigDecimal saldoPagar = BigDecimal.ZERO;
 
+    // Getters y Setters
     public static void setUsuarioActivo(int id, String nombreUsuario, String correo, boolean vendedor, int idCarritoUsuario, BigDecimal saldoActualUsuario, BigDecimal saldoPagarUsuario) {
         idUsuario = id;
         nombre = nombreUsuario;

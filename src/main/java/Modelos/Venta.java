@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 public class Venta {
+    // Atributos de la clase Venta
     private int idVenta;
     private Date fecha;
     private BigDecimal total; // Cambiado a BigDecimal
@@ -13,6 +14,7 @@ public class Venta {
     private Cliente cliente;
     private Factura factura;
 
+    //getters y setters
     public int getIdVenta() {
         return idVenta;
     }

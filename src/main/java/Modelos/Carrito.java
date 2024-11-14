@@ -4,13 +4,14 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public class Carrito {
-
+    //Se definen los atributos de la clase Carrito
     private int idCarrito;
     private int idUsuario;
     private List<Producto> productos;
     private BigDecimal total;
     private String codigoPromocional;
 
+    //se crea el constructor de la clase Carrito
     public Carrito(int idCarrito, int idUsuario, List<Producto> productos, BigDecimal total, String codigoPromocional) {
         this.idCarrito = idCarrito;
         this.idUsuario = idUsuario;

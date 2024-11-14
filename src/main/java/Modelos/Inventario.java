@@ -3,12 +3,14 @@ package Modelos;
 import java.util.List;
 
 public class Inventario {
+    // Atributos de la clase Inventario
     private int idInventario;
     private List<Producto> productos;
     private int cantidadTotal;
     private String tipoProducto;
     private String caracteristicaProducto;
 
+    // getters y setters
     public int getIdInventario() {
         return idInventario;
     }
