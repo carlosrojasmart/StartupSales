@@ -68,5 +68,4 @@ public class Carrito {
                 .reduce(BigDecimal.ZERO, BigDecimal::add); // Sumar todos los valores
     }
 
-
 }
