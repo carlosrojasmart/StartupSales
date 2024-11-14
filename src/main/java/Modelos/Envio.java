@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 public class Envio {
+    // Atributos de la clase Envio
     private int idEnvio;
     private String direccionDestino;
     private Date fechaEnvio;

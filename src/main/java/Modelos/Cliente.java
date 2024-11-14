@@ -1,6 +1,8 @@
 package Modelos;
 
 public class Cliente {
+
+    //Se definen los atributos de la clase Cliente
     private int idCliente;
     private String nombre;
     private String direccion;
@@ -8,10 +10,12 @@ public class Cliente {
     private String telefono;
     private int idTienda;
 
+    //se crea el constructor de la clase Cliente
     public int getIdCliente() {
         return idCliente;
     }
 
+    // Getters y setters
     public void setIdCliente(int idCliente) {
         this.idCliente = idCliente;
     }

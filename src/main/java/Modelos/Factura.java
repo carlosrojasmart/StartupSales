@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 public class Factura {
+    // Atributos de la clase Factura
     private int numeroFactura;
     private Date fecha;
     private BigDecimal total; // Cambiado a BigDecimal

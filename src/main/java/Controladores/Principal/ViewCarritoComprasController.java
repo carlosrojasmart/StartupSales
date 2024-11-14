@@ -62,100 +62,115 @@ public class ViewCarritoComprasController {
 
     @FXML
     private void initialize() {
-        buscarProductos.setOnMouseClicked(event -> buscarProductos.clear());
+
+        // Limpiar el campo de búsqueda al hacer clic
+        buscarProductos.setOnMouseClicked(event -> {buscarProductos.clear();});
+
+        // Asignar la funcionalidad de búsqueda al presionar "Enter"
+        buscarProductos.setOnAction(event -> realizarBusqueda());
+
+        //Inicializa el icono de perfil
         usuarioIcono.setOnMouseClicked(event -> mostrarMiPerfil());
 
+        //Carga los productos al carrito
         cargarProductosCarrito();
 
-        String terminoBusqueda = CambiosVistas.getTerminoBusqueda();
-        if (terminoBusqueda != null && !terminoBusqueda.isEmpty()) {
-            buscarProductos.setText(terminoBusqueda);
-            realizarBusqueda();
-        }
-
-        buscarProductos.setOnAction(event -> realizarBusqueda());
     }
 
-    @FXML
-    private void realizarBusqueda() {
-        String terminoBusqueda = buscarProductos.getText().trim();
-        if (!terminoBusqueda.isEmpty()) {
-            CambiosVistas.setTerminoBusqueda(terminoBusqueda);
-            cambiarVista(buscarProductos, "/Vistas/PantallaPrincipal/View-BusquedaProductos.fxml");
-        } else {
-            System.out.println("El término de búsqueda está vacío.");
-        }
-    }
-
+    //Carga y muestra los productos en el carrito de compras
     private void cargarProductosCarrito() {
+        //Crea la lista de productos y usa el carrito service para obtener los productos del carrito
         List<Producto> productos = carritoService.obtenerProductosDeCarrito(UsuarioActivo.getIdCarrito());
-        vboxProductos.getChildren().clear();
+        vboxProductos.getChildren().clear(); //Limpia vbox de productos
 
+        //Crea producto por producto
         for (Producto producto : productos) {
+            //Crea un hbox para el producto con margen de 10 pixeles le da un style y un ancho
             HBox hboxProducto = new HBox(10);
             hboxProducto.setStyle("-fx-background-color: #ffffff; -fx-padding: 10; -fx-border-color: #dddddd;");
             hboxProducto.setPrefWidth(600);
 
+            //Crea el imageView del producto y le da medidas
             ImageView imagenProducto = new ImageView();
             imagenProducto.setFitHeight(80);
             imagenProducto.setFitWidth(80);
-            if (producto.getImagenProducto() != null) {
+            if (producto.getImagenProducto() != null) {//Verifica que el producto tenga imagen y la carga al imageView
                 Image image = new Image(new ByteArrayInputStream(producto.getImagenProducto()));
                 imagenProducto.setImage(image);
             }
 
+            //Agrega el nombre del producto
             Label nombreProducto = new Label(producto.getNombre());
             nombreProducto.setStyle("-fx-font-size: 14px;");
 
+            //Inicializa el spinner para que el usuario pueda aumentar o disminuir cantidad el producto
             Spinner<Integer> spinnerCantidad = new Spinner<>();
             spinnerCantidad.setPrefWidth(55);
             spinnerCantidad.setMaxWidth(55);
             spinnerCantidad.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100, producto.getCantidad()));
             spinnerCantidad.valueProperty().addListener((obs, oldValue, newValue) -> {
+                //Usa el carritoService para actualizar la cantidad del producto
                 carritoService.actualizarCantidadProducto(producto.getIdProducto(), UsuarioActivo.getIdCarrito(), newValue);
                 actualizarTotal();
             });
 
+            //Agrega el precio del producto
             Label precioProducto = new Label(FormatoUtil.formatearPrecio(producto.getPrecio()));
             precioProducto.setStyle("-fx-font-size: 14px;");
 
+            //Agrega el boton eliminar producto
             Button btnEliminarProducto = new Button("Eliminar");
             btnEliminarProducto.setStyle("-fx-background-color: #000000; -fx-text-fill: #ffffff;");
             btnEliminarProducto.setOnAction(event -> eliminarProductoDelCarrito(producto));
 
+            ///Agrega el item al hbox y al vbox de productos
             hboxProducto.getChildren().addAll(imagenProducto, nombreProducto, spinnerCantidad, precioProducto, btnEliminarProducto);
             vboxProductos.getChildren().add(hboxProducto);
         }
 
+        //Actualiza el total del carrito
         actualizarTotal();
     }
 
+    //Calcula y actualiza el total del carrito
     private void actualizarTotal() {
+        //Inicializa un total en cero
         BigDecimal total = BigDecimal.ZERO;
 
+        //Recorre cada nodo dentro del vbox de productos pare procesar cada producto
         for (Node node : vboxProductos.getChildren()) {
+            //Verifica si el nodo es un Hbox que contiene informacion del producto
             if (node instanceof HBox hbox) {
-                Label precioLabel = (Label) hbox.getChildren().get(3);
-                Spinner<Integer> spinnerCantidad = (Spinner<Integer>) hbox.getChildren().get(2);
+                //Obtiene el label que muestra el precio del producto y el spinner que muestra la cantidad de este
+                Label precioLabel = (Label) hbox.getChildren().get(3); //marca el inice 3 como precio del producto
+                Spinner<Integer> spinnerCantidad = (Spinner<Integer>) hbox.getChildren().get(2); //marca el indice 2 como la cantidad el producto
 
+                //Obtiene el texto del precio y lo formatea a BigDecimal
                 String precioTexto = precioLabel.getText()
-                        .replace("COP", "")
-                        .replace(",", "")
-                        .trim();
+                        .replace("COP", "") //Elimina la moneda
+                        .replace(",", "") //Elimina las comas
+                        .trim(); //Elimina espacios
 
                 try {
+                    //Convierte el precio del texto a BigDecimal
                     BigDecimal precio = new BigDecimal(precioTexto);
-                    total = total.add(precio.multiply(BigDecimal.valueOf(spinnerCantidad.getValue())));
+                    // Calcula el subtotal multiplicando el precio por la cantidad
+                    BigDecimal subtotal = precio.multiply(BigDecimal.valueOf(spinnerCantidad.getValue()));
+                    // Agrega el subtotal al total general
+                    total = total.add(subtotal);
                 } catch (NumberFormatException e) {
                     System.out.println("Error al convertir el precio: " + precioTexto);
                 }
             }
         }
 
+        //Muestra el total calculado al usuario
         lblTotal.setText("Total: " + FormatoUtil.formatearPrecio(total));
     }
 
+    //Elimina el producto del carrito y actualiza la vista
     private void eliminarProductoDelCarrito(Producto producto) {
+        //Usa el carrito service para eliminar el producto del carrito del usuario
         carritoService.eliminarProductoDelCarrito(producto.getIdProducto(), UsuarioActivo.getIdCarrito());
         cargarProductosCarrito();
     }
@@ -212,37 +227,57 @@ public class ViewCarritoComprasController {
         return total.setScale(2, RoundingMode.HALF_UP);
     }
 
+    //Manejo vista busqueda Producto
     @FXML
-    public void mostrarMiPerfil() {
-        cambiarVista(usuarioIcono, "/Vistas/PantallaCuenta/MiPerfil/View-MiPerfil.fxml");
-    }
+    private void realizarBusqueda() {
+        //inicializa el terminoBusqueda
+        String terminoBusqueda = buscarProductos.getText().trim();
+        if (!terminoBusqueda.isEmpty()) {
+            // Si no esta vacio almacena el termino el término de búsqueda para usarlo en la vista de búsqueda de productos
+            CambiosVistas.setTerminoBusqueda(terminoBusqueda);
 
-    @FXML
-    public void mostrarMisTiendas(ActionEvent event) {
-        if (UsuarioActivo.isVendedor()) {
-            cambiarVista(BtnMisTiendas, "/Vistas/PantallaCuenta/Tienda/View-TiendaCreada.fxml");
+            // Cambiar a la vista de búsqueda de productos
+            cambiarVista(buscarProductos, "/Vistas/PantallaPrincipal/View-BusquedaProductos.fxml");
         } else {
-            cambiarVista(BtnMisTiendas, "/Vistas/PantallaCuenta/Tienda/View-CrearTienda.fxml");
+            // Si el termino de busqueda esta avcio imprime
+            System.out.println("El término de búsqueda está vacío.");
         }
     }
 
+    //Cambio de vista general
+    private void cambiarVista(Node nodo, String rutaFXML) {
+        //Inicializa el stage usando el nodo para cambio de vista
+        Stage stage = (Stage) nodo.getScene().getWindow();
+        //Usa CambiosVista para realizar el cambio usando el stage y la ruta del fxml
+        cambiosVistas.cambiarVista(stage, rutaFXML);
+    }
+
+    //Cambio de vista a tiendas
+    @FXML
+    public void mostrarMisTiendas(ActionEvent event) {
+        // Verificar si el usuario es verdeor o no
+        if (UsuarioActivo.isVendedor()) {
+            // Si es vendedor va a la vista de tiena ya creada
+            cambiarVista(BtnMisTiendas, "/Vistas/PantallaCuenta/Tienda/View-TiendaCreada.fxml");
+        } else {
+            // Si no es vendedor va a la vista para crear tienda
+            cambiarVista(BtnMisTiendas, "/Vistas/PantallaCuenta/Tienda/View-CrearTienda.fxml");
+        }
+    }
+    //Cambio de vista a Compras
     @FXML
     public void mostrarCompras(ActionEvent event) {
+        //Verifica si el usuario tiene compras y muestra la vista de comprasCreada
         if (CambiosVistas.usuarioTieneCompras(UsuarioActivo.getIdUsuario())) {
             cambiarVista(BtnComprasAr, "/Vistas/PantallaCuenta/Compras/View-ComprasCreada.fxml");
+            //Si usuario no tiene compras muestra vista Compras
         } else {
             cambiarVista(BtnComprasAr, "/Vistas/PantallaCuenta/Compras/View-Compras.fxml");
         }
     }
 
-    private void cambiarVista(Node nodo, String rutaFXML) {
-        Platform.runLater(() -> {
-            if (nodo.getScene() != null && nodo.getScene().getWindow() != null) {
-                Stage stage = (Stage) nodo.getScene().getWindow();
-                cambiosVistas.cambiarVista(stage, rutaFXML);
-            } else {
-                System.out.println("El nodo aún no está asociado a un Stage.");
-            }
-        });
-    }
+    //Cambio de vista a perfil
+    @FXML
+    public void mostrarMiPerfil() {cambiarVista(usuarioIcono, "/Vistas/PantallaCuenta/MiPerfil/View-MiPerfil.fxml");}
+
 }

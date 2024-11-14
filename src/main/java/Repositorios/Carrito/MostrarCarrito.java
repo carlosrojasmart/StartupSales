@@ -13,15 +13,15 @@ import java.util.List;
 
 public class MostrarCarrito {
 
-    // Método para obtener el ID del carrito de un usuario
+    // Metodo para obtener el ID del carrito de un usuario
     public int obtenerIdCarritoDesdeBD(int idUsuario) throws SQLException {
-        String sql = "SELECT idCarrito FROM carrito WHERE idUsuario = ?";
-        try (Connection conexion = JDBC.ConectarBD();
-             PreparedStatement pstmt = conexion.prepareStatement(sql)) {
-            pstmt.setInt(1, idUsuario);
-            ResultSet rs = pstmt.executeQuery();
+        String sql = "SELECT idCarrito FROM carrito WHERE idUsuario = ?"; //consulta sql para obtener el carrito de un un usuario
+        try (Connection conexion = JDBC.ConectarBD();// el '?' es para dinamizar el resulatado
+             PreparedStatement pstmt = conexion.prepareStatement(sql)) { //PreparedStament asegura la consulta sql
+            pstmt.setInt(1, idUsuario); //asigna la consulta en indice 1 para el usuario
+            ResultSet rs = pstmt.executeQuery();//ejecuta la query
             if (rs.next()) {
-                return rs.getInt("idCarrito");
+                return rs.getInt("idCarrito"); //retorna la columna idCarrito del rs
             } else {
                 System.out.println("No se encontró carrito para el usuario con id: " + idUsuario);
                 return -1;
@@ -30,34 +30,34 @@ public class MostrarCarrito {
     }
 
     public boolean productoYaExisteEnCarrito(int idCarrito, int idProducto) throws SQLException {
-        String verificarSql = "SELECT cantidad FROM carrito_producto WHERE idCarrito = ? AND idProducto = ?";
+        String verificarSql = "SELECT cantidad FROM carrito_producto WHERE idCarrito = ? AND idProducto = ?";//misma explicacion
         try (Connection conexion = JDBC.ConectarBD();
-             PreparedStatement verificarStmt = conexion.prepareStatement(verificarSql)) {
-            verificarStmt.setInt(1, idCarrito);
-            verificarStmt.setInt(2, idProducto);
-            ResultSet rs = verificarStmt.executeQuery();
-            return rs.next();
+             PreparedStatement verificarStmt = conexion.prepareStatement(verificarSql)) { //misma explicacion
+            verificarStmt.setInt(1, idCarrito);//asigna la consulta en indice 1 del idCarrito
+            verificarStmt.setInt(2, idProducto);//asigna la consulta en indice 2 del idProducto
+            ResultSet rs = verificarStmt.executeQuery();//misma ejecucion de query
+            return rs.next();//aqui rs avanza a la siguiente fila verificando si hay mas filas
         }
     }
 
     public void actualizarCantidadProducto(int idCarrito, int idProducto, int cantidad) throws SQLException {
-        String actualizarSql = "UPDATE carrito_producto SET cantidad = cantidad + ? WHERE idCarrito = ? AND idProducto = ?";
+        String actualizarSql = "UPDATE carrito_producto SET cantidad = cantidad + ? WHERE idCarrito = ? AND idProducto = ?"; //consuilta qque actualiza la cantidad de un producto
         try (Connection conexion = JDBC.ConectarBD();
-             PreparedStatement actualizarStmt = conexion.prepareStatement(actualizarSql)) {
-            actualizarStmt.setInt(1, cantidad);
-            actualizarStmt.setInt(2, idCarrito);
-            actualizarStmt.setInt(3, idProducto);
-            actualizarStmt.executeUpdate();
+            PreparedStatement actualizarStmt = conexion.prepareStatement(actualizarSql)) {
+            actualizarStmt.setInt(1, cantidad);//asigna consulta en el indice 1 de cantidad
+            actualizarStmt.setInt(2, idCarrito);//misma funcion en indice 2 y en idCarrito
+            actualizarStmt.setInt(3, idProducto);//misma funcion en indice 3 y en idProducto
+            actualizarStmt.executeUpdate();//actualiza la bd
         }
     }
 
     public void insertarProductoEnCarrito(int idCarrito, int idProducto, int cantidad) throws SQLException {
-        String insertarSql = "INSERT INTO carrito_producto (idCarrito, idProducto, cantidad) VALUES (?, ?, ?)";
+        String insertarSql = "INSERT INTO carrito_producto (idCarrito, idProducto, cantidad) VALUES (?, ?, ?)"; //inserta en carrito_producto valores del parentesis
         try (Connection conexion = JDBC.ConectarBD();
              PreparedStatement insertarStmt = conexion.prepareStatement(insertarSql)) {
-            insertarStmt.setInt(1, idCarrito);
-            insertarStmt.setInt(2, idProducto);
-            insertarStmt.setInt(3, cantidad);
+            insertarStmt.setInt(1, idCarrito);//mismas funciones de obtener consultas
+            insertarStmt.setInt(2, idProducto);//
+            insertarStmt.setInt(3, cantidad);//
             insertarStmt.executeUpdate();
         }
     }
@@ -67,26 +67,26 @@ public class MostrarCarrito {
         String sql = "SELECT p.idProducto, p.nombre, p.precio, p.imagenProducto, cp.cantidad " +
                 "FROM Producto p " +
                 "JOIN carrito_producto cp ON p.idProducto = cp.idProducto " +
-                "WHERE cp.idCarrito = ?";
+                "WHERE cp.idCarrito = ?";//obtiene lso productos del carrito, utiizando el '?' para establecer el valor q se tiene que buscar
         try (Connection conexion = JDBC.ConectarBD();
              PreparedStatement pstmt = conexion.prepareStatement(sql)) {
-            pstmt.setInt(1, idCarrito);
+            pstmt.setInt(1, idCarrito);//asigna consulta en indice 1 de idCarrto
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {
-                Producto producto = new Producto();
-                producto.setIdProducto(rs.getInt("idProducto"));
-                producto.setNombre(rs.getString("nombre"));
-                producto.setPrecio(rs.getBigDecimal("precio"));
-                producto.setImagenProducto(rs.getBytes("imagenProducto"));
-                producto.setCantidad(rs.getInt("cantidad"));
-                productos.add(producto);
+                Producto producto = new Producto();//instancia el un producto
+                producto.setIdProducto(rs.getInt("idProducto"));//setea en idProducto los valores de la consulta
+                producto.setNombre(rs.getString("nombre"));//setea en Nombre los valores de la consulta
+                producto.setPrecio(rs.getBigDecimal("precio"));//setea en Precio los valores de la consulta
+                producto.setImagenProducto(rs.getBytes("imagenProducto"));//setea en ImagenProducto los valores de la consulta
+                producto.setCantidad(rs.getInt("cantidad"));//setea en Cantidad los valores de la consulta
+                productos.add(producto);//se agrega en la lista productos lo que se seteo en producto
             }
         }
         return productos;
     }
 
     public void eliminarProductoDelCarrito(int idProducto, int idCarrito) throws SQLException {
-        String sql = "DELETE FROM carrito_producto WHERE idCarrito = ? AND idProducto = ?";
+        String sql = "DELETE FROM carrito_producto WHERE idCarrito = ? AND idProducto = ?";//elimina un producto del carrito segun el idCarrito
         try (Connection conexion = JDBC.ConectarBD();
              PreparedStatement pstmt = conexion.prepareStatement(sql)) {
             pstmt.setInt(1, idCarrito);
@@ -96,7 +96,7 @@ public class MostrarCarrito {
     }
 
     public void vaciarCarrito(int idCarrito) throws SQLException {
-        String sql = "DELETE FROM carrito_producto WHERE idCarrito = ?";
+        String sql = "DELETE FROM carrito_producto WHERE idCarrito = ?";//vacia todo el carrito
         try (Connection conexion = JDBC.ConectarBD();
              PreparedStatement pstmt = conexion.prepareStatement(sql)) {
             pstmt.setInt(1, idCarrito);
@@ -105,16 +105,16 @@ public class MostrarCarrito {
     }
 
     public int registrarCompra(int idUsuario, BigDecimal totalCompra) throws SQLException {
-        String sql = "INSERT INTO Compra (idUsuario, total_compra, fecha, hora) VALUES (?, ?, CURDATE(), CURTIME())";
-        try (Connection conexion = JDBC.ConectarBD();
-             PreparedStatement pstmt = conexion.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
+        String sql = "INSERT INTO Compra (idUsuario, total_compra, fecha, hora) VALUES (?, ?, CURDATE(), CURTIME())";//inserta en Compra los parametros de la consulta
+        try (Connection conexion = JDBC.ConectarBD();//se insertan parametros de fecha y tiempo actual (funciones sql CURDATE-TIME)
+            PreparedStatement pstmt = conexion.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {//generated keys se utiliza para tener las claves que se generan en la BD
             pstmt.setInt(1, idUsuario);
             pstmt.setBigDecimal(2, totalCompra);
             pstmt.executeUpdate();
 
-            ResultSet rs = pstmt.getGeneratedKeys();
+            ResultSet rs = pstmt.getGeneratedKeys();//retorna las claves generadas
             if (rs.next()) {
-                return rs.getInt(1); // ID de la compra generada
+                return rs.getInt(1); //ID de la compra generada
             } else {
                 throw new SQLException("No se pudo obtener el ID de la compra generada.");
             }
@@ -122,27 +122,27 @@ public class MostrarCarrito {
     }
 
     public void registrarProductosDeCompra(int idCompra, int idCarrito) throws SQLException {
-        String sql = "INSERT INTO compra_producto (idCompra, idProducto, cantidad) " +
-                "SELECT ?, idProducto, cantidad FROM carrito_producto WHERE idCarrito = ?";
+        String sql = "INSERT INTO compra_producto (idCompra, idProducto, cantidad) " + //inserta parametros en compra_productos
+                "SELECT ?, idProducto, cantidad FROM carrito_producto WHERE idCarrito = ?";//se asignan parametros y el '?' se asigna a idCompra siendo variable
         try (Connection conexion = JDBC.ConectarBD();
              PreparedStatement pstmt = conexion.prepareStatement(sql)) {
             pstmt.setInt(1, idCompra);
             pstmt.setInt(2, idCarrito);
-            pstmt.executeUpdate();
+            pstmt.executeUpdate();//ejectua y actualiza
         }
     }
 
-    // Método en el repositorio MostrarCarrito para reducir stock
+    // Metodo en el repositorio MostrarCarrito para reducir stock
     public void reducirStockProductos(int idCarrito) throws SQLException {
-        String sql = "UPDATE producto SET stock = stock - ? WHERE idProducto = ?";
+        String sql = "UPDATE producto SET stock = stock - ? WHERE idProducto = ?";//actualiza el producto con el stock
         List<Producto> productos = obtenerProductosDeCarrito(idCarrito);
 
         try (Connection conexion = JDBC.ConectarBD();
              PreparedStatement pstmt = conexion.prepareStatement(sql)) {
 
             for (Producto producto : productos) {
-                pstmt.setInt(1, producto.getCantidad()); // Cantidad del producto en el carrito
-                pstmt.setInt(2, producto.getIdProducto()); // ID del producto
+                pstmt.setInt(1, producto.getCantidad()); //cantidad del producto en el carrito
+                pstmt.setInt(2, producto.getIdProducto()); //iD del producto
                 pstmt.executeUpdate();
             }
         }

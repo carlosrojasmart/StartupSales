@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import java.math.BigDecimal;
 
 public class Compra {
+    // Atributos de la clase Compra
     private int idCompra;
     private int idUsuario;
     private BigDecimal totalCompra;
@@ -32,6 +33,7 @@ public class Compra {
         this.productosResumen = generarProductosResumen();
     }
 
+    // Getters y setters
     public int getIdCompra() {
         return idCompra;
     }
