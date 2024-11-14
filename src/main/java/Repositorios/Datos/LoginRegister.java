@@ -18,12 +18,11 @@ public class LoginRegister {
             byte[] hashBytes = md.digest(password.getBytes());//convierte la contraseña en un array de bytes y calcula el hash
             StringBuilder hexString = new StringBuilder();//crea un StringBuilder para construir el hash en formato hexadecimal
 
-            for (byte b : hashBytes) {// Itera sobre cada byte del hash generado
+            for (byte b : hashBytes) {//tera sobre cada byte del hash generado
                 String hex = Integer.toHexString(0xff & b);//convierte el byte a hexadecimal y asegura que tenga dos dígitos
                 if (hex.length() == 1) hexString.append('0'); //añade un '0' si el hex es de un dígito
                 hexString.append(hex); //añade el valor hexadecimal al StringBuilder
             }
-
             //retorna el hash de la contraseña en formato hexadecimal
             return hexString.toString();
         } catch (NoSuchAlgorithmException e) {
@@ -33,12 +32,12 @@ public class LoginRegister {
 
 
     public boolean buscarUsuarioPorCorreo(String correo, String password) {
-        //consulta SQL para seleccionar los datos del usuario en base al correo
+        //consulta para seleccionar los datos del usuario en base al correo
         String sql = "SELECT idUsuario, nombre, correo_electronico, contraseña, esVendedor, saldo_actual, saldo_pagar FROM Usuario WHERE correo_electronico = ?";
 
         try (Connection conexion = JDBC.ConectarBD();
              PreparedStatement pstmt = conexion.prepareStatement(sql)) {
-            pstmt.setString(1, correo);//obtiene laconsulta en el indice 1 de correo
+            pstmt.setString(1, correo);//asigna laconsulta en el indice 1 de correo
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {//verifica si existe el correo proporcionado
                 String storedPassword = rs.getString("contraseña");//obtiene la contraseña en la BD
@@ -66,7 +65,7 @@ public class LoginRegister {
 
         try (Connection conexion = JDBC.ConectarBD();
              PreparedStatement pstmt = conexion.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            // Asigna valores a los parámetros de la consulta en el orden correspondiente
+            //asigna valores a los parámetros de la consulta en el orden correspondiente
             pstmt.setString(1, usuario);//usuario
             pstmt.setString(2, direccion);//dirección del usuario
             pstmt.setString(3, correo);//crreo electrónico del usuario
@@ -92,7 +91,7 @@ public class LoginRegister {
         String sql = "SELECT idCarrito FROM carrito WHERE idUsuario = ?";//consulta para seleccionar el idCarrito a un idUsuario
         try (Connection conexion = JDBC.ConectarBD();
              PreparedStatement pstmt = conexion.prepareStatement(sql)) {
-            pstmt.setInt(1, idUsuario);//obtiene la consulta de idUsuario en el indice 1
+            pstmt.setInt(1, idUsuario);//asigna la consulta de idUsuario en el indice 1
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {//verifica si existe un registro que coincida con el idUsuario proporcionado
                 return rs.getInt("idCarrito");//retorna el idCarrito obtenido de la consulta
@@ -108,7 +107,7 @@ public class LoginRegister {
         String sql = "INSERT INTO carrito (idUsuario) VALUES (?)";//consulta para insertar un nuevo carrito de un idUsuario
         try (Connection conexion = JDBC.ConectarBD();
              PreparedStatement pstmt = conexion.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            pstmt.setInt(1, idUsuario);//obtiene la consulta de idUsuario en el indice 1
+            pstmt.setInt(1, idUsuario);//asigna la consulta de idUsuario en el indice 1
             pstmt.executeUpdate();
             ResultSet generatedKeys = pstmt.getGeneratedKeys();//obtiene las claves generadas de idCarrito de la inserción
 
