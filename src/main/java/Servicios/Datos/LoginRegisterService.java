@@ -1,6 +1,7 @@
 package Servicios.Datos;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
 import Modelos.UsuarioActivo;
 import Repositorios.Datos.LoginRegister;
 
@@ -54,4 +55,5 @@ public class LoginRegisterService {
         System.out.println("Error al registrar usuario.");
         return false;
     }
+
 }
